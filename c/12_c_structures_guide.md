@@ -1019,6 +1019,156 @@ struct Good {
 };
 ```
 
+### Using `__attribute__((__packed__))`
+
+The `__attribute__((__packed__))` directive (GCC-specific) removes all padding from a structure, packing members tightly together.
+
+```c
+#include <stdio.h>
+
+// Regular structure with padding
+struct Regular {
+    char a;    // 1 byte
+    int b;     // 4 bytes
+    char c;    // 1 byte
+};
+
+// Packed structure without padding
+struct __attribute__((__packed__)) Packed {
+    char a;    // 1 byte
+    int b;     // 4 bytes
+    char c;    // 1 byte
+};
+
+// Alternative syntax
+__attribute__((__packed__)) struct AlsoPacked {
+    char a;
+    int b;
+    char c;
+};
+
+int main() {
+    printf("Size of Regular: %zu bytes\n", sizeof(struct Regular));
+    printf("Size of Packed: %zu bytes\n", sizeof(struct Packed));
+    
+    return 0;
+}
+```
+
+**Output:**
+```
+Size of Regular: 12 bytes
+Size of Packed: 6 bytes
+```
+
+### Practical Example: Employee Structure
+
+```c
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_EMPLOYEES 1000
+
+// Packed structure to save memory
+__attribute__((__packed__)) struct employee_t {
+    int id;
+    char firstname[64];
+    char lastname[64];
+    float income;
+    bool ismanager;
+};
+
+int main() {
+    struct employee_t employees[MAX_EMPLOYEES];
+    
+    printf("Size of one employee: %zu bytes\n", sizeof(struct employee_t));
+    printf("Size of array: %zu bytes\n", sizeof(employees));
+    printf("Memory saved per employee: %zu bytes\n", 
+           sizeof(struct {int id; char firstname[64]; char lastname[64]; float income; bool ismanager;}) 
+           - sizeof(struct employee_t));
+    
+    return 0;
+}
+```
+
+### ⚠️ Warnings About Packed Structures
+
+**Advantages:**
+- Reduces memory usage
+- Useful for network protocols and file formats
+- Ensures exact memory layout
+
+**Disadvantages:**
+- ❌ **Performance penalty** - unaligned access is slower
+- ❌ **Portability issues** - may cause crashes on some architectures
+- ❌ **Compiler-specific** - `__attribute__` is GCC/Clang extension
+- ❌ **Harder to debug** - unusual memory layout
+
+```c
+#include <stdio.h>
+
+__attribute__((__packed__)) struct Slow {
+    char a;
+    int b;     // Unaligned access - slower!
+    char c;
+};
+
+struct Fast {
+    int b;     // Aligned access - faster!
+    char a;
+    char c;
+};
+
+int main() {
+    struct Slow s;
+    struct Fast f;
+    
+    printf("Slow struct: %zu bytes (unaligned)\n", sizeof(s));
+    printf("Fast struct: %zu bytes (aligned)\n", sizeof(f));
+    
+    return 0;
+}
+```
+
+**When to use `__packed__`:**
+- ✅ Network packet structures
+- ✅ File format specifications
+- ✅ Hardware register mappings
+- ✅ Interfacing with external systems
+- ❌ General-purpose data structures (performance cost)
+
+### Example: Network Packet Structure
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+// Network packet must have exact size
+__attribute__((__packed__)) struct TCPHeader {
+    uint16_t source_port;
+    uint16_t dest_port;
+    uint32_t sequence_num;
+    uint32_t ack_num;
+    uint8_t data_offset;
+    uint8_t flags;
+    uint16_t window;
+    uint16_t checksum;
+    uint16_t urgent_pointer;
+};
+
+int main() {
+    printf("TCP Header size: %zu bytes\n", sizeof(struct TCPHeader));
+    // Must be exactly 20 bytes for TCP protocol
+    
+    return 0;
+}
+```
+
+**Output:**
+```
+TCP Header size: 20 bytes
+```
+
 ---
 
 ## Practical Examples
