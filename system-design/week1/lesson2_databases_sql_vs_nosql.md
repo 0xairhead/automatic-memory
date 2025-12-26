@@ -1,6 +1,7 @@
 # Week 1, Lesson 2: Databases 101 - SQL vs NoSQL
 
 ## Table of Contents
+- [Media Resources](#media-resources)
 - [What is a Database?](#what-is-a-database)
 - [The Two Main Types: SQL vs NoSQL](#the-two-main-types-sql-vs-nosql)
   - [SQL Databases (Relational Databases)](#sql-databases-relational-databases)
@@ -12,6 +13,16 @@
 - [Hybrid Approach: The Modern Way](#hybrid-approach-the-modern-way)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+
+---
+
+## Media Resources
+
+**Visual Guide:**
+![SQL vs NoSQL: Choosing the Right Database](./assets/sql_vs_nosql_infographic.png)
+
+**Audio Lesson:**
+[SQL, NoSQL, Consistency and Scale (Audio)](./assets/sql_nosql_consistency_and_scale.m4a)
 
 ---
 

@@ -1,6 +1,7 @@
 # Week 1, Lesson 3: APIs - REST, Design Principles, and Pagination
 
 ## Table of Contents
+- [Media Resources](#media-resources)
 - [What is an API?](#what-is-an-api)
 - [What is REST?](#what-is-rest)
   - [The 6 REST Principles](#the-6-rest-principles)
@@ -15,6 +16,16 @@
 - [API Authentication](#api-authentication)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+
+---
+
+## Media Resources
+
+**Visual Guide:**
+![A Developer's Guide to REST APIs](./assets/rest_apis_guide_infographic.png)
+
+**Audio Lesson:**
+[Designing REST APIs for Massive Scale (Audio)](./assets/designing_rest_apis_for_scale.m4a)
 
 ---
 
