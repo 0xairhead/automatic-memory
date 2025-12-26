@@ -1,6 +1,27 @@
 # System Design Mastery
 ## 12-Week Course Curriculum
 
+## Table of Contents
+- [Phase 1: Fundamentals (Weeks 1-2)](#phase-1-fundamentals-weeks-1-2)
+  - [Week 1: Building Blocks](#week-1-building-blocks)
+  - [Week 2: Core Infrastructure](#week-2-core-infrastructure)
+- [Phase 2: Scalability (Weeks 3-4)](#phase-2-scalability-weeks-3-4)
+  - [Week 3: Growing Your System](#week-3-growing-your-system)
+  - [Week 4: Distribution Basics](#week-4-distribution-basics)
+- [Phase 3: System Design Patterns (Weeks 5-6)](#phase-3-system-design-patterns-weeks-5-6)
+  - [Week 5: Common Patterns](#week-5-common-patterns)
+  - [Week 6: Reliability](#week-6-reliability)
+- [Phase 4: Real System Designs (Weeks 7-10)](#phase-4-real-system-designs-weeks-7-10)
+  - [Week 7: Basic Systems](#week-7-basic-systems)
+  - [Week 8: Social Media](#week-8-social-media)
+  - [Week 9: Media & Streaming](#week-9-media--streaming)
+  - [Week 10: Real-time & Location](#week-10-real-time--location)
+- [Phase 5: Advanced Topics (Weeks 11-12)](#phase-5-advanced-topics-weeks-11-12)
+  - [Week 11: Advanced Concepts](#week-11-advanced-concepts)
+  - [Week 12: Production Readiness](#week-12-production-readiness)
+
+---
+
 ### **Phase 1: Fundamentals (Weeks 1-2)**
 
 #### **Week 1: Building Blocks**
