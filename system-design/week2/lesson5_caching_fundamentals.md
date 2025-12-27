@@ -1,6 +1,7 @@
 # Week 2, Lesson 5: Caching Fundamentals - Why, Where, and How
 
 ## Table of Contents
+- [Media Resources](#media-resources)
 - [What is Caching?](#what-is-caching)
 - [Why Cache? The Performance Impact](#why-cache-the-performance-impact)
 - [Where to Cache? (Cache Layers)](#where-to-cache-cache-layers)
@@ -28,6 +29,14 @@
 ---
 
 Welcome to one of the most important lessons in system design! Caching is the secret weapon behind fast, scalable systems. Master this, and you'll dramatically improve any system's performance.
+
+## Media Resources
+
+**Visual Guide:**
+![Caching Fundamentals: A Guide to Faster Systems](./assets/caching_fundamentals_infographic.png)
+
+**Audio Lesson:**
+[The Secret Weapon of System Design: Caching (Audio)](./assets/caching_fundamentals.m4a)
 
 ---
 

@@ -1,6 +1,7 @@
 # Week 2, Lesson 6: Storage Systems - Files, Blocks, and Objects
 
 ## Table of Contents
+- [Media Resources](#media-resources)
 - [The Storage Hierarchy](#the-storage-hierarchy)
 - [The Three Main Storage Types](#the-three-main-storage-types)
 - [Part 1: File Storage](#part-1-file-storage)
@@ -34,6 +35,14 @@
 ---
 
 Welcome to the final lesson of Week 2! You've learned about networking and caching—now let's talk about where and how we actually store data long-term.
+
+## Media Resources
+
+**Visual Guide:**
+![Choosing Your Storage: A Guide to File, Block, and Object](./assets/storage_systems_infographic.png)
+
+**Audio Lesson:**
+[File, Block and Object Storage Explained (Audio)](./assets/storage_systems.m4a)
 
 ---
 

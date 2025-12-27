@@ -1,5 +1,43 @@
 # Week 3, Lesson 9: Stateless vs Stateful Architecture
 
+## Table of Contents
+- [What is State?](#what-is-state)
+- [The Core Difference](#the-core-difference)
+  - [Stateful Server](#stateful-server)
+  - [Stateless Server](#stateless-server)
+- [Why Stateless is Better for Scaling](#why-stateless-is-better-for-scaling)
+  - [Stateful Scaling Problem](#stateful-scaling-problem)
+  - [Stateless Scaling Freedom](#stateless-scaling-freedom)
+- [Types of State](#types-of-state)
+  - [1. Session State](#1-session-state)
+  - [2. Application State](#2-application-state)
+  - [3. Resource State](#3-resource-state)
+- [Making Services Stateless](#making-services-stateless)
+  - [Strategy 1: Client-Side State](#strategy-1-client-side-state)
+  - [Strategy 2: External Session Store](#strategy-2-external-session-store)
+  - [Strategy 3: Token-Based Authentication (JWT)](#strategy-3-token-based-authentication-jwt)
+- [When You Need Statefulness](#when-you-need-statefulness)
+  - [WebSocket Connections](#websocket-connections)
+  - [Long-Running Operations](#long-running-operations)
+  - [Caching User Data](#caching-user-data)
+- [Session Management Strategies](#session-management-strategies)
+  - [Strategy 1: Sticky Sessions](#strategy-1-sticky-sessions)
+  - [Strategy 2: Session Replication](#strategy-2-session-replication)
+  - [Strategy 3: Centralized Session Store](#strategy-3-centralized-session-store)
+  - [Strategy 4: Client-Side Sessions (JWT)](#strategy-4-client-side-sessions-jwt)
+- [Comparison Table](#comparison-table)
+- [Real-World Architecture Patterns](#real-world-architecture-patterns)
+  - [Pattern 1: Stateless API + External Everything](#pattern-1-stateless-api--external-everything)
+  - [Pattern 2: Hybrid (Stateless HTTP + Stateful WebSocket)](#pattern-2-hybrid-stateless-http--stateful-websocket)
+  - [Pattern 3: Microservices with Shared Auth](#pattern-3-microservices-with-shared-auth)
+- [Converting Stateful to Stateless](#converting-stateful-to-stateless)
+- [Performance Considerations](#performance-considerations)
+- [Common Mistakes](#common-mistakes)
+- [Key Concepts to Remember](#key-concepts-to-remember)
+- [Practice Questions](#practice-questions)
+
+---
+
 This is the final lesson of Week 3! We've covered scaling strategies and database techniques. Now we'll tackle a fundamental architectural decision that determines how easily your system can scale: **stateless vs stateful design**.
 
 ---

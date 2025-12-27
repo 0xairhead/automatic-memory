@@ -1,6 +1,7 @@
 # Week 2, Lesson 4: Networking Basics - DNS, Load Balancers, CDNs
 
 ## Table of Contents
+- [Media Resources](#media-resources)
 - [Part 1: DNS (Domain Name System)](#part-1-dns-domain-name-system)
   - [What is DNS?](#what-is-dns)
   - [How DNS Works: The Journey](#how-dns-works-the-journey)
@@ -34,6 +35,14 @@
 ---
 
 Welcome to Week 2! Now we're getting into the infrastructure that makes the internet work at scale. Let's understand the invisible magic that happens when you type "google.com" into your browser.
+
+## Media Resources
+
+**Visual Guide:**
+![The Pillars of Modern Networking: DNS, Load Balancers & CDNs](./assets/dns_loadbalancers_cdn_infographic.png)
+
+**Audio Lesson:**
+[DNS, Load Balancers and CDNs Explained (Audio)](./assets/dns_loadbalancers_cdn.m4a)
 
 ---
 

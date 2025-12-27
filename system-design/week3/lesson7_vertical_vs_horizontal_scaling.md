@@ -1,5 +1,38 @@
 # Week 3, Lesson 7: Vertical vs Horizontal Scaling
 
+## Table of Contents
+- [What is Scalability?](#what-is-scalability)
+- [The Two Scaling Approaches](#the-two-scaling-approaches)
+- [Part 1: Vertical Scaling (Scale Up)](#part-1-vertical-scaling-scale-up)
+  - [What is Vertical Scaling?](#what-is-vertical-scaling)
+  - [Advantages of Vertical Scaling](#advantages-of-vertical-scaling)
+  - [Disadvantages of Vertical Scaling](#disadvantages-of-vertical-scaling)
+  - [When to Use Vertical Scaling](#when-to-use-vertical-scaling)
+- [Part 2: Horizontal Scaling (Scale Out)](#part-2-horizontal-scaling-scale-out)
+  - [What is Horizontal Scaling?](#what-is-horizontal-scaling)
+  - [Architecture with Horizontal Scaling](#architecture-with-horizontal-scaling)
+  - [Advantages of Horizontal Scaling](#advantages-of-horizontal-scaling)
+  - [Disadvantages of Horizontal Scaling](#disadvantages-of-horizontal-scaling)
+  - [When to Use Horizontal Scaling](#when-to-use-horizontal-scaling)
+- [Stateful vs Stateless: Key to Horizontal Scaling](#stateful-vs-stateless-key-to-horizontal-scaling)
+  - [Stateless Services (Easy to Scale)](#stateless-services-easy-to-scale)
+  - [Stateful Services (Hard to Scale)](#stateful-services-hard-to-scale)
+  - [Making Stateful Services Stateless](#making-stateful-services-stateless)
+- [Scaling Databases](#scaling-databases)
+  - [Vertical Scaling Databases](#vertical-scaling-databases)
+  - [Horizontal Scaling Databases](#horizontal-scaling-databases)
+- [Real-World Examples](#real-world-examples)
+- [Auto-Scaling: Smart Horizontal Scaling](#auto-scaling-smart-horizontal-scaling)
+  - [What is Auto-Scaling?](#what-is-auto-scaling)
+  - [Auto-Scaling Metrics](#auto-scaling-metrics)
+  - [Auto-Scaling Strategies](#auto-scaling-strategies)
+- [Decision Framework: Vertical vs Horizontal](#decision-framework-vertical-vs-horizontal)
+- [Common Mistakes](#common-mistakes)
+- [Key Concepts to Remember](#key-concepts-to-remember)
+- [Practice Questions](#practice-questions)
+
+---
+
 Welcome to Week 3! Now we're entering the world of scalability—how to handle growth from hundreds to millions of users. This lesson covers one of the most fundamental decisions in system design.
 
 ---

@@ -1,5 +1,43 @@
 # Week 3, Lesson 8: Database Replication & Sharding
 
+## Table of Contents
+- [Why Database Scaling is Different](#why-database-scaling-is-different)
+- [Part 1: Database Replication](#part-1-database-replication)
+  - [What is Replication?](#what-is-replication)
+  - [Why Replicate?](#why-replicate)
+- [Replication Strategy 1: Master-Slave (Primary-Replica)](#replication-strategy-1-master-slave-primary-replica)
+  - [How It Works](#how-it-works)
+  - [The Replication Process](#the-replication-process)
+  - [Synchronous vs Asynchronous Replication](#synchronous-vs-asynchronous-replication)
+  - [Handling Primary Failure (Failover)](#handling-primary-failure-failover)
+  - [Reading from Replicas: Consistency Concerns](#reading-from-replicas-consistency-concerns)
+- [Replication Strategy 2: Multi-Master (Active-Active)](#replication-strategy-2-multi-master-active-active)
+  - [Why Multi-Master?](#why-multi-master)
+  - [The Conflict Problem](#the-conflict-problem)
+  - [Conflict Resolution Strategies](#conflict-resolution-strategies)
+  - [When to Use Multi-Master](#when-to-use-multi-master)
+- [Part 2: Database Sharding](#part-2-database-sharding)
+  - [What is Sharding?](#what-is-sharding)
+  - [Why Sharding?](#why-sharding)
+- [Sharding Strategy 1: Range-Based Sharding](#sharding-strategy-1-range-based-sharding)
+- [Sharding Strategy 2: Hash-Based Sharding](#sharding-strategy-2-hash-based-sharding)
+- [Sharding Strategy 3: Consistent Hashing](#sharding-strategy-3-consistent-hashing)
+- [Sharding Strategy 4: Directory-Based Sharding](#sharding-strategy-4-directory-based-sharding)
+- [Sharding Challenges](#sharding-challenges)
+  - [Challenge 1: Cross-Shard Queries](#challenge-1-cross-shard-queries)
+  - [Challenge 2: Cross-Shard Joins](#challenge-2-cross-shard-joins)
+  - [Challenge 3: Cross-Shard Transactions](#challenge-3-cross-shard-transactions)
+  - [Challenge 4: Rebalancing](#challenge-4-rebalancing)
+  - [Challenge 5: Schema Changes](#challenge-5-schema-changes)
+- [Combining Replication and Sharding](#combining-replication-and-sharding)
+- [Real-World Examples](#real-world-examples)
+- [Decision Framework](#decision-framework)
+- [Common Mistakes](#common-mistakes)
+- [Key Concepts to Remember](#key-concepts-to-remember)
+- [Practice Questions](#practice-questions)
+
+---
+
 In the previous lesson, we learned about scaling applications horizontally. But what about databases? This lesson covers the two most important techniques for scaling databases: **replication** and **sharding**.
 
 ---
