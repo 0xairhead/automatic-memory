@@ -516,3 +516,9 @@ Why?
 ```
 GET /api/users/123/posts    (returns 10,000 posts with no pagination)
 ```
+
+---
+
+## Next Up
+
+Congratulations on completing Week 1! In Week 2, we'll start with **Networking Basics: DNS, Load Balancers, and CDNs** - the infrastructure that makes the internet fast and reliable!

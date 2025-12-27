@@ -927,6 +927,8 @@ Recommend a storage solution for each and explain the migration approach.
 
 ---
 
-Congratulations! You've completed Week 2! You now understand the infrastructure fundamentals: networking, caching, and storage. These form the building blocks for everything we'll learn next! 🎉
+## Next Up
 
-Ready to move to Week 3 and start learning about scalability? 🚀
+Congratulations on completing Week 2! You now understand the infrastructure fundamentals: networking, caching, and storage.
+
+In Week 3, we'll start with **Vertical vs Horizontal Scaling** - learning how to grow your system from hundreds to millions of users!

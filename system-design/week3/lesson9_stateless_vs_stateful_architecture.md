@@ -1061,12 +1061,8 @@ Is this stateful or stateless? What problems could occur with multiple servers?
 
 ---
 
-## Week 3 Complete!
+## Next Up
 
-Congratulations! You've completed Week 3: Growing Your System. You now understand:
+Congratulations on completing Week 3: Growing Your System! You now understand vertical vs horizontal scaling, database replication & sharding, and stateless vs stateful architecture.
 
-- **Lesson 7:** Vertical vs Horizontal Scaling
-- **Lesson 8:** Database Replication & Sharding
-- **Lesson 9:** Stateless vs Stateful Architecture
-
-Next week, we'll dive into **Distribution Basics**: Consistent Hashing, Message Queues, and the CAP Theorem!
+In Week 4, we'll start with **Consistent Hashing** - the elegant algorithm behind distributed caches, databases, and load balancers!

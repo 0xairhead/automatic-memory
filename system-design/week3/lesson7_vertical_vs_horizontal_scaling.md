@@ -879,4 +879,6 @@ Consider costs, user experience, and engineering effort.
 
 ---
 
-Excellent work! You now understand one of the most fundamental concepts in system design. Next, we'll dive into database-specific scaling techniques! 🚀
+## Next Up
+
+In Lesson 8, we'll dive into **Database Replication & Sharding** - the techniques for scaling your database to handle massive amounts of data and traffic!

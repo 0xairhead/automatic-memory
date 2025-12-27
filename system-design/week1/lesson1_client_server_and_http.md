@@ -218,3 +218,9 @@ Think about these, and when you're ready, share your answers with me:
 **Q3:** You visit an e-commerce site and get a "504 Gateway Timeout" error. Based on what you learned, what does this likely mean? (Hint: Is it a 4xx client error or 5xx server error?)
 
 **Q4:** Why do you think modern websites make so many HTTP requests? (Think about images, styles, scripts, data...)
+
+---
+
+## Next Up
+
+In Lesson 2, we'll explore **Databases: SQL vs NoSQL** - understanding when to use relational databases and when NoSQL is the better choice!

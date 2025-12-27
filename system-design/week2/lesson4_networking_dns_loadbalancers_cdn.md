@@ -677,3 +677,9 @@ What caching strategy (TTL values) would you use for each?
 - Users who last visited 1 hour ago vs 25 hours ago?
 
 **Q6:** Explain why "versioned URLs" (e.g., /style.css?v=2) is better than cache purging for CDN updates.
+
+---
+
+## Next Up
+
+In Lesson 5, we'll explore **Caching Fundamentals** - the secret weapon behind fast, scalable systems!

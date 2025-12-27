@@ -373,3 +373,9 @@ User:
 ```
 
 **Q5:** A startup is building a new app. They're unsure if their data model will change. They expect 100 users initially but hope to scale to millions. What database approach would you recommend?
+
+---
+
+## Next Up
+
+In Lesson 3, we'll dive into **APIs, REST, and Pagination** - learning how to design clean, scalable APIs that developers love to use!

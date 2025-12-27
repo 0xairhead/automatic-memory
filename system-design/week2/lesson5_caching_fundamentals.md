@@ -831,3 +831,9 @@ Which is better and why?
 - 10,000 users trying to buy 100 products
 - Inventory must be accurate
 - System must stay fast
+
+---
+
+## Next Up
+
+In Lesson 6, we'll dive into **Storage Systems: Files, Blocks, and Objects** - understanding where and how to store your data long-term!
