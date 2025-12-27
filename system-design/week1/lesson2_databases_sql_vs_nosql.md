@@ -13,6 +13,7 @@
 - [Hybrid Approach: The Modern Way](#hybrid-approach-the-modern-way)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 

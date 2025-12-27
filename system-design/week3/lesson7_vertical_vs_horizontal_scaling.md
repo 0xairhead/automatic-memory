@@ -30,6 +30,7 @@
 - [Common Mistakes](#common-mistakes)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 

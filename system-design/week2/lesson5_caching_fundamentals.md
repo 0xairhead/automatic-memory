@@ -25,6 +25,7 @@
 - [When NOT to Cache](#when-not-to-cache)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 

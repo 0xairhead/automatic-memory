@@ -31,6 +31,7 @@
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [System Design Impact](#system-design-impact)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 

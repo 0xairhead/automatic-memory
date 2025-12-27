@@ -31,6 +31,7 @@
 - [Hybrid Storage Solutions](#hybrid-storage-solutions)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 

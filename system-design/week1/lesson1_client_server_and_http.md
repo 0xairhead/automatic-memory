@@ -13,6 +13,7 @@
 - [HTTPS: The Secure Version](#https-the-secure-version)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
+- [Next Up](#next-up)
 
 ---
 
