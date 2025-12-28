@@ -895,6 +895,28 @@ Typical Web Application:
 
 Explain your choice for each component.
 
+<details>
+<summary>View Answer</summary>
+
+| Component | Storage | Reasoning |
+|-----------|---------|-----------|
+| **Raw uploaded videos** | S3 (object storage) | Massive files, write-once, cost-effective |
+| **Transcoded videos** | S3 + CDN | Multiple resolutions, served via CloudFront/CDN |
+| **Video metadata** | PostgreSQL/MySQL (block storage) | Structured data, complex queries, ACID |
+| **Thumbnails** | S3 + CDN | Small images, millions of files, HTTP access |
+| **View counts** | Redis + async DB sync | High-frequency updates, eventual consistency OK |
+
+**Architecture:**
+```
+Upload: User → S3 → Lambda trigger → Transcoding queue → S3 (multiple resolutions)
+Serve: User → CDN → S3 (cache miss) or Edge (cache hit)
+Metadata: App → PostgreSQL
+```
+
+**Global serving:** CDN with edge locations worldwide. Videos cached at edges closest to users.
+
+</details>
+
 **Q2:** Compare storage solutions for these scenarios:
 
 a) A database handling 10,000 transactions/second
@@ -903,7 +925,73 @@ c) A shared development environment for 50 developers
 
 Which storage type (file, block, or object) for each? Why?
 
+<details>
+<summary>View Answer</summary>
+
+| Scenario | Storage Type | Solution | Reasoning |
+|----------|--------------|----------|-----------|
+| **a) 10K TPS database** | Block | AWS EBS io2 or local NVMe | Low latency, random I/O, IOPS provisioning |
+| **b) 100TB backup** | Object | S3 Glacier | Cheapest for archival, durability, no IOPS needed |
+| **c) 50 dev shared env** | File | AWS EFS or FSx | Multiple concurrent access, POSIX compatibility |
+
+**Detailed reasoning:**
+
+a) **Block storage** because databases need:
+- Random read/write at block level
+- Consistent low latency (<1ms)
+- High IOPS (can provision 64,000+ IOPS)
+
+b) **Object storage** because backups need:
+- Massive capacity at low cost ($0.004/GB/month for Glacier)
+- 11 nines durability
+- No random access needed
+
+c) **File storage** because developers need:
+- Shared access to same files
+- POSIX semantics (locks, permissions)
+- Mount as network drive
+
+</details>
+
 **Q3:** Your S3 bill is $10,000/month for 500TB of data. 80% of files haven't been accessed in 90 days. How can you reduce costs?
+
+<details>
+<summary>View Answer</summary>
+
+**Current cost:** ~$0.023/GB × 500,000 GB = ~$11,500 (S3 Standard)
+
+**Strategy: Implement S3 Lifecycle policies**
+
+```json
+{
+  "Rules": [
+    {
+      "ID": "ArchiveOldFiles",
+      "Filter": {},
+      "Status": "Enabled",
+      "Transitions": [
+        {"Days": 30, "StorageClass": "STANDARD_IA"},
+        {"Days": 90, "StorageClass": "GLACIER"},
+        {"Days": 365, "StorageClass": "DEEP_ARCHIVE"}
+      ]
+    }
+  ]
+}
+```
+
+**New cost calculation:**
+- 100TB (20%) in Standard: $2,300
+- 200TB in Glacier: $800 ($0.004/GB)
+- 200TB in Deep Archive: $400 ($0.002/GB)
+- **Total: ~$3,500/month (65% savings!)**
+
+**Additional optimizations:**
+1. Delete truly unused data
+2. Enable S3 Intelligent-Tiering for unpredictable access
+3. Compress files before storage
+4. Review if all data needs to be kept
+
+</details>
 
 **Q4:** You need to store user profile pictures for a social network with 100 million users. Should you:
 a) Store as files in EFS (file storage)?
@@ -912,12 +1000,127 @@ c) Store in S3 (object storage)?
 
 Justify your answer with scalability, cost, and performance considerations.
 
+<details>
+<summary>View Answer</summary>
+
+**Answer: c) S3 (object storage)**
+
+| Option | Scalability | Cost | Performance | Verdict |
+|--------|-------------|------|-------------|---------|
+| **EFS** | Good | $300/TB/mo | Good | ❌ Too expensive |
+| **PostgreSQL BLOBs** | Poor | Medium | Terrible | ❌ Database not for images |
+| **S3** | Unlimited | $23/TB/mo | Excellent via CDN | ✅ Best choice |
+
+**Why S3 wins:**
+
+1. **Scalability:** Unlimited storage, no provisioning
+2. **Cost:** 100M users × 1MB avg = 100TB = $2,300/month
+3. **Performance:** Serve via CloudFront CDN, sub-50ms globally
+4. **Simplicity:** Direct URL access, no app server needed for serving
+
+**Why NOT the others:**
+
+- **EFS:** 13x more expensive ($30,000/month for 100TB), designed for shared file systems
+- **PostgreSQL:** Database bloat, backup nightmares, terrible query performance with BLOBs, no CDN integration
+
+**Architecture:**
+```
+Upload: App → S3 (generate unique key)
+Serve: Browser → CloudFront CDN → S3
+Database: Only store S3 key (e.g., "users/123/profile.jpg")
+```
+
+</details>
+
 **Q5:** Explain why object storage (S3) is terrible for databases, but databases on block storage (EBS) are great. What's the fundamental difference?
+
+<details>
+<summary>View Answer</summary>
+
+**The fundamental difference: Access patterns**
+
+| Aspect | Block Storage | Object Storage |
+|--------|---------------|----------------|
+| **Access unit** | 4KB-64KB blocks | Entire objects (KB-TB) |
+| **Random I/O** | Excellent | Not supported |
+| **Latency** | <1ms | 50-200ms |
+| **Update** | Modify any block | Replace entire object |
+| **POSIX** | Yes (mount as disk) | No (HTTP API only) |
+
+**Why databases need block storage:**
+
+```
+Database operation: UPDATE users SET name='Alice' WHERE id=123
+
+What happens on disk:
+1. Read 8KB page containing row
+2. Modify a few bytes
+3. Write 8KB page back
+4. Update index (another random write)
+5. Write to WAL (sequential write)
+
+This requires: Random access, small writes, low latency
+```
+
+**Why S3 can't do this:**
+
+```
+S3 operation flow:
+1. GET entire object (even if TB)
+2. Modify in memory
+3. PUT entire object back
+4. No random access within object
+5. No concurrent writes
+
+Result: Impossibly slow for database workloads
+```
+
+**S3 latency:** 50-200ms per operation
+**EBS latency:** 0.1-1ms per operation
+
+For 10,000 TPS database:
+- EBS: 10,000 × 1ms = 10 seconds of I/O time (parallelized)
+- S3: 10,000 × 100ms = 1,000 seconds = impossible
+
+</details>
 
 **Q6:** Design a backup strategy that uses all three storage types:
 - What goes in block storage?
 - What goes in file storage?
 - What goes in object storage?
+
+<details>
+<summary>View Answer</summary>
+
+**Comprehensive backup architecture:**
+
+```
+[Production Systems]
+        │
+        ├─→ [Block: EBS Snapshots] ──→ [Object: S3 Archive]
+        │         (hot backup)              (cold archive)
+        │
+        ├─→ [File: EFS/NFS] ──────────→ [Object: S3]
+        │    (shared backups)              (offsite copy)
+        │
+        └─→ [Object: S3]
+             (direct backup)
+```
+
+| Storage Type | Use For | Retention | Example |
+|--------------|---------|-----------|---------|
+| **Block (EBS Snapshots)** | Database point-in-time recovery | 7-30 days | PostgreSQL snapshots every 6 hours |
+| **File (EFS)** | Shared backup staging, incremental backups | 1-7 days | rsync destination for multiple servers |
+| **Object (S3 Standard)** | Recent backups needing quick restore | 30-90 days | Application data, configs |
+| **Object (S3 Glacier)** | Long-term archive | 1-7 years | Compliance, legal holds |
+| **Object (Deep Archive)** | Rarely accessed archives | 7+ years | Historical records |
+
+**3-2-1 Backup Rule:**
+- **3** copies of data
+- **2** different storage types
+- **1** offsite (different region)
+
+</details>
 
 **Q7:** A company is migrating from on-premises to cloud. They have:
 - 50TB of shared files (documents, spreadsheets)
@@ -925,6 +1128,58 @@ Justify your answer with scalability, cost, and performance considerations.
 - Media archive (500TB, rarely accessed)
 
 Recommend a storage solution for each and explain the migration approach.
+
+<details>
+<summary>View Answer</summary>
+
+| Asset | Solution | Migration Approach |
+|-------|----------|-------------------|
+| **50TB shared files** | AWS FSx for Windows / EFS | AWS DataSync over Direct Connect |
+| **SQL Server 2TB** | RDS SQL Server on EBS io2 | AWS DMS with minimal downtime |
+| **500TB media archive** | S3 Glacier Deep Archive | AWS Snowball devices |
+
+**Detailed migration:**
+
+**1. Shared Files (50TB) → FSx/EFS**
+```
+Week 1-2: Set up Direct Connect (faster than internet)
+Week 3-4: Initial sync with AWS DataSync
+Week 5: Final sync + cutover
+Tool: AWS DataSync (handles incremental, ~125 MB/s)
+Downtime: Minimal (final sync during maintenance window)
+```
+
+**2. SQL Server (2TB) → RDS**
+```
+Option A: AWS DMS (Database Migration Service)
+- Continuous replication until cutover
+- Minimal downtime (<1 hour)
+
+Option B: Native backup/restore to S3
+- Full backup → S3 → Restore to RDS
+- Longer downtime (hours)
+
+Recommendation: DMS for minimal downtime
+```
+
+**3. Media Archive (500TB) → Glacier Deep Archive**
+```
+Problem: 500TB over internet = months
+Solution: AWS Snowball Edge devices
+
+Process:
+1. Order 5-6 Snowball Edge devices (100TB each)
+2. Copy data to devices on-premises
+3. Ship to AWS
+4. AWS imports to S3 Glacier Deep Archive
+
+Timeline: 2-3 weeks
+Cost: ~$300 per device + $0.002/GB storage
+```
+
+**Total migration timeline:** 6-8 weeks with parallel tracks
+
+</details>
 
 ---
 

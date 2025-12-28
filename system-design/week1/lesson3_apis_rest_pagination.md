@@ -487,6 +487,36 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 - Users
 - Tags/Categories
 
+<details>
+<summary>View Answer</summary>
+
+```
+Posts:
+GET    /posts              - List all posts (with pagination)
+POST   /posts              - Create a new post
+GET    /posts/:id          - Get a specific post
+PUT    /posts/:id          - Update a post
+DELETE /posts/:id          - Delete a post
+
+Comments:
+GET    /posts/:id/comments - Get comments for a post
+POST   /posts/:id/comments - Add a comment to a post
+DELETE /comments/:id       - Delete a comment
+
+Users:
+GET    /users/:id          - Get user profile
+PUT    /users/:id          - Update user profile
+GET    /users/:id/posts    - Get all posts by a user
+
+Tags/Categories:
+GET    /tags               - List all tags
+GET    /posts?tag=tech     - Filter posts by tag
+GET    /categories         - List all categories
+GET    /categories/:id/posts - Get posts in a category
+```
+
+</details>
+
 **Q2:** What's wrong with these endpoints? How would you fix them?
 ```
 GET /getUserById/123
@@ -495,7 +525,48 @@ GET /posts/getByCategory?category=tech
 PUT /updateUserEmail
 ```
 
+<details>
+<summary>View Answer</summary>
+
+| Wrong | Problem | Fixed |
+|-------|---------|-------|
+| `GET /getUserById/123` | Verb in URL, not RESTful | `GET /users/123` |
+| `POST /posts/delete/456` | Using POST for delete, verb in URL | `DELETE /posts/456` |
+| `GET /posts/getByCategory?category=tech` | Redundant "getByCategory" | `GET /posts?category=tech` |
+| `PUT /updateUserEmail` | Missing resource ID, verb in URL | `PATCH /users/123` with email in body |
+
+**Key principles:**
+- URLs should be nouns (resources), not verbs
+- HTTP methods express the action
+- Resource IDs go in the URL path
+- Filters go in query parameters
+
+</details>
+
 **Q3:** You're building Instagram's feed API. Would you use offset-based or cursor-based pagination? Why?
+
+<details>
+<summary>View Answer</summary>
+
+**Cursor-based pagination** is the right choice for Instagram's feed:
+
+1. **Feed constantly changes:** New posts appear frequently. With offset-based, you'd see duplicates or miss posts as the list shifts
+2. **Infinite scroll UX:** Cursor-based is perfect for "load more" functionality
+3. **Performance:** Cursor-based is O(1) with an index, while offset-based becomes slower as offset grows (OFFSET 10000 must skip 10000 rows)
+4. **Real-time data:** Cursor marks your exact position regardless of new insertions
+
+**Example:**
+```
+GET /feed?cursor=eyJpZCI6MTIzNH0=&limit=20
+
+Response includes:
+{
+  "posts": [...],
+  "next_cursor": "eyJpZCI6MTI1NH0="
+}
+```
+
+</details>
 
 **Q4:** A client makes this request:
 ```
@@ -507,16 +578,106 @@ The user doesn't exist. What HTTP status code should you return?
 - 204 No Content?
 Why?
 
+<details>
+<summary>View Answer</summary>
+
+This is debatable, but **404 Not Found** is the most common and recommended choice:
+
+- **404 Not Found:** The resource doesn't exist. Client should know they tried to delete something that wasn't there. Most RESTful approach.
+
+- **204 No Content:** Some argue this is fine because the end state is achieved (user doesn't exist). This follows "idempotent" principles.
+
+- **200 OK:** Misleading because no actual deletion happened.
+
+**Best practice:** Return **404** with a clear message:
+```json
+{
+  "error": "User not found",
+  "code": "USER_NOT_FOUND"
+}
+```
+
+This helps clients distinguish between "successfully deleted" vs "never existed" which is important for debugging and logging.
+
+</details>
+
 **Q5:** Design a pagination response format for an e-commerce product listing API. Include:
 - Product data
 - Total count
 - Current page info
 - Links to next/previous pages
 
+<details>
+<summary>View Answer</summary>
+
+```json
+{
+  "data": [
+    {"id": 1, "name": "iPhone 15", "price": 999},
+    {"id": 2, "name": "Galaxy S24", "price": 899},
+    {"id": 3, "name": "Pixel 8", "price": 699}
+  ],
+  "pagination": {
+    "total_items": 1250,
+    "total_pages": 125,
+    "current_page": 3,
+    "per_page": 10,
+    "has_next": true,
+    "has_previous": true
+  },
+  "links": {
+    "self": "/products?page=3&per_page=10",
+    "first": "/products?page=1&per_page=10",
+    "last": "/products?page=125&per_page=10",
+    "next": "/products?page=4&per_page=10",
+    "previous": "/products?page=2&per_page=10"
+  }
+}
+```
+
+**Key elements:**
+- `data`: The actual products
+- `pagination`: Metadata about the current position
+- `links`: HATEOAS-style navigation links (clients don't need to construct URLs)
+
+</details>
+
 **Q6:** Why is this a problem, and how would you fix it?
 ```
 GET /api/users/123/posts    (returns 10,000 posts with no pagination)
 ```
+
+<details>
+<summary>View Answer</summary>
+
+**Problems:**
+
+1. **Performance:** Fetching 10,000 records is slow and memory-intensive
+2. **Bandwidth:** Huge payload wastes bandwidth, especially on mobile
+3. **Timeout risk:** Request might timeout before completing
+4. **Poor UX:** User waits forever, browser might freeze
+5. **Server strain:** One request consumes excessive resources
+6. **No one needs 10K at once:** Users can only view ~10-50 at a time
+
+**Fixes:**
+
+```
+# Add pagination (required)
+GET /api/users/123/posts?page=1&limit=20
+
+# Add cursor-based pagination (better for feeds)
+GET /api/users/123/posts?cursor=abc123&limit=20
+
+# Set a maximum limit server-side
+limit = min(request.limit, 100)  # Cap at 100
+
+# Add filtering options
+GET /api/users/123/posts?limit=20&year=2024&sort=newest
+```
+
+**Best practice:** Always enforce a default limit (e.g., 20) and maximum limit (e.g., 100) on list endpoints.
+
+</details>
 
 ---
 

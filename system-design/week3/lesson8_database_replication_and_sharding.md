@@ -1184,7 +1184,128 @@ Sharding adds massive complexity!
 
 **Q1:** You have a database with 80% reads and 20% writes. Currently using a single PostgreSQL server that's reaching capacity. What's your first step? Justify your answer.
 
+<details>
+<summary>View Answer</summary>
+
+**First Step: Add Read Replicas**
+
+**Why this is the right first step:**
+
+```
+Current state:
+[Single PostgreSQL] ← 100% of all traffic
+                      80% reads + 20% writes
+
+After adding 2 read replicas:
+[Primary]   ← 20% writes + some reads
+[Replica 1] ← ~40% reads
+[Replica 2] ← ~40% reads
+```
+
+**Justification:**
+
+1. **Addresses the main bottleneck:**
+   - 80% of your load is reads
+   - Replicas can handle reads, immediately reducing load by 60-70%
+
+2. **Low complexity:**
+   - PostgreSQL has built-in streaming replication
+   - No application schema changes required
+   - Just add connection routing logic
+
+3. **No data movement:**
+   - Unlike sharding, you don't need to partition data
+   - Replicas automatically sync from primary
+
+4. **Adds availability:**
+   - If primary fails, promote a replica
+   - No single point of failure
+
+**Why NOT sharding first:**
+- Sharding is for write scaling and data volume limits
+- With only 20% writes, primary can likely handle the write load
+- Sharding adds massive complexity (cross-shard queries, transactions)
+
+**Implementation:**
+```python
+# Application routing
+def get_connection(query_type):
+    if query_type == 'write':
+        return primary_connection
+    else:
+        return random.choice(replica_connections)
+```
+
+**Next steps if this isn't enough:**
+1. Add caching (Redis) for hot data
+2. Vertical scale the primary
+3. Consider sharding only if writes become bottleneck
+
+</details>
+
 **Q2:** An e-commerce platform shards their orders table by order_id using hash sharding. Users complain that "View My Orders" is slow. Why? How would you fix it?
+
+<details>
+<summary>View Answer</summary>
+
+**Why It's Slow:**
+
+When orders are sharded by `order_id`, a single user's orders are scattered across ALL shards:
+
+```
+User Alice's orders:
+- Order #1001 → hash(1001) % 4 = Shard 1
+- Order #1002 → hash(1002) % 4 = Shard 3
+- Order #1003 → hash(1003) % 4 = Shard 0
+- Order #1004 → hash(1004) % 4 = Shard 2
+
+"View My Orders" for Alice:
+→ Must query ALL 4 shards!
+→ Wait for slowest shard
+→ Aggregate results
+→ SLOW! 😰
+```
+
+**The Fix: Re-shard by user_id**
+
+```
+Shard by user_id instead:
+
+User Alice (ID: 123) → hash(123) % 4 = Shard 2
+- All Alice's orders → Shard 2
+
+"View My Orders" for Alice:
+→ Query only Shard 2
+→ Single shard query
+→ FAST! ✅
+```
+
+**Implementation:**
+
+```sql
+-- Before: Sharded by order_id
+-- order_id determines shard
+
+-- After: Sharded by user_id
+-- Composite key: (user_id, order_id)
+-- user_id determines shard, order_id is unique within shard
+```
+
+**Trade-offs of user_id sharding:**
+
+| Query Type | Performance |
+|------------|-------------|
+| User's orders | Fast (single shard) ✅ |
+| Single order by ID | Need user_id too |
+| All orders by date | Slow (all shards) |
+| Admin reports | Slow (all shards) |
+
+**Additional optimizations:**
+1. Include `user_id` in order URLs/APIs for direct routing
+2. Cache recent orders in Redis
+3. Create separate analytics database for admin queries
+
+</details>
 
 **Q3:** You're designing a chat application like Slack. Messages need to be queried by:
 - Channel (most common)
@@ -1193,15 +1314,429 @@ Sharding adds massive complexity!
 
 What's your sharding strategy? What trade-offs are you making?
 
+<details>
+<summary>View Answer</summary>
+
+**Recommended Strategy: Shard by Channel ID**
+
+```
+Shard assignment:
+hash(channel_id) % num_shards = shard
+
+Shard 1: Channels A, D, G, ...
+Shard 2: Channels B, E, H, ...
+Shard 3: Channels C, F, I, ...
+
+Each shard contains:
+- Channel metadata
+- All messages for those channels
+- Message indexes by user and date
+```
+
+**Why Channel ID:**
+
+1. **Most common query is fast:**
+   ```
+   "Load #general channel" → Single shard
+   "Get last 50 messages in channel" → Single shard
+   ```
+
+2. **Natural data locality:**
+   - Users viewing a channel need all messages together
+   - Real-time updates stay on one shard
+
+3. **Manageable hot spots:**
+   - Popular channels are on one shard
+   - Can manually move very large channels to dedicated shards
+
+**Trade-offs:**
+
+| Query | Performance | Mitigation |
+|-------|-------------|------------|
+| Channel messages | Fast ✅ | - |
+| User's messages (all channels) | Slow (scatter-gather) | Secondary index table sharded by user_id |
+| Date range (analytics) | Slow (all shards) | Async ETL to analytics DB |
+| Search | Slow (all shards) | Elasticsearch cluster |
+
+**Handling the Trade-offs:**
+
+**1. User's Messages Query:**
+```
+Create secondary lookup table:
+user_messages (user_id, channel_id, message_id, timestamp)
+Sharded by user_id
+
+"My messages" query:
+1. Query user_messages shard for list
+2. Optionally fetch full messages from channel shards
+```
+
+**2. Analytics Queries:**
+```
+Don't query shards directly!
+
+Real-time: Stream messages to Apache Kafka
+Analytics: Consume into data warehouse (BigQuery, Snowflake)
+Reports: Query analytics DB, not production shards
+```
+
+**3. Very Large Channels (>1M members):**
+```
+Further partition by time:
+channel_123_2024_01 → Shard A
+channel_123_2024_02 → Shard B
+
+Recent messages (hot): Primary shard
+Old messages (cold): Archive shards
+```
+
+</details>
+
 **Q4:** Your multi-master MySQL setup has conflicts occurring 100 times per day. 90% are on the "page_views" counter column. How do you eliminate these conflicts?
 
+<details>
+<summary>View Answer</summary>
+
+**The Problem:**
+
+```
+Master 1 (US):
+UPDATE pages SET page_views = page_views + 1 WHERE id = 123;
+(page_views: 1000 → 1001)
+
+Master 2 (EU) at same time:
+UPDATE pages SET page_views = page_views + 1 WHERE id = 123;
+(page_views: 1000 → 1001)
+
+Conflict! Both think it should be 1001
+Actual views: 1002
+```
+
+**Solutions (in order of preference):**
+
+**Solution 1: Use a Counter Service (Best)**
+```
+Don't store counters in MySQL at all!
+
+Redis for real-time counters:
+INCR page:123:views  ← Atomic, no conflicts!
+
+Architecture:
+[Page View] → [Redis Counter] → [Periodic sync to MySQL]
+
+Benefits:
+- Atomic increments
+- No conflicts possible
+- Much faster than MySQL
+```
+
+**Solution 2: CRDT Counter**
+```
+Store increments per-master, sum on read:
+
+page_views_master1: 500
+page_views_master2: 502
+
+Total views = 500 + 502 = 1002
+
+Conflict-free by design!
+```
+
+**Solution 3: Partition Writes**
+```
+Route page view writes by page ID:
+
+Pages 1-1000:    → Master 1 only
+Pages 1001-2000: → Master 2 only
+
+No conflicts because each page has single writer!
+```
+
+**Solution 4: Last-Write-Wins with Higher Granularity**
+```
+Instead of:
+page_views = 1001
+
+Store:
+view_events (page_id, timestamp, master_id)
+
+Count on read:
+SELECT COUNT(*) FROM view_events WHERE page_id = 123
+
+No conflicts, just append events
+```
+
+**Recommended Approach:**
+
+```
+For page views specifically:
+
+1. Real-time display: Redis INCR
+2. Persistent storage: Event stream (Kafka)
+3. Analytics: Aggregate in data warehouse
+4. MySQL: Periodic snapshot (for backup)
+
+Redis handles 100K+ increments/sec with zero conflicts!
+```
+
+**Cost-benefit:**
+- 90% of conflicts eliminated
+- Redis is cheaper than debugging conflicts
+- Better performance overall
+
+</details>
+
 **Q5:** Explain why consistent hashing is better than regular hash sharding when you need to add or remove shards frequently.
+
+<details>
+<summary>View Answer</summary>
+
+**Regular Hash Sharding Problem:**
+
+```
+With 3 shards, using: hash(key) % 3
+
+key_A → hash = 7  → 7 % 3 = 1 → Shard 1
+key_B → hash = 12 → 12 % 3 = 0 → Shard 0
+key_C → hash = 15 → 15 % 3 = 0 → Shard 0
+key_D → hash = 22 → 22 % 3 = 1 → Shard 1
+
+Add Shard 4, now using: hash(key) % 4
+
+key_A → hash = 7  → 7 % 4 = 3 → Shard 3  ← MOVED!
+key_B → hash = 12 → 12 % 4 = 0 → Shard 0 ← Same
+key_C → hash = 15 → 15 % 4 = 3 → Shard 3 ← MOVED!
+key_D → hash = 22 → 22 % 4 = 2 → Shard 2 ← MOVED!
+
+Result: 75% of data must move!
+```
+
+**Why This Is Bad:**
+
+```
+3 → 4 shards: ~75% data moves
+4 → 5 shards: ~80% data moves
+
+Moving data means:
+- Network bandwidth consumed
+- Both old and new locations need data temporarily
+- Risk of data loss during migration
+- Performance degradation during rebalancing
+- Hours or days of migration time for large datasets
+```
+
+**Consistent Hashing Solution:**
+
+```
+Hash ring (0 to 2^32):
+
+         0°
+          │
+    S1 ●──┼──● S3
+         ╲│╱
+          ●
+         S2
+        180°
+
+Data placement:
+- Hash the key to get position on ring
+- Walk clockwise to find first shard
+
+key_A → position 45°  → hits S3
+key_B → position 120° → hits S2
+key_C → position 200° → hits S1
+key_D → position 300° → hits S3
+```
+
+**Adding a Shard with Consistent Hashing:**
+
+```
+Add S4 at position 90°:
+
+         0°
+          │
+    S1 ●──┼──● S3
+         ╲│╱
+       S4 ●● S2
+        180°
+
+key_A → position 45°  → hits S4 (was S3) ← MOVED
+key_B → position 120° → hits S2          ← Same
+key_C → position 200° → hits S1          ← Same
+key_D → position 300° → hits S3          ← Same
+
+Only ~25% of data moves (1/N where N = new shard count)
+```
+
+**Comparison:**
+
+| Shards | Regular Hash | Consistent Hash |
+|--------|--------------|-----------------|
+| 3 → 4  | ~75% moves   | ~25% moves      |
+| 4 → 5  | ~80% moves   | ~20% moves      |
+| 10 → 11 | ~91% moves  | ~9% moves       |
+| 100 → 101 | ~99% moves | ~1% moves     |
+
+**Virtual Nodes Enhancement:**
+
+```
+Each physical shard gets multiple positions:
+
+S1: positions 30°, 120°, 210°, 300°
+S2: positions 60°, 150°, 240°, 330°
+S3: positions 90°, 180°, 270°, 0°
+
+Benefits:
+- More even distribution
+- Removing a shard spreads its data evenly
+- Better load balancing
+```
+
+**Real-world usage:**
+- Amazon DynamoDB
+- Apache Cassandra
+- Discord
+- Memcached
+
+</details>
 
 **Q6:** Design the replication and sharding strategy for a social media app with:
 - 100M users
 - Users post ~2 times per day
 - Users read feeds ~50 times per day
 - Users are globally distributed
+
+<details>
+<summary>View Answer</summary>
+
+**Traffic Analysis:**
+
+```
+Writes:
+- 100M users × 2 posts/day = 200M posts/day
+- 200M ÷ 86,400 sec = ~2,300 writes/sec
+
+Reads:
+- 100M users × 50 reads/day = 5B reads/day
+- 5B ÷ 86,400 sec = ~58,000 reads/sec
+
+Ratio: 25:1 read to write (read-heavy!)
+```
+
+**Architecture Design:**
+
+```
+                    [Global CDN]
+                         │
+           ┌─────────────┼─────────────┐
+           ↓             ↓             ↓
+      [US Region]   [EU Region]   [Asia Region]
+           │             │             │
+      [App Servers] [App Servers] [App Servers]
+           │             │             │
+      [Cache Layer - Redis Cluster per region]
+           │             │             │
+           └─────────────┼─────────────┘
+                         │
+                  [Shard Router]
+                         │
+    ┌────────────────────┼────────────────────┐
+    ↓                    ↓                    ↓
+[Shard 1]           [Shard 2]            [Shard N]
+Users 0-10M        Users 10M-20M        Users 90M-100M
+    │                    │                    │
+┌───┴───┐          ┌───┴───┐           ┌───┴───┐
+[P][R][R]          [P][R][R]           [P][R][R]
+```
+
+**Sharding Strategy:**
+
+```
+Shard by user_id using consistent hashing:
+
+10 shards (10M users each):
+- Each shard: 1 Primary + 2 Replicas
+- ~230 writes/sec per shard (easily handled)
+- ~5,800 reads/sec per shard (handled by replicas + cache)
+
+Co-located data per shard:
+- User profile
+- User's posts
+- User's followers/following list
+- User's feed preferences
+```
+
+**Replication Strategy:**
+
+```
+Per-shard replication:
+- Primary: Handles all writes, some reads
+- Replica 1: Same region as primary (fast failover)
+- Replica 2: Different region (disaster recovery)
+
+Cross-region async replication:
+- Primary in user's home region
+- Read replicas in other regions
+- Replication lag: 100-500ms (acceptable for feeds)
+```
+
+**Feed Generation:**
+
+```
+Two approaches:
+
+1. Fan-out on Write (for users with <10K followers):
+   User posts → Push to all followers' feed caches
+   Fast reads, expensive writes
+
+2. Fan-out on Read (for celebrities):
+   User posts → Store in user's posts
+   Read time: Merge celebrity posts into feed
+   Cheap writes, slightly slower reads
+
+Hybrid: Based on follower count
+```
+
+**Caching Strategy:**
+
+```
+Regional Redis clusters:
+
+Hot data cached:
+- User profiles (TTL: 5 min)
+- Recent posts (TTL: 1 min)
+- Feed cache (TTL: 30 sec)
+- Follower counts (TTL: 1 min)
+
+Cache hit rate target: >95%
+Reduces DB reads from 58K/sec to <3K/sec
+```
+
+**Global Distribution:**
+
+```
+Write routing:
+- User writes → Nearest region → Route to user's shard primary
+
+Read routing:
+- User reads → Nearest region → Local cache → Local replica
+
+Example:
+- Alice (US user) posts → US Primary for Shard 3
+- Bob (EU user) reads Alice's post → EU Cache → EU Replica for Shard 3
+```
+
+**Summary:**
+
+| Component | Strategy |
+|-----------|----------|
+| Sharding | Consistent hash by user_id, 10 shards |
+| Replication | 1 Primary + 2 Replicas per shard |
+| Caching | Regional Redis, 95%+ hit rate |
+| Feed | Hybrid fan-out |
+| Global | Write to home shard, read from nearest |
+
+</details>
 
 **Q7:** A team wants to shard by user_id but needs to run this query efficiently:
 ```sql
@@ -1210,6 +1745,130 @@ WHERE created_at > '2024-01-01'
 GROUP BY product_id
 ```
 What's the problem? Propose solutions.
+
+<details>
+<summary>View Answer</summary>
+
+**The Problem:**
+
+When sharded by `user_id`, this query is extremely inefficient:
+
+```
+Shard 1: Users 1-1M and their orders
+Shard 2: Users 1M-2M and their orders
+Shard 3: Users 2M-3M and their orders
+
+Query: "Count orders by product since Jan 1"
+
+Execution:
+1. Query ALL shards (orders for any user could have any product)
+2. Each shard scans ALL orders checking created_at
+3. Aggregate results from all shards
+4. Group by product_id across combined results
+
+Problems:
+- Full table scan on every shard
+- Massive network transfer
+- Memory pressure for aggregation
+- Slow (minutes to hours for large datasets)
+```
+
+**Solutions:**
+
+**Solution 1: Materialized Analytics Table (Recommended)**
+
+```
+Create pre-aggregated table updated in real-time:
+
+daily_product_orders:
+| date       | product_id | order_count |
+|------------|------------|-------------|
+| 2024-01-01 | P001       | 1,234       |
+| 2024-01-01 | P002       | 567         |
+| 2024-01-02 | P001       | 1,456       |
+
+Query becomes:
+SELECT product_id, SUM(order_count)
+FROM daily_product_orders
+WHERE date > '2024-01-01'
+GROUP BY product_id
+
+Single table, no shard scatter!
+```
+
+**How to maintain:**
+```
+On each order insert:
+1. Write to sharded orders table (by user_id)
+2. Increment counter in daily_product_orders
+
+Use:
+- Database trigger, OR
+- Application-level dual write, OR
+- Stream processing (Kafka → aggregator)
+```
+
+**Solution 2: Dedicated Analytics Database**
+
+```
+Production DB (sharded by user_id):
+- Optimized for user queries
+- Fast order lookups
+
+Analytics DB (not sharded or sharded by date):
+- Copy of order data
+- Optimized for aggregate queries
+- Can use columnar storage (ClickHouse, BigQuery)
+
+ETL pipeline:
+[Shards] → [Kafka] → [Analytics DB]
+```
+
+**Solution 3: Secondary Sharding Index**
+
+```
+Create second table sharded by product_id:
+
+orders_by_product (sharded by product_id):
+| product_id | order_id | user_id | created_at |
+|------------|----------|---------|------------|
+
+Write path:
+1. Insert into orders (shard by user_id)
+2. Insert into orders_by_product (shard by product_id)
+
+Query path:
+- User queries → orders table
+- Product queries → orders_by_product table
+
+Trade-off: Double storage, double write latency
+```
+
+**Solution 4: Scatter-Gather with Caching**
+
+```
+If query is infrequent and results can be stale:
+
+1. Run scatter-gather query across all shards
+2. Cache result for 1 hour
+3. Subsequent queries hit cache
+
+Good for: Daily reports, dashboards
+Bad for: Real-time analytics
+```
+
+**Comparison:**
+
+| Solution | Write Impact | Query Speed | Complexity | Best For |
+|----------|--------------|-------------|------------|----------|
+| Materialized table | Low | Fast | Medium | Real-time dashboards |
+| Analytics DB | None | Fast | High | Complex analytics |
+| Secondary index | High (2x writes) | Fast | Medium | Multiple access patterns |
+| Scatter-gather + cache | None | Slow first, fast cached | Low | Infrequent reports |
+
+**Recommended approach:** Solution 1 for this specific query, with Solution 2 as you scale and need more complex analytics.
+
+</details>
 
 ---
 

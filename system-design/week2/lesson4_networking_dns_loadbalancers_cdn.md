@@ -655,14 +655,108 @@ When designing systems, always consider:
 
 **Q1:** A user in Australia visits your US-based website. Walk through the complete request flow involving DNS, Load Balancers, and CDN. Where are the main latency points?
 
+<details>
+<summary>View Answer</summary>
+
+**Request Flow:**
+
+1. **DNS Resolution (~50-200ms)**
+   - Browser checks local cache → ISP DNS → Root DNS → .com TLD → Your authoritative DNS
+   - GeoDNS returns IP of nearest CDN edge (Sydney)
+
+2. **CDN Edge (Sydney) (~10-50ms)**
+   - Request hits Sydney CDN edge
+   - If cached: Return immediately (fast!)
+   - If not cached: Forward to origin
+
+3. **Load Balancer (~5-10ms if regional)**
+   - Request routed to US load balancer
+   - LB selects healthy backend server
+
+4. **Origin Server (~100-300ms round trip)**
+   - US server processes request
+   - Response travels back to Australia
+
+5. **Response cached at CDN edge**
+   - Future Australian users get fast response
+
+**Main Latency Points:**
+- **DNS lookup:** First visit is slow (mitigate with DNS prefetch)
+- **Origin fetch:** 300ms+ round trip to US (mitigate with CDN caching)
+- **TLS handshake:** Adds 1-2 round trips (mitigate with session resumption)
+
+</details>
+
 **Q2:** Your company is launching a video streaming service globally. Design the infrastructure using DNS, Load Balancers, and CDN. What challenges might you face?
+
+<details>
+<summary>View Answer</summary>
+
+**Infrastructure Design:**
+
+```
+                    [GeoDNS]
+                       │
+    ┌──────────────────┼──────────────────┐
+    ↓                  ↓                  ↓
+[CDN Edge US]    [CDN Edge EU]    [CDN Edge Asia]
+    │                  │                  │
+    ↓                  ↓                  ↓
+[Regional LB]    [Regional LB]    [Regional LB]
+    │                  │                  │
+[Origin US]      [Origin EU]      [Origin Asia]
+```
+
+**Key Components:**
+- **GeoDNS:** Route users to nearest region
+- **CDN:** Cache video chunks at edge (huge bandwidth savings)
+- **Regional origins:** Reduce latency for uploads and API calls
+- **Adaptive bitrate:** Serve different quality based on connection
+
+**Challenges:**
+
+1. **Video file size:** Terabytes of content, expensive CDN costs
+2. **Live streaming:** Can't cache live content, need low-latency protocols
+3. **Cold start:** First viewer in a region gets slow experience
+4. **Cache invalidation:** When videos are updated or removed
+5. **DRM/geo-restrictions:** Different content rights per country
+6. **Peak load:** Viral content causes traffic spikes
+7. **Cost:** CDN bandwidth for video is expensive
+
+</details>
 
 **Q3:** You have these servers:
 - Server A: 16GB RAM, handling 100 connections
-- Server B: 32GB RAM, handling 50 connections  
+- Server B: 32GB RAM, handling 50 connections
 - Server C: 8GB RAM, handling 150 connections
 
 Which load balancing algorithm would you use? Why?
+
+<details>
+<summary>View Answer</summary>
+
+**Least Connections** is the best choice here.
+
+**Why:**
+- Servers have different capacities AND different current loads
+- Round-robin would send equal traffic, ignoring current load
+- Weighted would require manual configuration of weights
+
+**Current state analysis:**
+- Server A: 100 connections (moderate load)
+- Server B: 50 connections (underutilized despite more RAM!)
+- Server C: 150 connections (overloaded for 8GB)
+
+**With Least Connections:**
+- Next request → Server B (only 50 connections)
+- This naturally balances based on actual load
+
+**Even better: Weighted Least Connections**
+- Weight by RAM: A=2, B=4, C=1
+- Considers both capacity and current load
+- Server B gets more traffic (more RAM, fewer connections)
+
+</details>
 
 **Q4:** Your website has:
 - Homepage (changes hourly)
@@ -672,12 +766,95 @@ Which load balancing algorithm would you use? Why?
 
 What caching strategy (TTL values) would you use for each?
 
+<details>
+<summary>View Answer</summary>
+
+| Content | TTL | Cache-Control Header | Reason |
+|---------|-----|---------------------|--------|
+| **Homepage** | 5-15 minutes | `public, max-age=900, stale-while-revalidate=300` | Changes hourly, short TTL with stale-while-revalidate for smooth updates |
+| **Product images** | 1 year | `public, max-age=31536000, immutable` | Rarely change; use versioned URLs (/img/product.v2.jpg) |
+| **User profiles** | 0 (no cache) | `private, no-store` | Personalized content should never be cached on CDN |
+| **Blog posts** | 1 day | `public, max-age=86400, stale-while-revalidate=3600` | Change weekly, 1-day TTL is safe |
+
+**Additional strategies:**
+- Use `stale-while-revalidate` for better UX during revalidation
+- Version static assets (CSS, JS, images) for instant updates
+- Set `private` for any user-specific content
+- Consider `s-maxage` for CDN-specific TTL different from browser
+
+</details>
+
 **Q5:** Your origin server goes down for 2 hours. You have a CDN with 24-hour cache. What happens to:
 - Cached content?
 - Non-cached content?
 - Users who last visited 1 hour ago vs 25 hours ago?
 
+<details>
+<summary>View Answer</summary>
+
+**Cached content:**
+- ✅ Continues to be served from CDN edge
+- Users see no disruption for cached pages
+- CDN serves "stale" content (which is fine for 2 hours)
+
+**Non-cached content:**
+- ❌ CDN tries to fetch from origin, fails
+- Users see error (502 Bad Gateway or 504 Timeout)
+- Any uncached pages, API calls, or dynamic content fails
+
+**Users who visited 1 hour ago:**
+- ✅ Their content is still in CDN cache (TTL: 24h - 1h = 23h remaining)
+- They can continue browsing cached content normally
+
+**Users who visited 25 hours ago:**
+- ❌ Their cached content expired (24h TTL exceeded)
+- CDN needs to revalidate with origin
+- Origin is down → Error or stale content (if `stale-if-error` is configured)
+
+**Best practices for resilience:**
+- Configure `stale-if-error` directive to serve expired cache when origin fails
+- Set up health checks and automatic failover
+- Use multiple origin servers
+- Cache API responses where possible
+
+</details>
+
 **Q6:** Explain why "versioned URLs" (e.g., /style.css?v=2) is better than cache purging for CDN updates.
+
+<details>
+<summary>View Answer</summary>
+
+**Versioned URLs advantages:**
+
+1. **Instant update:** New URL = new cache entry, immediately fetched
+   - Old: `/style.css?v=1` (still cached)
+   - New: `/style.css?v=2` (fetched immediately)
+
+2. **No purge propagation delay:** Cache purges can take minutes to propagate across all CDN edges globally
+
+3. **Atomic deployment:** Users get all-new or all-old assets, never a mix
+
+4. **Rollback is trivial:** Just change back to `?v=1`
+
+5. **No purge API needed:** Works with any CDN, no special configuration
+
+6. **Long cache TTL:** Can set 1-year cache since URL changes when content changes
+
+**Cache purging problems:**
+
+1. **Propagation delay:** 1-15 minutes for global purge
+2. **Race conditions:** Some users get new HTML with old CSS
+3. **Cost:** Many CDNs charge for purge API calls
+4. **Complexity:** Need to track what to purge
+5. **Inconsistency:** Some edges purged, others not
+
+**Best practice:** Use content-hash in filename:
+```
+/style.a1b2c3d4.css  (hash of file content)
+```
+Build tools (Webpack, Vite) do this automatically!
+
+</details>
 
 ---
 

@@ -214,11 +214,63 @@ Think about these, and when you're ready, share your answers with me:
 - Marking a todo as complete?
 - Deleting a todo?
 
+<details>
+<summary>View Answer</summary>
+
+- **Getting all todos:** `GET /todos` - You're reading/retrieving data
+- **Creating a new todo:** `POST /todos` - You're creating a new resource
+- **Marking a todo as complete:** `PUT /todos/123` or `PATCH /todos/123` - You're updating an existing resource (PUT for full update, PATCH for partial)
+- **Deleting a todo:** `DELETE /todos/123` - You're removing a resource
+
+</details>
+
 **Q2:** If HTTP is stateless, how does Twitter "remember" you're logged in when you navigate from your feed to your profile page?
+
+<details>
+<summary>View Answer</summary>
+
+Twitter uses **cookies** or **tokens** to maintain session state. When you log in:
+1. Server creates a session and sends back a session ID (via cookie) or JWT token
+2. Your browser stores this cookie/token
+3. Every subsequent request automatically includes this cookie/token in the headers
+4. Server validates the cookie/token to identify you
+
+So while HTTP itself is stateless, cookies/tokens carry your identity with each request, making it appear "stateful" to users.
+
+</details>
 
 **Q3:** You visit an e-commerce site and get a "504 Gateway Timeout" error. Based on what you learned, what does this likely mean? (Hint: Is it a 4xx client error or 5xx server error?)
 
+<details>
+<summary>View Answer</summary>
+
+504 is a **5xx server error**, meaning the problem is on the server side, not yours. Specifically:
+
+- A gateway or proxy server didn't receive a timely response from an upstream server
+- The backend server is overloaded, crashed, or taking too long to respond
+- There could be network issues between servers
+
+**What to do:** Wait and retry later. It's not something you can fix as a user.
+
+</details>
+
 **Q4:** Why do you think modern websites make so many HTTP requests? (Think about images, styles, scripts, data...)
+
+<details>
+<summary>View Answer</summary>
+
+Modern websites make many requests because:
+
+1. **Separation of concerns:** HTML, CSS, JavaScript, and images are separate files for maintainability
+2. **Third-party resources:** Analytics, ads, fonts, CDN-hosted libraries
+3. **Dynamic content:** API calls to fetch user data, feeds, recommendations
+4. **Lazy loading:** Images and content loaded as you scroll
+5. **Real-time updates:** WebSocket connections or polling for new notifications/messages
+6. **Caching efficiency:** Separate files can be cached independently (change CSS without re-downloading images)
+
+A typical page might make 50-200+ requests!
+
+</details>
 
 ---
 

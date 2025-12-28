@@ -814,11 +814,149 @@ cache.set("order:123", order_data)
 
 Include TTL values and explain your reasoning.
 
+<details>
+<summary>View Answer</summary>
+
+| Content | Pattern | TTL | Reasoning |
+|---------|---------|-----|-----------|
+| **Blog post content** | Cache-aside | 1 hour | Posts rarely change; invalidate on edit |
+| **Author profile** | Cache-aside | 15 minutes | Updated occasionally; short TTL for freshness |
+| **Comment count** | Write-through or short TTL | 30 seconds | Frequently changes; users expect near-real-time |
+| **User sessions** | Write-through | 24 hours (sliding) | Must be consistent; extend on activity |
+
+**Implementation details:**
+- Blog posts: Cache full rendered HTML for maximum speed
+- Author profile: Invalidate cache when user updates profile
+- Comment count: Use Redis INCR for atomic updates, or accept slight staleness
+- Sessions: Use Redis with `EXPIRE` command, refresh TTL on each request
+
+</details>
+
 **Q2:** Your cache has a 60% hit rate. Is this good or bad? What would you do to improve it?
+
+<details>
+<summary>View Answer</summary>
+
+**60% is mediocre** - most well-optimized caches achieve 85-95%+.
+
+**Investigation steps:**
+
+1. **Analyze cache misses:**
+   - Cold misses (first access)? → Pre-warm cache
+   - Capacity misses (eviction)? → Increase cache size
+   - Conflict misses (bad key distribution)? → Improve hashing
+
+2. **Check TTL values:**
+   - Too short? Data expires before reuse
+   - Increase TTL for stable data
+
+3. **Review access patterns:**
+   - Long-tail distribution? Many unique keys accessed once
+   - Consider caching only "hot" data
+
+**Improvement strategies:**
+
+- **Increase cache size:** More memory = fewer evictions
+- **Extend TTL:** Keep data longer (if consistency allows)
+- **Pre-warming:** Load popular data at startup
+- **Better eviction policy:** LRU might not be optimal; try LFU
+- **Cache more aggressively:** Cache computed results, not just DB queries
+- **Multi-tier caching:** Local cache + distributed cache
+
+**Target:** 85%+ for most applications, 95%+ for read-heavy workloads.
+
+</details>
 
 **Q3:** You're using cache-aside pattern. A user updates their profile. Walk through the exact steps (cache operations and database operations) to ensure consistency.
 
+<details>
+<summary>View Answer</summary>
+
+**Correct sequence (Write-Invalidate):**
+
+```
+1. UPDATE database
+   → UPDATE users SET name='New Name' WHERE id=123
+
+2. DELETE from cache (invalidate)
+   → DELETE cache key "user:123"
+
+3. Next READ triggers cache refill
+   → Cache miss → Read from DB → Write to cache
+```
+
+**Why this order?**
+
+- **DB first:** If cache delete fails, data is still correct in DB; cache will eventually expire
+- **Delete, don't update:** Avoids race conditions where stale data overwrites fresh data
+
+**What NOT to do:**
+
+```
+❌ Wrong: Update cache, then database
+   - If DB update fails, cache has wrong data
+
+❌ Wrong: Update cache instead of delete
+   - Race condition: another process might write stale data
+```
+
+**Race condition example (why delete is safer):**
+
+```
+Thread A: Update user name to "Alice"
+Thread B: Read user (gets old name "Bob")
+
+With UPDATE cache:
+1. A: Update DB to "Alice"
+2. B: Read DB (gets "Bob" - stale read)
+3. A: Update cache to "Alice"
+4. B: Update cache to "Bob" ← WRONG! Overwrites fresh data
+
+With DELETE cache:
+1. A: Update DB to "Alice"
+2. A: Delete cache
+3. B: Read → cache miss → reads "Alice" from DB ← CORRECT
+```
+
+</details>
+
 **Q4:** Your Redis cache is at 95% memory capacity and evicting frequently. What are your options? Discuss trade-offs of each.
+
+<details>
+<summary>View Answer</summary>
+
+| Option | Pros | Cons |
+|--------|------|------|
+| **Add more memory** | Simple, no code changes | Cost, vertical scaling limits |
+| **Add more Redis nodes** | Horizontal scaling | Complexity, data distribution |
+| **Reduce TTL** | Free up space faster | Lower hit rate |
+| **Cache less data** | Reduces memory needs | Lower hit rate, code changes |
+| **Better eviction policy** | Keeps hot data | Might not help if all data is hot |
+| **Compress values** | 50-90% space savings | CPU overhead, complexity |
+| **Use smaller data types** | Significant savings | Requires refactoring |
+
+**Recommended approach:**
+
+1. **First:** Analyze what's in the cache
+   ```
+   redis-cli --bigkeys
+   redis-cli DEBUG OBJECT key
+   ```
+
+2. **Quick wins:**
+   - Remove unused/stale keys
+   - Reduce TTL on less critical data
+   - Switch to `volatile-lfu` eviction (evict least frequently used)
+
+3. **Medium-term:**
+   - Add Redis node (cluster mode)
+   - Implement compression for large values
+
+4. **Review architecture:**
+   - Are you caching things that shouldn't be cached?
+   - Can you cache at a different layer (CDN, application)?
+
+</details>
 
 **Q5:** Compare these two approaches for a product inventory system:
 - Approach A: Cache product inventory with 1-minute TTL
@@ -826,12 +964,156 @@ Include TTL values and explain your reasoning.
 
 Which is better and why?
 
+<details>
+<summary>View Answer</summary>
+
+**Approach B (Write-through) is better for inventory.**
+
+**Why:**
+
+| Aspect | Approach A (TTL) | Approach B (Write-through) |
+|--------|------------------|---------------------------|
+| **Consistency** | Up to 1 min stale | Always current |
+| **Overselling risk** | HIGH - stale count | LOW - accurate count |
+| **Complexity** | Simple | More complex |
+| **Write performance** | Fast | Slower (2 writes) |
+
+**Inventory is critical:**
+- Showing "5 in stock" when there's actually 0 = angry customers
+- Overselling = refunds, bad reviews, lost trust
+- 1-minute staleness is unacceptable for inventory
+
+**Implementation with write-through:**
+
+```python
+def purchase_item(product_id):
+    # Atomic operation
+    with transaction:
+        # 1. Update database
+        db.execute("UPDATE products SET stock = stock - 1 WHERE id = ?", product_id)
+
+        # 2. Update cache (write-through)
+        new_stock = db.query("SELECT stock FROM products WHERE id = ?", product_id)
+        cache.set(f"product:{product_id}:stock", new_stock)
+```
+
+**Even better: Use Redis for inventory directly**
+
+```python
+# Atomic decrement
+remaining = redis.decr(f"inventory:{product_id}")
+if remaining < 0:
+    redis.incr(f"inventory:{product_id}")  # Rollback
+    raise OutOfStockError()
+# Then async sync to database
+```
+
+</details>
+
 **Q6:** You have 3 cache servers. How would you ensure that the key "user:123" always goes to the same cache server, even if a server is added or removed?
+
+<details>
+<summary>View Answer</summary>
+
+**Use Consistent Hashing!**
+
+**Simple modulo (bad):**
+```
+server = hash("user:123") % 3  → Server 1
+
+Add server 4:
+server = hash("user:123") % 4  → Server 2 (DIFFERENT!)
+```
+~75% of keys move to different servers!
+
+**Consistent hashing (good):**
+```
+1. Create a hash ring (0 to 2^32)
+2. Place servers at positions on the ring
+3. Place keys at positions on the ring
+4. Key goes to next server clockwise
+
+Add server 4:
+- Only ~25% of keys move (1/N)
+- "user:123" likely stays on same server
+```
+
+**Implementation options:**
+
+1. **Client-side library:**
+   ```python
+   from uhashring import HashRing
+   ring = HashRing(nodes=['server1', 'server2', 'server3'])
+   server = ring.get_node('user:123')
+   ```
+
+2. **Redis Cluster:** Built-in consistent hashing with 16384 hash slots
+
+3. **Memcached with ketama:** Consistent hashing algorithm
+
+**This is covered in depth in Lesson 10!**
+
+</details>
 
 **Q7:** Design a caching strategy for an e-commerce flash sale where:
 - 10,000 users trying to buy 100 products
 - Inventory must be accurate
 - System must stay fast
+
+<details>
+<summary>View Answer</summary>
+
+**Architecture:**
+
+```
+[Users] → [CDN] → [Load Balancer] → [App Servers] → [Redis] → [Database]
+                                          ↓
+                                    [Queue] → [Order Processor]
+```
+
+**Strategy:**
+
+1. **Pre-cache everything:**
+   - Product details in Redis before sale starts
+   - Pre-render product pages, cache in CDN
+
+2. **Inventory in Redis (not DB):**
+   ```python
+   # Atomic check-and-decrement
+   remaining = redis.eval("""
+       local stock = redis.call('GET', KEYS[1])
+       if tonumber(stock) > 0 then
+           return redis.call('DECR', KEYS[1])
+       end
+       return -1
+   """, 1, f"inventory:{product_id}")
+
+   if remaining >= 0:
+       queue.push(order_details)  # Process async
+   else:
+       return "Out of stock"
+   ```
+
+3. **Queue orders for processing:**
+   - Don't hit database on hot path
+   - Process orders asynchronously
+   - Database can handle queue at its own pace
+
+4. **CDN for static content:**
+   - Product images, CSS, JS cached at edge
+   - Only inventory check hits origin
+
+5. **Rate limiting:**
+   - Limit purchases per user
+   - Prevent bots with CAPTCHA
+
+6. **Graceful degradation:**
+   - If Redis fails, show "high demand, try again"
+   - Don't fall back to database (will crash)
+
+**Key insight:** Keep the hot path (checking inventory) entirely in Redis. Database is only for durability, not real-time operations.
+
+</details>
 
 ---
 

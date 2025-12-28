@@ -357,9 +357,53 @@ Transaction DB      ─┘
 
 **Q1:** You're building a banking app where users can transfer money between accounts. Should you use SQL or NoSQL? Why?
 
+<details>
+<summary>View Answer</summary>
+
+**SQL** is the clear choice for banking. Here's why:
+
+- **ACID transactions are critical:** Transferring money requires atomicity - either both accounts update or neither does. You can't have money disappear or duplicate!
+- **Strong consistency:** Account balances must be accurate immediately, not "eventually"
+- **Complex queries:** Financial reports require JOINs across accounts, transactions, users
+- **Regulatory compliance:** Audit trails and data integrity are legally required
+
+NoSQL's eventual consistency could cause serious problems: showing wrong balances, allowing overdrafts, or losing transaction records.
+
+</details>
+
 **Q2:** You're building a chat app like WhatsApp that needs to handle millions of messages per second. Should you use SQL or NoSQL? Why?
 
+<details>
+<summary>View Answer</summary>
+
+**NoSQL** (like Cassandra or MongoDB) is better suited here:
+
+- **Write-heavy workload:** Millions of messages/sec requires horizontal scaling
+- **Simple access patterns:** Usually just "get messages for conversation X" - no complex JOINs
+- **Flexible schema:** Messages can have attachments, reactions, replies - schema evolves
+- **Eventual consistency is acceptable:** If a message appears 100ms late, users won't notice
+- **Horizontal scalability:** NoSQL databases are designed to scale across many servers
+
+However, you might still use SQL for user accounts and settings where consistency matters more.
+
+</details>
+
 **Q3:** What problems might occur if you use a NoSQL database with eventual consistency for an e-commerce checkout system?
+
+<details>
+<summary>View Answer</summary>
+
+Several serious problems could occur:
+
+1. **Overselling:** Two users buy the "last item" because inventory count hadn't synchronized yet
+2. **Double charging:** Payment recorded on one node but not visible to another, causing retry
+3. **Lost orders:** Order placed but not yet replicated to all nodes; if the node fails, order is lost
+4. **Inconsistent cart:** User adds item on phone, opens laptop, item not there yet
+5. **Price discrepancies:** Price updated but old price still showing during checkout
+
+**Solution:** Use SQL for checkout/inventory (strong consistency) and NoSQL for product catalog/reviews (where eventual consistency is fine).
+
+</details>
 
 **Q4:** Look at this data structure. Would SQL or NoSQL be better? Why?
 ```
@@ -373,7 +417,46 @@ User:
   - preferences: {theme: "dark", notifications: true}
 ```
 
+<details>
+<summary>View Answer</summary>
+
+**NoSQL** (document database like MongoDB) would be a better fit:
+
+- **Nested/embedded data:** Orders array and preferences object fit naturally in a document
+- **Schema flexibility:** Preferences can vary per user without migrations
+- **Read pattern:** Likely fetching entire user profile at once (no JOINs needed)
+- **Denormalized:** All user data in one place = fast reads
+
+**SQL would require:**
+- Separate tables: users, orders, preferences
+- JOINs to reconstruct the full user object
+- More rigid schema for preferences
+
+However, if you need to query "all orders over $500" across all users, SQL might be better due to its powerful query capabilities.
+
+</details>
+
 **Q5:** A startup is building a new app. They're unsure if their data model will change. They expect 100 users initially but hope to scale to millions. What database approach would you recommend?
+
+<details>
+<summary>View Answer</summary>
+
+**Start with PostgreSQL (SQL), consider adding NoSQL later:**
+
+1. **Start simple:** 100 users doesn't need distributed databases. PostgreSQL handles millions of rows easily.
+2. **Schema flexibility exists:** PostgreSQL has JSONB columns for flexible data alongside structured tables
+3. **Don't over-engineer:** Premature optimization is the root of all evil. Scale problems are good problems to have!
+4. **SQL is versatile:** Ad-hoc queries, reporting, and analytics are easier with SQL
+5. **Migrate when needed:** Many companies successfully migrate to NoSQL or sharded databases when they actually hit scale limits
+
+**The approach:**
+- Start with PostgreSQL
+- Use JSONB for flexible/evolving fields
+- Monitor performance as you grow
+- Add read replicas when needed
+- Consider sharding or NoSQL when you actually hit limits (usually millions of daily active users)
+
+</details>
 
 ---
 
