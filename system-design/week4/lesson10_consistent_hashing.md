@@ -886,6 +886,59 @@ Don't use: simple modulo, CRC32
 
 **Q1:** A cache cluster uses `hash(key) % 10` for 10 servers. One server fails. What percentage of cache misses would you expect? What if they used consistent hashing?
 
+<details>
+<summary>View Answer</summary>
+
+**Traditional Modulo Hashing (hash % 10 → hash % 9):**
+
+```
+Before: hash(key) % 10
+After:  hash(key) % 9
+
+Example calculations:
+key_A: hash=15 → 15%10=5 → 15%9=6  (MOVED!)
+key_B: hash=27 → 27%10=7 → 27%9=0  (MOVED!)
+key_C: hash=36 → 36%10=6 → 36%9=0  (MOVED!)
+key_D: hash=45 → 45%10=5 → 45%9=0  (MOVED!)
+key_E: hash=18 → 18%10=8 → 18%9=0  (MOVED!)
+
+Almost everything changes!
+```
+
+**Mathematical Analysis:**
+```
+When going from N to N-1 servers:
+- Keys that stay: Only keys where hash % N == hash % (N-1)
+- Probability a key stays: 1/N (approximately)
+- Keys that move: (N-1)/N ≈ 90%
+
+Expected cache misses: ~90%
+```
+
+**Consistent Hashing:**
+
+```
+When 1 of 10 servers fails:
+- Only keys that were on the failed server move
+- Those keys go to the next server clockwise
+- Other 9 servers' keys stay put
+
+Expected cache misses: ~10% (only 1/N)
+```
+
+**Comparison:**
+
+| Approach | Cache Misses | Impact |
+|----------|--------------|--------|
+| Modulo hashing | ~90% | Catastrophic - database overwhelmed |
+| Consistent hashing | ~10% | Manageable - one server's worth |
+
+**Real-world impact with 1 billion keys:**
+- Modulo: 900 million cache misses → potential database collapse
+- Consistent: 100 million cache misses → temporary increased DB load
+
+</details>
+
 **Q2:** You have 4 servers with different capacities:
 - Server A: 8GB RAM
 - Server B: 8GB RAM
@@ -894,9 +947,291 @@ Don't use: simple modulo, CRC32
 
 How would you configure virtual nodes to distribute data proportionally to capacity?
 
+<details>
+<summary>View Answer</summary>
+
+**Total Capacity:** 8 + 8 + 16 + 32 = 64GB
+
+**Proportional Distribution:**
+```
+Server A:  8GB / 64GB = 12.5% of data
+Server B:  8GB / 64GB = 12.5% of data
+Server C: 16GB / 64GB = 25% of data
+Server D: 32GB / 64GB = 50% of data
+```
+
+**Virtual Node Configuration:**
+
+Use a base of 100 virtual nodes for the smallest server, then scale proportionally:
+
+```
+Server A (8GB):   100 virtual nodes (1x)
+Server B (8GB):   100 virtual nodes (1x)
+Server C (16GB):  200 virtual nodes (2x)
+Server D (32GB):  400 virtual nodes (4x)
+
+Total: 800 virtual nodes on the ring
+```
+
+**Implementation:**
+```python
+class WeightedConsistentHash:
+    def __init__(self, base_vnodes=100):
+        self.base_vnodes = base_vnodes
+        self.ring = {}
+        self.sorted_keys = []
+
+    def add_node(self, node, capacity_gb):
+        # Calculate weight relative to 8GB base
+        weight = capacity_gb / 8
+        num_vnodes = int(self.base_vnodes * weight)
+
+        for i in range(num_vnodes):
+            vnode_key = f"{node}_vn{i}"
+            hash_val = self._hash(vnode_key)
+            self.ring[hash_val] = node
+            bisect.insort(self.sorted_keys, hash_val)
+
+# Usage
+ch = WeightedConsistentHash(base_vnodes=100)
+ch.add_node("Server_A", 8)   # 100 vnodes
+ch.add_node("Server_B", 8)   # 100 vnodes
+ch.add_node("Server_C", 16)  # 200 vnodes
+ch.add_node("Server_D", 32)  # 400 vnodes
+```
+
+**Verification:**
+```
+Ring distribution:
+- Server A: 100/800 = 12.5% ✓
+- Server B: 100/800 = 12.5% ✓
+- Server C: 200/800 = 25% ✓
+- Server D: 400/800 = 50% ✓
+
+Each server gets data proportional to its capacity!
+```
+
+**Alternative Formula:**
+```
+If you want exactly N total virtual nodes:
+
+vnodes_per_server = (server_capacity / total_capacity) × N
+
+With N = 1000:
+Server A: (8/64) × 1000 = 125 vnodes
+Server B: (8/64) × 1000 = 125 vnodes
+Server C: (16/64) × 1000 = 250 vnodes
+Server D: (32/64) × 1000 = 500 vnodes
+```
+
+</details>
+
 **Q3:** Explain why consistent hashing with 1 virtual node per server (no virtual nodes) might result in one server handling 70% of the requests while another handles only 5%.
 
+<details>
+<summary>View Answer</summary>
+
+**The Problem: Uneven Arc Lengths**
+
+With only 1 position per server on the ring, the arc (segment) each server "owns" depends entirely on where the hash function places them:
+
+```
+Ring with 4 servers (each with 1 position):
+
+Assume hash positions:
+Server A: position 100
+Server B: position 200
+Server C: position 300
+Server D: position 3,500,000,000 (close to max of 2^32)
+
+Visualized:
+        0
+        │
+  A ●───┤ (100)
+  B ●───┤ (200)
+  C ●───┤ (300)
+        │
+        │  (huge gap!)
+        │
+        │
+        │
+  D ●───┤ (3.5B)
+        │
+     (wraps to 0)
+
+Arc lengths (what each server handles):
+A: 100 to 200         = 100 positions
+B: 200 to 300         = 100 positions
+C: 300 to 3.5B        = 3,499,999,700 positions (~81%)
+D: 3.5B to 100 (wrap) = ~800,000,100 positions (~19%)
+```
+
+**Result:**
+```
+Server A: 100 / 4.3B ≈ 0.000002% of keys
+Server B: 100 / 4.3B ≈ 0.000002% of keys
+Server C: ~81% of keys  ← MASSIVELY OVERLOADED!
+Server D: ~19% of keys
+```
+
+**Why This Happens:**
+
+1. **Hash functions are pseudo-random** - server positions are effectively random
+2. **With few points, variance is high** - like rolling dice, you can get unlucky
+3. **No guarantee of even spacing** - servers may cluster together
+
+**Statistical Analysis:**
+```
+With N servers and 1 position each:
+- Expected arc per server: 1/N
+- Standard deviation: √((N-1)/N²) ≈ 1/√N
+
+For 4 servers:
+- Expected: 25% each
+- Std dev: ~50% of expected!
+- Possible range: 5% to 70%+ per server
+```
+
+**Solution: Virtual Nodes**
+```
+With 100 virtual nodes per server:
+- 400 positions total (4 servers × 100)
+- Standard deviation: ~5% of expected
+- Typical range: 22% to 28% per server
+
+With 200 virtual nodes per server:
+- 800 positions total
+- Even tighter distribution: 24% to 26%
+```
+
+**The math:** Standard deviation ≈ 1/√(total_vnodes)
+- 4 vnodes: ±50% variance
+- 400 vnodes: ±5% variance
+- 10,000 vnodes: ±1% variance
+
+</details>
+
 **Q4:** A social media platform has a "viral tweet" problem. When a celebrity posts, millions of requests try to fetch that tweet. The tweet is on Server 3 per consistent hashing. How would you handle this hotspot?
+
+<details>
+<summary>View Answer</summary>
+
+**The Problem:**
+
+Consistent hashing distributes keys evenly, but it doesn't know about request frequency:
+
+```
+Normal tweet:     10 requests/second → Server 3 handles fine
+Viral tweet:  2,000,000 requests/second → Server 3 overwhelmed!
+
+All requests for "tweet_12345" hash to the same position
+→ Same server every time
+→ Server 3 is crushed while others are idle
+```
+
+**Solutions:**
+
+**Solution 1: Read Replicas / Cache Tier**
+```
+Add a distributed cache layer in front:
+
+[Clients]
+    │
+    ↓
+[Distributed Cache Layer] ← CDN or Redis Cluster
+    │
+    ↓ (cache miss only)
+[Consistent Hash Ring]
+    │
+    ↓
+[Server 3]
+
+Cache absorbs 99%+ of reads
+Server 3 only hit on cache miss
+```
+
+**Solution 2: Key Replication (Read from Multiple Servers)**
+```
+For hot keys, store on multiple servers:
+
+Normal key: hash("tweet_123") → Server 3 only
+Hot key:    Store on Servers 3, 4, 5
+
+Read routing:
+tweet_12345 → randomly pick Server 3, 4, or 5
+→ Load spread across 3 servers!
+
+Implementation:
+def get_server_for_hot_key(key):
+    servers = consistent_hash.get_nodes(key, n=3)
+    return random.choice(servers)
+```
+
+**Solution 3: Key Splitting / Sharding the Hot Key**
+```
+Split one key into multiple sub-keys:
+
+Instead of: tweet_12345
+Use: tweet_12345_shard_0, tweet_12345_shard_1, ... tweet_12345_shard_9
+
+Request routing:
+client_id = get_client_id()
+shard = hash(client_id) % 10
+actual_key = f"tweet_12345_shard_{shard}"
+server = consistent_hash.get_node(actual_key)
+
+Each shard hashes to different server!
+10 shards → load spread across ~10 servers
+```
+
+**Solution 4: Local Application Cache**
+```
+Each application server caches hot keys locally:
+
+[App Server 1] ← local cache: tweet_12345
+[App Server 2] ← local cache: tweet_12345
+[App Server 3] ← local cache: tweet_12345
+
+First request: fetch from Server 3, cache locally
+Subsequent: serve from local cache (TTL: 30 seconds)
+
+No consistent hashing needed for cached data!
+```
+
+**Solution 5: Hot Key Detection + Special Handling**
+```
+Real-time detection system:
+
+1. Monitor request rates per key
+2. When key exceeds threshold (e.g., 10K req/sec):
+   - Flag as "hot"
+   - Move to dedicated hot-key cache
+   - Replicate across all edge servers
+
+def get(key):
+    if is_hot_key(key):
+        return hot_key_cache.get(key)  # Distributed cache
+    else:
+        server = consistent_hash.get_node(key)
+        return server.get(key)
+```
+
+**Twitter's Actual Approach:**
+```
+1. CDN caches static content (profile pics, media)
+2. Redis cluster for hot tweets
+3. Fan-out on write for feeds
+4. Celebrity tweets: special handling with replication
+5. Rate limiting on read path
+```
+
+**Best Practice:** Combine multiple approaches:
+- CDN/cache layer for all reads
+- Automatic hot key detection
+- Key replication for detected hot keys
+- Rate limiting as safety net
+
+</details>
 
 **Q5:** Compare these approaches for a 100-server cluster:
 - Traditional modulo hashing
@@ -905,9 +1240,442 @@ How would you configure virtual nodes to distribute data proportionally to capac
 
 Consider: distribution evenness, memory usage, lookup time, and data movement when adding 1 server.
 
+<details>
+<summary>View Answer</summary>
+
+**Comparison Table:**
+
+| Factor | Modulo Hash | CH (10 vnodes) | CH (200 vnodes) |
+|--------|-------------|----------------|-----------------|
+| **Distribution** | Perfect 1% each | ~1% ± 30% | ~1% ± 7% |
+| **Memory** | O(1) | ~1KB | ~20KB |
+| **Lookup Time** | O(1) | O(log 1000) | O(log 20000) |
+| **Data Movement** | ~99% | ~1% | ~1% |
+
+**Detailed Analysis:**
+
+**1. Distribution Evenness**
+
+```
+Modulo Hashing:
+- Perfect distribution: exactly 1% per server
+- Every key has equal probability for each server
+- BUT: only works when N is constant!
+
+Consistent Hashing (10 vnodes):
+- Expected: 1% per server
+- Standard deviation: 1/√1000 ≈ 3% absolute
+- Range: Some servers get 0.3%, others get 3%+
+- Unacceptable variance!
+
+Consistent Hashing (200 vnodes):
+- Expected: 1% per server
+- Standard deviation: 1/√20000 ≈ 0.7% absolute
+- Range: 0.7% to 1.3% per server
+- Good enough for production!
+```
+
+**2. Memory Usage**
+
+```
+Modulo Hashing:
+- Zero memory for routing
+- Just compute hash % N
+- Memory: O(1)
+
+Consistent Hashing (10 vnodes):
+- 100 servers × 10 vnodes = 1,000 entries
+- Each entry: ~8 bytes (hash) + ~16 bytes (server ref) = ~24 bytes
+- Total: ~24KB for ring + sorted array
+- Negligible
+
+Consistent Hashing (200 vnodes):
+- 100 servers × 200 vnodes = 20,000 entries
+- Total: ~480KB for ring structure
+- Still negligible for servers with GBs of RAM
+```
+
+**3. Lookup Time**
+
+```
+Modulo Hashing:
+- Compute hash: O(1)
+- Compute modulo: O(1)
+- Total: O(1), ~nanoseconds
+
+Consistent Hashing (10 vnodes):
+- Compute hash: O(1)
+- Binary search in 1,000 entries: O(log 1000) ≈ 10 comparisons
+- Total: O(log n), ~microseconds
+
+Consistent Hashing (200 vnodes):
+- Binary search in 20,000 entries: O(log 20000) ≈ 15 comparisons
+- Total: O(log n), ~microseconds
+- Only ~50% slower than 10 vnodes
+```
+
+**4. Data Movement When Adding 1 Server**
+
+```
+Modulo Hashing (100 → 101 servers):
+- hash % 100 → hash % 101
+- ~99% of keys change servers!
+- With 1 billion keys: 990 million must move
+- CATASTROPHIC!
+
+Consistent Hashing (either config):
+- New server takes ~1/101 ≈ 1% of keyspace
+- Only ~1% of keys move
+- With 1 billion keys: ~10 million must move
+- Manageable!
+
+With 200 vnodes:
+- New server's 200 vnodes distributed around ring
+- Takes small slices from many servers
+- Smoother rebalancing than 10 vnodes
+```
+
+**Recommendation:**
+
+```
+For a 100-server production cluster:
+
+✅ Use consistent hashing with 150-200 virtual nodes per server
+
+Why not modulo?
+- Server failures/additions cause data storms
+- Not suitable for dynamic environments
+
+Why not 10 vnodes?
+- Too much variance (some servers 3x others)
+- Operational headache
+
+Why 200 vnodes?
+- ~7% variance is acceptable
+- Memory usage (~500KB) is trivial
+- Lookup time (~microseconds) is fast enough
+- Smooth rebalancing
+```
+
+</details>
+
 **Q6:** Implement a `get_nodes(key, n)` method that returns n different physical servers for replication, handling the case where virtual nodes of the same physical server are adjacent on the ring.
 
+<details>
+<summary>View Answer</summary>
+
+**The Problem:**
+
+When walking clockwise on the ring, consecutive virtual nodes might belong to the same physical server:
+
+```
+Ring positions:
+Position 1000: Server_A_vn5
+Position 1001: Server_A_vn12  ← Same physical server!
+Position 1003: Server_B_vn7
+Position 1010: Server_A_vn3   ← Same server again!
+Position 1020: Server_C_vn1
+
+If key hashes to position 999:
+- Walk clockwise, hit Server_A_vn5 → Server A
+- Next: Server_A_vn12 → Server A (duplicate!)
+- Next: Server_B_vn7 → Server B (good!)
+
+We need to skip virtual nodes of servers we've already seen!
+```
+
+**Implementation:**
+
+```python
+import hashlib
+import bisect
+
+class ConsistentHashWithReplication:
+    def __init__(self, virtual_nodes=150):
+        self.virtual_nodes = virtual_nodes
+        self.ring = {}              # hash_value -> physical_node
+        self.sorted_keys = []       # sorted list of hash values
+        self.physical_nodes = set() # track physical nodes
+
+    def _hash(self, key):
+        return int(hashlib.md5(key.encode()).hexdigest(), 16)
+
+    def add_node(self, node):
+        """Add a physical node with virtual nodes"""
+        self.physical_nodes.add(node)
+        for i in range(self.virtual_nodes):
+            vnode_key = f"{node}_vn{i}"
+            hash_value = self._hash(vnode_key)
+            self.ring[hash_value] = node
+            bisect.insort(self.sorted_keys, hash_value)
+
+    def remove_node(self, node):
+        """Remove a physical node and all its virtual nodes"""
+        self.physical_nodes.discard(node)
+        for i in range(self.virtual_nodes):
+            vnode_key = f"{node}_vn{i}"
+            hash_value = self._hash(vnode_key)
+            if hash_value in self.ring:
+                del self.ring[hash_value]
+                self.sorted_keys.remove(hash_value)
+
+    def get_node(self, key):
+        """Get single node for a key"""
+        nodes = self.get_nodes(key, 1)
+        return nodes[0] if nodes else None
+
+    def get_nodes(self, key, n):
+        """
+        Get n DIFFERENT physical nodes for replication.
+        Handles adjacent virtual nodes of the same physical server.
+        """
+        if not self.ring:
+            return []
+
+        # Can't return more nodes than we have
+        n = min(n, len(self.physical_nodes))
+
+        hash_value = self._hash(key)
+
+        # Find starting position on ring
+        idx = bisect.bisect_left(self.sorted_keys, hash_value)
+        if idx == len(self.sorted_keys):
+            idx = 0
+
+        result = []
+        seen_physical_nodes = set()
+        positions_checked = 0
+
+        # Walk clockwise until we have n unique physical nodes
+        while len(result) < n and positions_checked < len(self.sorted_keys):
+            ring_hash = self.sorted_keys[idx]
+            physical_node = self.ring[ring_hash]
+
+            # Only add if we haven't seen this physical node
+            if physical_node not in seen_physical_nodes:
+                result.append(physical_node)
+                seen_physical_nodes.add(physical_node)
+
+            # Move to next position (wrap around)
+            idx = (idx + 1) % len(self.sorted_keys)
+            positions_checked += 1
+
+        return result
+
+
+# Usage Example
+ch = ConsistentHashWithReplication(virtual_nodes=150)
+ch.add_node("server_A")
+ch.add_node("server_B")
+ch.add_node("server_C")
+ch.add_node("server_D")
+
+# Get 3 unique physical servers for replication
+key = "user_12345"
+replicas = ch.get_nodes(key, 3)
+print(f"Key '{key}' replicated to: {replicas}")
+# Output: Key 'user_12345' replicated to: ['server_B', 'server_D', 'server_A']
+
+# Verify all are unique physical servers
+assert len(replicas) == len(set(replicas))  # No duplicates!
+```
+
+**Edge Cases Handled:**
+
+```python
+# Edge case 1: Request more replicas than servers exist
+ch = ConsistentHashWithReplication()
+ch.add_node("server_A")
+ch.add_node("server_B")
+result = ch.get_nodes("key", 5)  # Only 2 servers exist
+# Returns: ['server_A', 'server_B'] (max available)
+
+# Edge case 2: Empty ring
+ch = ConsistentHashWithReplication()
+result = ch.get_nodes("key", 3)
+# Returns: []
+
+# Edge case 3: Key hashes to end of ring (wrap around)
+# Handled by: idx = (idx + 1) % len(self.sorted_keys)
+```
+
+**Time Complexity:**
+```
+get_nodes(key, n):
+- Hash computation: O(1)
+- Binary search: O(log V) where V = total virtual nodes
+- Walking ring: O(n × V/P) worst case
+  where P = physical nodes
+- Average case: O(n) since vnodes are well distributed
+
+For typical configs (150 vnodes, n=3):
+- Usually finds 3 unique nodes in first 3-10 steps
+- Microseconds in practice
+```
+
+</details>
+
 **Q7:** You're designing a distributed key-value store. Should you use consistent hashing or jump consistent hashing? What factors would influence your decision?
+
+<details>
+<summary>View Answer</summary>
+
+**Overview of Both Algorithms:**
+
+```
+Consistent Hashing (Ring-based):
+- Virtual nodes on a hash ring
+- O(log n) lookup time
+- O(n × v) memory (n servers, v virtual nodes)
+- Flexible server management
+
+Jump Consistent Hashing:
+- No ring, mathematical formula
+- O(log n) lookup time
+- O(1) memory
+- Buckets must be numbered 0 to n-1
+```
+
+**Decision Factors:**
+
+**1. Server Naming/Identification**
+
+```
+Consistent Hashing ✅
+- Servers can have any identifier
+- "us-east-1-server-a", "10.0.1.5", "redis-cluster-7"
+- Natural for named servers
+
+Jump Consistent Hashing ❌
+- Buckets must be integers 0 to n-1
+- Adding server = add bucket n
+- Removing server = complex (only from end)
+```
+
+**2. Adding/Removing Servers**
+
+```
+Consistent Hashing ✅
+- Add any server anytime: just add to ring
+- Remove any server anytime: just remove from ring
+- Minimal disruption (~1/n keys move)
+
+Jump Consistent Hashing ⚠️
+- Can only add bucket n (at the end)
+- Can only remove bucket n-1 (from the end)
+- Removing middle server: must renumber all higher buckets!
+```
+
+**3. Server Failures**
+
+```
+Consistent Hashing ✅
+- Server 5 fails? Remove from ring
+- Keys redistribute to neighbors
+- Other servers unaffected
+
+Jump Consistent Hashing ❌
+- Server 5 of 10 fails?
+- Can't just remove bucket 5
+- Must either: keep routing to it (errors) or renumber 6-9
+- Renumbering causes massive key movement!
+```
+
+**4. Weighted Distribution**
+
+```
+Consistent Hashing ✅
+- More virtual nodes = more load
+- server_A: 100 vnodes (1x)
+- server_B: 300 vnodes (3x load)
+
+Jump Consistent Hashing ❌
+- All buckets are equal
+- No native weighting support
+- Workaround: multiple bucket IDs per server (complex)
+```
+
+**5. Memory Usage**
+
+```
+Consistent Hashing: O(n × v)
+- 100 servers × 150 vnodes = 15,000 entries
+- ~360KB memory
+- Acceptable for most systems
+
+Jump Consistent Hashing: O(1)
+- Just the algorithm, no data structure
+- ~0 bytes
+- Perfect for memory-constrained environments
+```
+
+**6. Lookup Performance**
+
+```
+Both: O(log n) time
+
+Consistent Hashing:
+- Binary search on sorted ring
+- Cache-friendly with locality
+
+Jump Consistent Hashing:
+- Mathematical iteration
+- Very CPU-cache efficient
+- Often faster in practice
+```
+
+**Decision Matrix:**
+
+| Requirement | Consistent Hash | Jump Hash |
+|-------------|-----------------|-----------|
+| Dynamic server add/remove | ✅ Excellent | ❌ Limited |
+| Server failures | ✅ Handles well | ❌ Problematic |
+| Weighted distribution | ✅ Via vnodes | ❌ Not native |
+| Memory efficiency | ⚠️ Moderate | ✅ Excellent |
+| Lookup speed | ✅ Fast | ✅ Faster |
+| Implementation complexity | ⚠️ Moderate | ✅ Simple |
+
+**Recommendation:**
+
+```
+Use CONSISTENT HASHING when:
+✅ Servers can fail at any time
+✅ Need to add/remove arbitrary servers
+✅ Servers have different capacities
+✅ Server identifiers are strings/IPs
+✅ Building: caches, databases, general KV stores
+
+Use JUMP CONSISTENT HASHING when:
+✅ Buckets are stable and numbered
+✅ Only add to the end, remove from the end
+✅ Memory is extremely constrained
+✅ Highest performance is critical
+✅ Building: internal sharding with fixed shard count
+```
+
+**For a distributed key-value store:**
+
+```
+RECOMMENDATION: Consistent Hashing
+
+Reasons:
+1. KV stores need to handle server failures gracefully
+2. Capacity changes (adding servers) happen in any order
+3. Different servers may have different capacities
+4. Memory usage of consistent hashing is negligible
+   for a KV store already using GBs of RAM
+
+Example systems using consistent hashing:
+- Amazon DynamoDB
+- Apache Cassandra
+- Riak
+- Memcached clients
+- Redis Cluster (variant)
+```
+
+**Exception:** If building a fixed-shard internal system (like sharding within a single service where shard count never changes), jump consistent hashing's simplicity and speed make it attractive.
+
+</details>
 
 ---
 
