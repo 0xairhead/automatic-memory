@@ -29,7 +29,7 @@ Welcome to Cloud Security! This foundational lesson covers the most critical con
 
 **Visual Guide:**
 
-![Shared Responsibility Model](./assets/shared-responsibility-model.png)
+![Shared Responsibility Model](./assets/01-shared-responsibility-model.png)
 
 **Audio Lecture:**
 
