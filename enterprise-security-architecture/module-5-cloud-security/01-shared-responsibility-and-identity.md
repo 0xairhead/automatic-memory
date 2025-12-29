@@ -325,6 +325,36 @@ Most enterprises already have Active Directory. You don't want to recreate all u
 - Conditional access policies (MFA, device compliance, location)
 - Break-glass accounts for IdP outages (secured, monitored, rarely used)
 
+### Identity Protocols Reference
+
+This lesson covers several key protocols and mechanisms. Here is a quick reference guide:
+
+#### 1. Federation Protocols
+Used to "federate" (connect) your existing corporate identity (like Active Directory) with cloud providers so you don't have to recreate users.
+
+*   **SAML 2.0 (Security Assertion Markup Language):**
+    *   **Description:** The mature, enterprise standard XML-based protocol.
+    *   **Use Case:** The most common way to log users into the cloud console using their corporate credentials. It passes "assertions" (XML documents) stating who the user is.
+*   **OIDC (OpenID Connect):**
+    *   **Description:** A more modern, JSON/REST-based protocol built on top of OAuth 2.0.
+    *   **Use Case:** Often preferred for mobile-friendly or modern web applications, serving a similar authentication purpose as SAML but with lighter-weight JSON tokens.
+
+#### 2. Synchronization Protocols
+*   **SCIM (System for Cross-domain Identity Management):**
+    *   **Description:** A protocol specifically for user provisioning.
+    *   **Use Case:** It handles the *lifecycle* of a user. If you hire someone, SCIM automatically creates their account in the cloud. Critical for security: if you fire someone and disable them in Active Directory, SCIM automatically detects this and deactivates their cloud access.
+
+#### 3. Legacy Protocols
+*   **LDAP / Kerberos:**
+    *   **Context:** Used in *traditional on-premises* Active Directory environments (User -> Active Directory). This contrasts with how Cloud IAM works (API-based, fine-grained policies).
+
+#### 4. Cloud-Native Mechanisms
+While not "protocols" in the strict networking sense, these are the identity mechanisms specific to each cloud provider:
+
+*   **AWS:** **IAM Roles** (for assuming identity) and **Instance Profiles**.
+*   **Azure:** **Entra ID** (formerly Azure AD) and **Managed Identities**.
+*   **GCP:** **Workload Identity** and **Services Accounts**.
+
 ---
 
 ## Key Concepts to Remember
