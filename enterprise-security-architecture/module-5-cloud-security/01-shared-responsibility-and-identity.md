@@ -791,6 +791,103 @@ This method allows the application to authenticate using temporary credentials g
 
 </details>
 
+**Q18: The Curious Case of IP 169.254.169.254 (AWS)**
+**Scenario:** A penetration tester discovers a Server-Side Request Forgery warning (SSRF) in your web application running on an EC2 instance. They immediately try to make the application send a request to `http://169.254.169.254/latest/meta-data/iam/security-credentials/`.
+**What are they trying to steal, and why is this dangerous?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **What they are stealing:** They are trying to steal the **temporary AWS credentials** (Access Key, Secret Key, and Session Token) associated with the EC2 instance's **Instance Profile**.
+*   **Why it's dangerous:** If successful, they can use these credentials from *their own machine* to impersonate the EC2 instance. They will have whatever permissions are granted to the IAM Role attached to that instance (e.g., ability to read S3 buckets, delete databases).
+*   **Defense:** Use IMDSv2 (Instance Metadata Service Version 2), which requires a session token handshake, mitigating most SSRF attacks.
+
+</details>
+
+**Q19: Architecture Decision: 50 VMs (Azure)**
+**Scenario:** You have a scale set of 50 Virtual Machines that all perform the exact same backend logic. They all need access to the same Azure Key Vault to retrieve secrets. You are deciding between using a **System-Assigned Managed Identity** for each VM or creating one **User-Assigned Managed Identity** for the group.
+**Which approach is better and why?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **Better Approach:** **User-Assigned Managed Identity.**
+*   **Why:**
+    *   **Management:** If you use System-Assigned, you will have 50 separate identities in Azure AD to manage. You would have to add 50 entries to the Key Vault access policy (or RBAC assignments).
+    *   **Updates:** With User-Assigned, you create one identity, grant it access to the Key Vault *once*, and assign it to the scale set. If you scale to 1,000 VMs, no changes are needed to the Key Vault policies.
+
+</details>
+
+**Q20: The Silent Handshake (GCP)**
+**Scenario:** A developer is setting up **Workload Identity** on GKE. They ask you: "My Kubernetes Service Account has no password, and my Google Service Account has no key file. How do they actually trust each other?"
+**Explain the mechanism that connects them.**
+
+<details>
+<summary>View Answer</summary>
+
+*   **The Mechanism:** **OIDC Federation (OpenID Connect).**
+*   **Explanation:** It works via a "trust relationship" (binding).
+    1.  The Kubernetes cluster acts as an OIDC Identity Provider.
+    2.  It signs a token asserting "I am Pod X."
+    3.  GCP IAM is configured to *trust* that specific OIDC issuer.
+    4.  When the Pod presents its token to GCP, GCP validates the signature and exchanges it for a short-lived Google access token.
+
+</details>
+
+**Q21: The Blast Radius Problem (AWS EKS)**
+**Scenario:** You have a Kubernetes Node running 10 different pods. One pod is a public-facing web scraper that needs access to an S3 bucket. You attach an IAM Role to the **EC2 Node** (via Instance Profile) to grant this access.
+**What security risk have you just introduced, and how does IRSA fix it?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **The Risk:** **Excessive Scope / Blast Radius.**
+By attaching the role to the Node (the EC2 instance), *all* 10 pods running on that node now inherit those permissions. If a completely unrelated pod is compromised, the attacker can access the S3 bucket intended only for the web scraper.
+*   **The Fix:** **IRSA (IAM Roles for Service Accounts).**
+IRSA allows you to attach the IAM Role directly to the specific **Kubernetes Service Account** used by the web scraper pod. The other 9 pods on the same node get nothing.
+
+</details>
+
+**Q22: The Clean-Up Crew (Azure)**
+**Scenario:** A junior engineer creates a **System-Assigned Managed Identity** for a Virtual Machine. Later, they delete the Virtual Machine, but they forget to delete the identity.
+**Is this a security risk? Why or why not?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **Answer:** **No, it is not a risk.**
+*   **Why:** A System-Assigned Managed Identity is inextricably tied to the lifecycle of the resource. When the resource (the VM) is deleted, Azure **automatically deletes** the associated identity. There are no "orphan credentials" left behind.
+*   **Contrast:** This is *not* true for **User-Assigned** Managed Identities, which exist independently and must be manually deleted.
+
+</details>
+
+**Q23: The "Termination Gap" (SCIM)**
+**Scenario:** A specialized employee is fired at 9:00 AM. HR disables their Active Directory account immediately. However, the ex-employee is still able to access a third-party SaaS application for another 4 hours until their session token expires.
+**What specific protocol was missing that could have revoked access instantly?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **The Missing Protocol:** **SCIM (System for Cross-domain Identity Management).**
+*   **Explanation:** Federation (SAML/OIDC) only handles the *login* event. Once a user is in, they have a session.
+*   **How SCIM fixes it:** SCIM handles *provisioning and deprovisioning*. With SCIM enabled, when the user was disabled in Active Directory, a signal would have been sent immediately to the SaaS app to **delete/suspend the user's account**, invalidating their session instantly.
+
+</details>
+
+**Q24: The Mobile App Debate (SAML vs. OIDC)**
+**Scenario:** Your dev team is building a new customer-facing mobile app (iOS/Android). The security architect insists on using **SAML 2.0** because "it's the enterprise standard." The lead developer disagrees and wants to use **OIDC**.
+**Who is right, and why?**
+
+<details>
+<summary>View Answer</summary>
+
+*   **The Lead Developer (OIDC) is right.**
+*   **Why:**
+    *   **SAML** is XML-based and was designed for browser-based redirections. It is heavy and difficult to parse on mobile devices.
+    *   **OIDC (OpenID Connect)** is built on OAuth 2.0 and uses **JSON**, which is native to mobile/web development. It is lighter weight, API-friendly, and specifically designed for modern client applications (Single Page Apps, Mobile Apps).
+
+</details>
+
 **Quick Review of Key Identity Principles Tested:**
 *   **Cross-Account:** Use roles/impersonation, not duplicate users.
 *   **Context:** Identity is more than just a password; verify location and device (Conditional Access).
