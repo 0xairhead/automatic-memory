@@ -22,6 +22,8 @@
 
 Welcome to Cloud Security! This foundational lesson covers the most critical concept you'll encounter: who is responsible for what in the cloud.
 
+---
+
 ## Media Resources
 
 **Visual Guide:**
@@ -38,6 +40,8 @@ Welcome to Cloud Security! This foundational lesson covers the most critical con
 
 Here's the uncomfortable truth about cloud security: **the cloud provider is NOT responsible for all your security.** Many organizations learn this the hard way after a breach.
 
+---
+
 ### The Apartment Analogy
 
 Think of cloud computing like renting an apartment:
@@ -53,6 +57,8 @@ Think of cloud computing like renting an apartment:
 | Leaving windows open | No | Yes |
 
 If someone breaks in because you left your door unlocked, that's on you—not the landlord. The same applies to cloud security.
+
+---
 
 ### IaaS vs PaaS vs SaaS: Who Owns What?
 
@@ -89,6 +95,8 @@ The responsibility split changes dramatically based on the service model:
 **SaaS (Software as a Service)** - Salesforce, Microsoft 365, Workday
 - **You manage:** Data, User access, Configuration
 - **Provider manages:** The entire application stack
+
+---
 
 ### AWS, Azure, and GCP Specifics
 
@@ -136,6 +144,8 @@ Google takes a more modern, holistic approach. They noticed that "Shared Respons
     *   **Guardrails:** Policy intelligence tools that warn you *before* you deploy something insecure.
     *   **Default Security:** Turning on encryption and safety features by default, rather than making you hunt for the "on" switch.
 
+---
+
 ### Compliance Inheritance
 
 Here's what many architects miss: **You inherit some compliance controls, but not all.**
@@ -164,6 +174,8 @@ You must still handle:
 ## Cloud Identity & Access Management
 
 If Shared Responsibility is the "what" of cloud security, IAM is the "who." Every cloud breach investigation starts with one question: **Who had access?**
+
+---
 
 ### Understanding Cloud IAM
 
@@ -212,6 +224,8 @@ User/Service → Cloud IAM → 1000s of Services & APIs
 - Permissions granted at any level inherit downward
 - Service accounts for workload identity
 
+---
+
 ### Service Accounts & Workload Identity
 
 **The problem:** How does your application authenticate to cloud services?
@@ -239,6 +253,8 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 **AWS:** IAM Roles + Instance Profiles, EKS IRSA (IAM Roles for Service Accounts)
 **Azure:** Managed Identities (System-assigned or User-assigned)
 **GCP:** Workload Identity, Service Account Keys (avoid if possible)
+
+---
 
 ### Cross-Account Access Patterns
 
@@ -270,6 +286,8 @@ Enterprise environments have multiple accounts/subscriptions. How do you manage 
 - IAM policies at organization/folder level
 - Service account impersonation
 
+---
+
 ### Just-in-Time Privileged Access
 
 **The principle:** No one should have standing privileged access. Access should be:
@@ -300,6 +318,8 @@ Normal state:           JIT Request:              Active session:
 - GCP: Privileged Access Manager (PAM)
 - Third-party: CyberArk, HashiCorp Boundary, Teleport
 
+---
+
 ### Federation with On-Premises Directories
 
 Most enterprises already have Active Directory. You don't want to recreate all users in the cloud.
@@ -325,6 +345,8 @@ Most enterprises already have Active Directory. You don't want to recreate all u
 - High availability of IdP (it becomes a critical path)
 - Conditional access policies (MFA, device compliance, location)
 - Break-glass accounts for IdP outages (secured, monitored, rarely used)
+
+---
 
 ### Identity Protocols Reference
 
