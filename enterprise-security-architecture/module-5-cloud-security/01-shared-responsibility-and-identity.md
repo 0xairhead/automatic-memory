@@ -13,6 +13,7 @@
   - [Cross-Account Access Patterns](#cross-account-access-patterns)
   - [Just-in-Time Privileged Access](#just-in-time-privileged-access)
   - [Federation with On-Premises Directories](#federation-with-on-premises-directories)
+  - [Identity Protocols Reference](#identity-protocols-reference)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
 - [Next Up](#next-up)
