@@ -86,7 +86,7 @@ Think of CSPM as a continuous security audit that never sleeps.
 │  │ • Inventory  │  │ • Benchmark  │  │ • Auto-fix   │               │
 │  │ • Shadow IT  │  │ • Compliance │  │ • Playbooks  │               │
 │  │ • Multi-cloud│  │ • Risk score │  │ • Ticketing  │               │
-│  └──────────────┘  └──────────────┘  └──────────────┘               │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘               │
 │         │                 │                 │                       │
 │         └─────────────────┼─────────────────┘                       │
 │                           ▼                                         │
@@ -279,18 +279,18 @@ CWPP Protection Layers:
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Workload Types                                                      │
 ├─────────────────────────────────────────────────────────────────────┤
-│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐           │
-│  │ Virtual       │  │ Containers    │  │ Serverless    │           │
-│  │ Machines      │  │               │  │               │           │
-│  │               │  │ ┌───────────┐ │  │ ┌───────────┐ │           │
-│  │ ┌───────────┐ │  │ │ Container │ │  │ │ Function  │ │           │
-│  │ │    App    │ │  │ │           │ │  │ │           │ │           │
-│  │ ├───────────┤ │  │ ├───────────┤ │  │ └───────────┘ │           │
-│  │ │    OS     │ │  │ │ Container │ │  │               │           │
-│  │ └───────────┘ │  │ │ Runtime   │ │  │ No OS/Runtime │           │
-│  │               │  │ ├───────────┤ │  │ to manage     │           │
-│  └───────────────┘  │ │ Host OS   │ │  │               │           │
-│                     │ └───────────┘ │  └───────────────┘           │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐            │
+│  │ Virtual       │  │ Containers    │  │ Serverless    │            │
+│  │ Machines      │  │               │  │               │            │
+│  │               │  │ ┌───────────┐ │  │ ┌───────────┐ │            │
+│  │ ┌───────────┐ │  │ │ Container │ │  │ │ Function  │ │            │
+│  │ │    App    │ │  │ │           │ │  │ │           │ │            │
+│  │ ├───────────┤ │  │ ├───────────┤ │  │ └───────────┘ │            │
+│  │ │    OS     │ │  │ │ Container │ │  │               │            │
+│  │ └───────────┘ │  │ │ Runtime   │ │  │ No OS/Runtime │            │
+│  │               │  │ ├───────────┤ │  │ to manage     │            │
+│  └───────────────┘  │ │ Host OS   │ │  │               │            │
+│                     │ └───────────┘ │  └───────────────┘            │
 │                     └───────────────┘                               │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -344,10 +344,10 @@ CWPP continuously scans workloads for vulnerabilities:
 ├──────────────────────────────┬────────────────────────────┬─────────┤
 │ Vulnerability                │ Package                    │Severity │
 ├──────────────────────────────┼────────────────────────────┼─────────┤
-│ CVE-2023-44487 (HTTP/2 DoS)  │ libnghttp2-14             │ HIGH    │
-│ CVE-2023-4911 (glibc LPE)    │ libc6                     │ CRITICAL│
-│ CVE-2023-38545 (curl heap)   │ curl                      │ HIGH    │
-│ CVE-2022-48174 (busybox)     │ busybox                   │ CRITICAL│
+│ CVE-2023-44487 (HTTP/2 DoS)  │ libnghttp2-14              │ HIGH    │
+│ CVE-2023-4911 (glibc LPE)    │ libc6                      │ CRITICAL│
+│ CVE-2023-38545 (curl heap)   │ curl                       │ HIGH    │
+│ CVE-2022-48174 (busybox)     │ busybox                    │ CRITICAL│
 └──────────────────────────────┴────────────────────────────┴─────────┘
 │
 │ Recommendations:
@@ -361,15 +361,15 @@ CWPP continuously scans workloads for vulnerabilities:
 ```
 Developer commits → CI/CD Pipeline → Vulnerability Scan → Pass/Fail Gate
 
-                    ┌──────────────────────────────────────────────┐
-                    │ Pipeline Stage: Security Scan                │
-                    ├──────────────────────────────────────────────┤
-                    │ ✓ No CRITICAL vulnerabilities                │
-                    │ ✓ No HIGH vulnerabilities in base image      │
-                    │ ⚠ 3 MEDIUM vulnerabilities (allowed)         │
-                    │                                              │
-                    │ Result: PASSED                               │
-                    └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│ Pipeline Stage: Security Scan                │
+├──────────────────────────────────────────────┤
+│ ✓ No CRITICAL vulnerabilities                │
+│ ✓ No HIGH vulnerabilities in base image      │
+│ ⚠ 3 MEDIUM vulnerabilities (allowed)         │
+│                                              │
+│ Result: PASSED                               │
+└──────────────────────────────────────────────┘
 ```
 
 ---
@@ -390,21 +390,21 @@ Developer commits → CI/CD Pipeline → Vulnerability Scan → Pass/Fail Gate
 │ Complete Cloud Security                                             │
 │                                                                     │
 │  CSPM                          CWPP                                 │
-│  ┌─────────────────────┐       ┌─────────────────────┐             │
-│  │ Configuration       │       │ Runtime             │             │
-│  │ • Is it set up      │       │ • Is it behaving    │             │
-│  │   correctly?        │       │   correctly?        │             │
-│  │                     │       │                     │             │
-│  │ Pre-deployment      │       │ Post-deployment     │             │
-│  │ • Prevent misconfig │       │ • Detect attacks    │             │
-│  └─────────────────────┘       └─────────────────────┘             │
+│  ┌─────────────────────┐       ┌─────────────────────┐              │
+│  │ Configuration       │       │ Runtime             │              │
+│  │ • Is it set up      │       │ • Is it behaving    │              │
+│  │   correctly?        │       │   correctly?        │              │
+│  │                     │       │                     │              │
+│  │ Pre-deployment      │       │ Post-deployment     │              │
+│  │ • Prevent misconfig │       │ • Detect attacks    │              │
+│  └─────────────────────┘       └─────────────────────┘              │
 │            │                            │                           │
 │            └────────────┬───────────────┘                           │
 │                         ▼                                           │
 │              ┌─────────────────────┐                                │
 │              │ CNAPP               │                                │
 │              │ (Cloud-Native App   │                                │
-│              │  Protection Platform)│                               │
+│              │ Protection Platform)│                                │
 │              │                     │                                │
 │              │ Unified: CSPM + CWPP│                                │
 │              │ + CIEM + IaC Scan   │                                │
@@ -533,7 +533,7 @@ Developer commits → CI/CD Pipeline → Vulnerability Scan → Pass/Fail Gate
    ┌─────────────────────────────────────────────┐
    │ Kubernetes Cluster                          │
    │                                             │
-   │  DaemonSet: CWPP Agent (1 per node)        │
+   │  DaemonSet: CWPP Agent (1 per node)         │
    │  • Not in each pod (lower overhead)         │
    │  • Uses eBPF for syscall monitoring         │
    │  • Resource limits defined                  │

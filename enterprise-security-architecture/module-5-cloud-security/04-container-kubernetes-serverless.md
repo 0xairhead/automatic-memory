@@ -111,7 +111,7 @@ COPY ./app /app                ← Is YOUR code secure?
 ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
 │ Build    │───▶│ Scan     │───▶│ Sign     │───▶│ Deploy   │
 │ Image    │    │ (Trivy,  │    │ (Cosign, │    │ (Verify  │
-│          │    │ Snyk)    │    │ Notary)  │    │ Signature)│
+│          │    │ Snyk)    │    │ Notary)  │    │ Sig)     │
 └──────────┘    └──────────┘    └──────────┘    └──────────┘
                      │
                      ▼
@@ -179,7 +179,7 @@ Your container registry is a crown jewel—compromise it, and attackers can inje
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│ Secure Registry Architecture                                       │
+│ Secure Registry Architecture                                        │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  ┌─────────────────┐                                                │
@@ -201,14 +201,14 @@ Your container registry is a crown jewel—compromise it, and attackers can inje
 │                           └────────┬────────┘                       │
 │                                    │                                │
 │                                    ▼                                │
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │ Kubernetes Cluster                                          │   │
-│  │                                                             │   │
-│  │ Admission Controller:                                       │   │
-│  │ • Verify signature (Cosign/Kyverno)                        │   │
-│  │ • Check vulnerability scan passed                          │   │
-│  │ • Enforce registry allowlist                               │   │
-│  └─────────────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │ Kubernetes Cluster                                          │    │
+│  │                                                             │    │
+│  │ Admission Controller:                                       │    │
+│  │ • Verify signature (Cosign/Kyverno)                         │    │
+│  │ • Check vulnerability scan passed                           │    │
+│  │ • Enforce registry allowlist                                │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -251,21 +251,21 @@ Once containers are running, you need visibility into their behavior.
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  Application Layer                                                  │
-│  └── WAF, Input validation, Auth                                   │
+│  └── WAF, Input validation, Auth                                    │
 │                                                                     │
 │  Container Layer                                                    │
-│  └── Seccomp profiles (restrict syscalls)                          │
-│  └── AppArmor/SELinux (mandatory access control)                   │
-│  └── Read-only filesystem                                          │
-│  └── Dropped capabilities                                          │
+│  └── Seccomp profiles (restrict syscalls)                           │
+│  └── AppArmor/SELinux (mandatory access control)                    │
+│  └── Read-only filesystem                                           │
+│  └── Dropped capabilities                                           │
 │                                                                     │
 │  Runtime Layer                                                      │
-│  └── Falco (behavioral detection)                                  │
-│  └── eBPF-based monitoring (Cilium, Tetragon)                      │
+│  └── Falco (behavioral detection)                                   │
+│  └── eBPF-based monitoring (Cilium, Tetragon)                       │
 │                                                                     │
 │  Host Layer                                                         │
-│  └── Minimal host OS (Bottlerocket, Flatcar)                       │
-│  └── Host hardening (CIS Benchmark)                                │
+│  └── Minimal host OS (Bottlerocket, Flatcar)                        │
+│  └── Host hardening (CIS Benchmark)                                 │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -286,22 +286,22 @@ Kubernetes adds significant complexity—and attack surface.
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  Control Plane:                                                     │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
-│  │ API Server      │  │ etcd            │  │ Controller Mgr  │     │
-│  │                 │  │                 │  │                 │     │
-│  │ Attack: Unauth  │  │ Attack: Direct  │  │ Attack: SSRF    │     │
-│  │ access, RBAC    │  │ access to       │  │ to internal     │     │
-│  │ bypass          │  │ cluster secrets │  │ services        │     │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐      │
+│  │ API Server      │  │ etcd            │  │ Controller Mgr  │      │
+│  │                 │  │                 │  │                 │      │
+│  │ Attack: Unauth  │  │ Attack: Direct  │  │ Attack: SSRF    │      │
+│  │ access, RBAC    │  │ access to       │  │ to internal     │      │
+│  │ bypass          │  │ cluster secrets │  │ services        │      │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘      │
 │                                                                     │
 │  Worker Nodes:                                                      │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
-│  │ Kubelet         │  │ Container       │  │ Pods            │     │
-│  │                 │  │ Runtime         │  │                 │     │
-│  │ Attack: Exposed │  │ Attack: Escape  │  │ Attack: Lateral │     │
-│  │ API without     │  │ via CVE or      │  │ movement, priv  │     │
-│  │ auth            │  │ misconfig       │  │ escalation      │     │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐      │
+│  │ Kubelet         │  │ Container       │  │ Pods            │      │
+│  │                 │  │ Runtime         │  │                 │      │
+│  │ Attack: Exposed │  │ Attack: Escape  │  │ Attack: Lateral │      │
+│  │ API without     │  │ via CVE or      │  │ movement, priv  │      │
+│  │ auth            │  │ misconfig       │  │ escalation      │      │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘      │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -318,18 +318,18 @@ Kubernetes adds significant complexity—and attack surface.
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  Humans (kubectl):                                                  │
-│  ├── OIDC (recommended) → Okta, Azure AD, Google                   │
-│  ├── Client certificates                                           │
-│  └── Webhook token authentication                                  │
+│  ├── OIDC (recommended) → Okta, Azure AD, Google                    │
+│  ├── Client certificates                                            │
+│  └── Webhook token authentication                                   │
 │                                                                     │
-│  Service Accounts (pods):                                          │
-│  ├── Auto-mounted tokens (be careful!)                             │
-│  └── Projected tokens (bound, time-limited - recommended)          │
+│  Service Accounts (pods):                                           │
+│  ├── Auto-mounted tokens (be careful!)                              │
+│  └── Projected tokens (bound, time-limited - recommended)           │
 │                                                                     │
 │  Cloud Provider:                                                    │
-│  ├── AWS: IAM Roles for Service Accounts (IRSA)                    │
-│  ├── GCP: Workload Identity                                        │
-│  └── Azure: Azure AD Workload Identity                             │
+│  ├── AWS: IAM Roles for Service Accounts (IRSA)                     │
+│  ├── GCP: Workload Identity                                         │
+│  └── Azure: Azure AD Workload Identity                              │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
