@@ -349,11 +349,10 @@ CWPP continuously scans workloads for vulnerabilities:
 │ CVE-2023-38545 (curl heap)   │ curl                       │ HIGH    │
 │ CVE-2022-48174 (busybox)     │ busybox                    │ CRITICAL│
 └──────────────────────────────┴────────────────────────────┴─────────┘
-│
-│ Recommendations:
-│ - Update base image to ubuntu:22.04.3
-│ - Upgrade libnghttp2 to 1.52.0-1ubuntu0.1
-│ - Review if busybox is necessary
+│ Recommendations:                                                    │
+│ - Update base image to ubuntu:22.04.3                               │
+│ - Upgrade libnghttp2 to 1.52.0-1ubuntu0.1                           │
+│ - Review if busybox is necessary                                    │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -677,6 +676,58 @@ curl http://169.254.169.254/latest/meta-data/ \
   -H "X-aws-ec2-metadata-token: $TOKEN"  ← Requires PUT + headers, SSRF blocked
 ```
 
+</details>
+
+**Q5:** You are reviewing a Rego policy for your OPA-based CSPM. What does the following policy enforce, and why might it be critical for a production environment?
+
+```rego
+deny[msg] {
+    input.resource.type == "aws_security_group"
+    some i
+    input.resource.ingress[i].cidr == "0.0.0.0/0"
+    input.resource.ingress[i].from_port == 22
+    msg = "SSH access from the internet is not allowed"
+}
+```
+
+<details>
+<summary>View Answer</summary>
+
+**Answer:**
+It denies any AWS Security Group that allows ingress on port 22 (SSH) from `0.0.0.0/0` (any IP on the internet).
+
+**Why it's critical:**
+Leaving SSH open to the world invites constant brute-force attacks. If a credential is weak or compromised, attackers can gain direct shell access. SSH should always be restricted to a VPN, bastion host, or specific trusted IP ranges.
+</details>
+
+**Q6:** Your CSPM alerts you to "Drift Detected" on a critical production database. The alert shows `Storage Encrypted: False` (Actual) vs `Storage Encrypted: True` (Expected/State). What does this discrepancy indicate about how the change was made, and what is the risk?
+
+<details>
+<summary>View Answer</summary>
+
+**Indication:**
+The change was likely made **manually** (via the Cloud Console or CLI) or by a separate unauthorized script, bypassing the official Infrastructure-as-Code (Terraform/CloudFormation) pipeline. If it were changed in code, the "Expected" state would have updated too.
+
+**Risk:**
+1.  **Security/Compliance:** Sensitive data is now unencrypted at rest, violating policies/regulations (e.g., HIPAA, PCI-DSS).
+2.  **Process:** The "source of truth" (IaC) is broken. The next automated deployment might accidentally revert this setting (good in this case) or fail due to conflict.
+</details>
+
+**Q7:** You currently use Tool A for CSPM (scanning config) and Tool B for CWPP (scanning runtime). You are considering moving to a unified CNAPP (Cloud-Native Application Protection Platform). How does a CNAPP use "context" to prioritize risk better than your separate tools?
+
+<details>
+<summary>View Answer</summary>
+
+**Contextual Prioritization:**
+Separate tools see risks in isolation. A CNAPP connects the dots:
+
+*   **CSPM view:** "This VM has port 80 open to the internet." (High Risk?)
+*   **CWPP view:** "This VM has the 'Log4Shell' vulnerability in a jar file." (Critical Risk?)
+
+A CNAPP combines these:
+"This VM has a Critical vulnerability AND it is exposed to the internet." -> **EMERGENCY Priority.**
+
+Conversely, if the VM is purely internal and the vulnerable library is never loaded into memory (runtime), the CNAPP might downgrade the priority, saving the team from chasing a "ghost" risk.
 </details>
 
 ---
