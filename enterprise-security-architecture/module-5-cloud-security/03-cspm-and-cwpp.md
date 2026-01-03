@@ -13,6 +13,7 @@
   - [Runtime Protection](#runtime-protection)
   - [Vulnerability Management](#vulnerability-management)
 - [CSPM vs CWPP: The Complete Picture](#cspm-vs-cwpp-the-complete-picture)
+- [Cloud-Native Application Protection Platform (CNAPP)](#cloud-native-application-protection-platform-cnapp)
 - [Tool Landscape](#tool-landscape)
 - [Key Concepts to Remember](#key-concepts-to-remember)
 - [Practice Questions](#practice-questions)
@@ -414,6 +415,48 @@ Developer commits → CI/CD Pipeline → Vulnerability Scan → Pass/Fail Gate
 
 ---
 
+## Cloud-Native Application Protection Platform (CNAPP)
+
+The industry is moving away from separate tools (CSPM for config, CWPP for workloads) toward a unified platform: **CNAPP**.
+
+### The Problem: Tool Sprawl & Context Fatigue
+
+Using separate tools creates "noise" without context:
+1.  **CSPM says:** "Security Group open on Port 22" (High Severity)
+2.  **CWPP says:** "Vulnerable Package `lib-ssh` found" (High Severity)
+3.  **CIEM says:** "EC2 instance has Admin privileges" (High Severity)
+
+Security analysts have to manually correlate these. If they don't, they might waste time fixing a vulnerability on a machine that has no permissions and is not exposed to the internet.
+
+### The Solution: Contextual Risk
+
+CNAPP unifies these signals to focus on the **Attack Path**:
+
+```
+Attack Path Visualization:
+
+[ Internet ] ──(port 22)──▶ [ EC2 Instance ] ──(Admin Role)──▶ [ S3 Bucket ]
+     ▲                            ▲                                 ▲
+(CSPM Finding)              (CWPP Finding)                    (Target)
+  "Exposed"                  "Vulnerable"                   "Sensitive Data"
+```
+
+**The CNAPP Verdict:**
+"This is not just 3 separate 'High' alerts. This is a **CRITICAL** attack path where an expliotable vulnerability directly exposes sensitive data."
+
+### CNAPP Pillars
+
+A true CNAPP consolidates multiple capabilities:
+
+1.  **CSPM** (Infrastructure Configuration)
+2.  **CWPP** (Workload Runtime)
+3.  **CIEM** (Cloud Infrastructure Entitlement Management) - *The Identity piece*
+4.  **KSPM** (Kubernetes Security Posture Management)
+5.  **DSPM** (Data Security Posture Management) - *Scanning actual data for PII/Secrets*
+6.  **IaC Scanning** (Shift-left security)
+
+---
+
 ## Tool Landscape
 
 **Cloud-Native Tools:**
@@ -728,6 +771,33 @@ A CNAPP combines these:
 "This VM has a Critical vulnerability AND it is exposed to the internet." -> **EMERGENCY Priority.**
 
 Conversely, if the VM is purely internal and the vulnerable library is never loaded into memory (runtime), the CNAPP might downgrade the priority, saving the team from chasing a "ghost" risk.
+</details>
+
+**Q8:** During a CI/CD build pipeline, your scanner detects a "Critical" vulnerability in a container image. A developer argues that they should be allowed to deploy anyway and "fix it next week" to meet a deadline. Using the "Shift-Left" concept and the cost of defects, what is the counter-argument?
+
+<details>
+<summary>View Answer</summary>
+
+**Counter-argument:**
+In the "Shift-Left" model, fixing a defect (security bug) in the **Build/Design phase** is significantly cheaper (often 100x cheaper) than fixing it in **Production**.
+
+*   **Build Phase:** You just update the package version in the Dockerfile and rebuild (Minutes).
+*   **Production Phase:** You have to patch specific running servers, deal with potential downtime, handle customer notifications if breached, and perform emergency regression testing (Days/Weeks).
+*   **Risk:** Deploying a known Critical vulnerability intentionally invalidates compliance (SOC2/PCI) and leaves the door wide open for immediate exploitation.
+</details>
+
+**Q9:** Your team selects an **Agentless-only** CWPP tool because it's easier to deploy (no agents on servers). What specific security capability have you likely sacrificed compared to an agent-based approach, and why does it matter?
+
+<details>
+<summary>View Answer</summary>
+
+**Sacrificed Capability: Real-time Runtime Protection (Blocking).**
+
+*   **Agentless** scanners work by taking "snapshots" of disk volumes. They can see what is *installed* (vulnerabilities) and what configurations are set.
+*   **Agents** run inside the kernel/OS. They can see what is *executing* in memory right now.
+
+**Why it matters:**
+If a piece of "fileless" malware runs purely in memory, or if an attacker exploits a zero-day vulnerability to run a malicious command *right now*, an Agentless snapshot (which might run every 24 hours) will miss it completely. An Agent can block that process execution immediately.
 </details>
 
 ---
