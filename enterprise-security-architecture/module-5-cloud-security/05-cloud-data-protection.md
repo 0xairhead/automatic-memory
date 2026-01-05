@@ -124,6 +124,38 @@ You can't protect what you don't know exists.
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### Cloud-Native Discovery Tools
+
+#### AWS Macie
+*   **Best for:** AWS-centric organizations using S3 heavily.
+*   **How it works:** Uses machine learning to automatically discover, classify, and protect sensitive data in AWS.
+*   **Key Features:**
+    *   Continuously monitors S3 buckets for PII, PHI, and financial data.
+    *   Generates findings in Security Hub and EventBridge for automation (e.g., auto-tagging buckets).
+    *   Provides a dashboard of your data security posture across accounts.
+
+#### Azure Purview
+*   **Best for:** Hybrid and multi-cloud environments requiring unified governance.
+*   **How it works:** A unified data governance solution that maps data across your on-prem, multi-cloud, and SaaS estate.
+*   **Key Features:**
+    *   **Data Map:** Visual graph of data assets and lineage.
+    *   **Data Catalog:** Searchable inventory for business and technical users.
+    *   **Data Estate Insights:** View of sensitive data across the entire organization (SQL, Blob, AWS S3, etc.).
+
+#### GCP Cloud DLP / Data Catalog
+*   **Best for:** Google Cloud workloads and BigQuery analytics.
+*   **How it works:** Fully managed service to inspect, classify, and de-identify sensitive data.
+*   **Key Features:**
+    *   **De-identification:** Redact, mask, or tokenize data *before* it's stored or processed.
+    *   **Streaming API:** Inspect data in real-time streams.
+    *   **Risk Analysis:** Calculate k-anonymity and l-diversity for privacy compliance.
+
+### Third-Party Solutions
+
+*   **BigID:** Focuses on deep discovery and privacy automation. Excellent for finding "dark data" across fragmented environments.
+*   **Varonis:** Strong on-prem roots extended to cloud. Excellent for permission visualization and user behavior analytics alongside data classification.
+*   **Nightfall:** API-driven cloud-native DLP. Great for scanning SaaS apps (Slack, Jira, GitHub) where cloud provider tools often lack reach.
+
 **Sensitive data patterns detected:**
 
 ```
@@ -277,12 +309,33 @@ Traditional:                     Confidential Computing:
                                  └──────────────────────────┘
 ```
 
-**Technologies:**
-- **Intel SGX** - Secure enclaves in CPU
-- **AMD SEV** - Encrypted VM memory
-- **AWS Nitro Enclaves** - Isolated compute environment
-- **Azure Confidential Computing** - DCsv3 VMs with SGX
-- **GCP Confidential VMs** - AMD SEV encryption
+**Technologies & Hardware Roots of Trust:**
+
+#### 1. Intel SGX (Software Guard Extensions)
+*   **What it is:** Application-layer isolation. Creates "enclaves" – protected regions of memory that even the OS or hypervisor cannot read.
+*   **Security Model:** Removes the OS and Hypervisor from the Trusted Computing Base (TCB).
+*   **Trade-off:** Requires application refactoring (you must rewrite apps to use the SGX SDK) and has memory size limits.
+
+#### 2. AMD SEV (Secure Encrypted Virtualization)
+*   **What it is:** VM-layer isolation. Encrypts the entire virtual machine's memory with a key managed by the AMD Secure Processor.
+*   **Security Model:** Protects the VM from the Hypervisor.
+*   **Trade-off:** Easier "lift and shift" (no code changes needed), but the Guest OS is still inside the TCB.
+
+**Cloud Provider Implementations:**
+
+#### AWS Nitro Enclaves
+*   **Mechanism:** Uses the Nitro Hypervisor to carve out isolated compute environments from EC2 instances.
+*   **Features:** No persistent storage, no interactive access (SSH), and only secure local channel communication.
+*   **Best For:** Processing highly sensitive data / cryptographic operations where you want to prove that no admin could possibly SSH in and dump memory.
+
+#### Azure Confidential Computing
+*   **Mechanism:** extensive support for both Intel SGX (DCsv3-series) and AMD SEV-SNP.
+*   **Beat For:** "Confidential Containers" on AKS – running Kubernetes pods in secure enclaves without code changes.
+
+#### GCP Confidential VMs
+*   **Mechanism:** Built on AMD SEV.
+*   **Features:** "Click to enable" simplicity. Data stays encrypted in memory with no performance degradation.
+*   **Best For:** Lift-and-shift of legacy applications that process sensitive data, needing immediate compliance upgrade.
 
 **Use cases:**
 - Multi-party computation (joint analysis without sharing data)
@@ -1065,6 +1118,40 @@ plaintext, header = client.decrypt(
 )
 ```
 
+</details>
+
+**Q5:** You are a security architect for a Global retail company. You have data scattered across AWS S3, on-premise SQL servers, and various SaaS applications like Salesforce. You need a unified view of your data estate to identify where sensitive customer PII is located. Which tool is best suited for this requirement and why?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: Azure Purview (or Microsoft Purview)**
+
+**Why:**
+*   **Unified Governance:** Purview is explicitly designed for hybrid and multi-cloud scenarios.
+*   **Broad Connectivity:** Unlike AWS Macie (which is AWS S3 focused) or GCP Cloud DLP (GCP focused), Azure Purview has "Data Map" collectors for on-premise SQL, multicloud storage (S3), and SaaS apps (Salesforce).
+*   **Holistic View:** It provides a single pane of glass for governance across the disparate environments described.
+
+**Why not others:**
+*   **AWS Macie:** primarily scans S3.
+*   **GCP Cloud DLP:** primarily for Google Cloud and streaming data.
+*   **BigID:** Could also be a correct answer if "Cloud Native" wasn't implied, but Purview is the major cloud-provider offering for this scope.
+</details>
+
+**Q6:** Your finance team wants to run fraud detection models on extremely sensitive user transaction data. They want to use the cloud for scalability but are concerned that a malicious cloud admin or hypervisor vulnerability could expose the data while it is being processed in memory. What technology should you recommend?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: Confidential Computing (Encryption in Use)**
+
+**Technology to recommend:**
+*   **AWS Nitro Enclaves**, **Azure Confidential Computing (SGX)**, or **GCP Confidential VMs**.
+
+**Reasoning:**
+*   **Encryption in Use:** Standard encryption at rest and in transit protects data on disk and network, but data is typically decrypted in RAM for processing.
+*   **Isolation:** Confidential computing uses hardware-based execution environments (Trusted Execution Environments - TEEs) to isolate the memory.
+*   **Threat Model:** This specifically addresses the "malicious cloud admin" or "hypervisor breakout" threat vectors, as the host system cannot see inside the encrypted memory enclave.
 </details>
 
 ---
