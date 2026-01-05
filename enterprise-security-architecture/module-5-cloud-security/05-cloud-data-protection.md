@@ -1154,6 +1154,70 @@ plaintext, header = client.decrypt(
 *   **Threat Model:** This specifically addresses the "malicious cloud admin" or "hypervisor breakout" threat vectors, as the host system cannot see inside the encrypted memory enclave.
 </details>
 
+**Q7:** You need to enforce a policy that *no object* can be uploaded to your company's "sensitive-data" S3 bucket unless it is encrypted with server-side encryption using AWS KMS (SSE-KMS). Construct the S3 bucket policy condition statement to achieve this.
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: Deny PutObject where x-amz-server-side-encryption is NOT aws:kms**
+
+```json
+{
+  "Sid": "DenyIncorrectEncryptionHeader",
+  "Effect": "Deny",
+  "Principal": "*",
+  "Action": "s3:PutObject",
+  "Resource": "arn:aws:s3:::sensitive-data/*",
+  "Condition": {
+    "StringNotEquals": {
+      "s3:x-amz-server-side-encryption": "aws:kms"
+    }
+  }
+}
+```
+
+*Note: This works because `StringNotEquals` will match if the header is missing OR if the header is present but has a different value (like AES256).*
+</details>
+
+**Q8:** A government client has a strict regulatory requirement that all encryption keys must be generated and stored in a device that is FIPS 140-2 Level 3 validated. They also require that the cloud provider have absolutely no visibility into the key generation material. Which key management solution should you choose?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: AWS CloudHSM / Azure Dedicated HSM**
+
+**Reasoning:**
+*   **FIPS 140-2 Level 3:** Standard KMS services (like AWS KMS) are typically FIPS 140-2 Level 2 validated (some parts Level 3, but generally considered Level 2 for the service wrapping). CloudHSM provides dedicated hardware that is fully Level 3 validated.
+*   **Single Tenancy:** The requirement asks for keys to be stored in a device where the provider has no visibility. CloudHSM gives you a single-tenant hardware appliance where you hold the crypto-officer credentials.
+*   **KMS Custom Key Store:** You could also link KMS to CloudHSM (Custom Key Store), but the primary requirement driver here for "pure" isolation usually points directly to the HSM service.
+</details>
+
+**Q9:** A legacy healthcare application processes highly sensitive patient data in memory. The application runs on Linux, is written in C++, and the source code is no longer available to be recompiled. The Chief CISO wants to move this to the cloud but requires that the memory be encrypted to protect against hypervisor-level attacks. Which Confidential Computing technology is most appropriate?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: AMD SEV (Secure Encrypted Virtualization) / GCP Confidential VMs**
+
+**Reasoning:**
+*   **"No source code available":** Intel SGX (App Enclaves) requires you to use an SDK and recompile the application to partition code into trusted/untrusted parts.
+*   **"Lift and Shift":** AMD SEV encrypts the *entire* VM memory transparently to the OS and application. No code changes are required.
+*   **Suitability:** This fits the requirement of protecting legacy apps without refactoring.
+</details>
+
+**Q10:** You are designing a tokenizer service that accepts credit card numbers and returns a token. The processing of the credit card number must happen in an isolated environment where even the root user of the EC2 instance hosting the service cannot access the plaintext data or the memory. Which AWS service fits this description?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: AWS Nitro Enclaves**
+
+**Reasoning:**
+*   **Isolation:** Nitro Enclaves carves out vCPUs and memory from a parent EC2 instance to create a fully isolated environment.
+*   **No Access:** The Enclave has no persistent storage, no interactive access (no SSH), and even the root user of the parent instance cannot peer into the enclave's memory.
+*   **Communication:** Data is sent via a secure local channel (vsock). This is the classic use case for critical processing like tokenization or crypto operations.
+</details>
+
 ---
 
 ## Next Up
