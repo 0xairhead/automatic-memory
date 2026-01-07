@@ -983,7 +983,47 @@ CASB Policy for ProjectFlow:
 
 </details>
 
-**Q3:** You're designing the landing zone for a regulated financial services company moving to AWS. What guardrails would you implement, and how would you enforce them?
+**Q3:** Your organization allows employees to access Microsoft 365 from both managed corporate laptops and unmanaged personal devices. You need a solution that allows full access from corporate devices but restricts personal devices to "web-only" access (blocking downloads) in real-time. Which CASB deployment mode is required?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: Reverse Proxy Mode**
+
+**Reasoning:**
+*   **Real-time Control:** API mode is out-of-band and cannot block downloads inline in real-time.
+*   **Unmanaged Devices:** Forward Proxy requires an agent on the endpoint, which you cannot force on unmanaged/personal devices.
+*   **Solution:** Reverse Proxy sits in the authentication path (via SAML). When a user logs in, the IdP redirects them through the CASB. The CASB can then inspect the device posture (managed vs unmanaged) and dynamically rewrite the session to block downloads if the device is unmanaged.
+</details>
+
+**Q4:** A fintech company needs to connect their on-premises mainframe to their AWS VPC to process transaction data. The connection requires consistent low latency, high bandwidth (10 Gbps+), and must not traverse the public internet. Which connectivity option should they choose?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: AWS Direct Connect (or Azure ExpressRoute / GCP Interconnect)**
+
+**Reasoning:**
+*   **Performance:** VPNs over the internet are subject to variable latency and jitter ("internet weather"). Dedicated connections provide consistent, SLA-backed performance.
+*   **Bandwidth:** VPN tunnels typically top out at ~1.25 Gbps per tunnel. Direct Connect supports 10 Gbps, 100 Gbps, and aggregated links.
+*   **Security:** The requirement "must not traverse the public internet" rules out VPNs (even though VPNs are encrypted, they ride over the public internet). Direct Connect uses private fiber circuits.
+</details>
+
+**Q5:** You have 50 VPCs in AWS and need to inspect all east-west traffic (VPC-to-VPC) and north-south traffic (VPC-to-Internet) using a central fleet of Next-Gen Firewalls. Which network architecture pattern supports this with the least management overhead?
+
+<details>
+<summary>View Answer</summary>
+
+**Answer: Hub and Spoke with Transit Gateway (Inspection VPC pattern)**
+
+**Reasoning:**
+*   **Hub and Spoke:** Connecting 50 VPCs with VPC Peering (Full Mesh) would require $N(N-1)/2$ connections (1,225 peers), which is unmanageable. Transit Gateway acts as a central hub.
+*   **Centralized Inspection:** You can create a dedicated "Security Protocol" or "Inspection VPC" attached to the Transit Gateway.
+*   **Routing:** Route tables in the TGW force traffic from Spoke VPCs to the Inspection VPC firewall fleet before forwarding it to the destination (another VPC or Internet).
+*   **Scalability:** This allows you to manage one firewall cluster for the entire organization rather than deploying firewalls in every VPC.
+</details>
+
+**Q6:** You're designing the landing zone for a regulated financial services company moving to AWS. What guardrails would you implement, and how would you enforce them?
 
 <details>
 <summary>View Answer</summary>
@@ -1166,7 +1206,7 @@ Quarterly:
 
 </details>
 
-**Q4:** Explain how you would implement GitOps for infrastructure security, including the security scanning pipeline and approval workflows.
+**Q7:** Explain how you would implement GitOps for infrastructure security, including the security scanning pipeline and approval workflows.
 
 <details>
 <summary>View Answer</summary>
