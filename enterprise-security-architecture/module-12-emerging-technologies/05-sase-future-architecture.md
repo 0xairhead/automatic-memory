@@ -26,6 +26,11 @@
     - [Question 3: SASE Migration Challenges](#question-3-sase-migration-challenges)
     - [Question 4: Future Architecture Planning](#question-4-future-architecture-planning)
     - [Question 5: SASE Vendor Selection](#question-5-sase-vendor-selection)
+    - [Question 6: ZTNA Technical Architecture](#question-6-ztna-technical-architecture)
+    - [Question 7: SASE and SD-WAN Integration](#question-7-sase-and-sd-wan-integration)
+    - [Question 8: Unified Data Protection](#question-8-unified-data-protection)
+    - [Question 9: SASE for Unmanaged Devices (IoT/OT)](#question-9-sase-for-unmanaged-devices-iotot)
+    - [Question 10: Measuring Success with DEM](#question-10-measuring-success-with-dem)
 - [Key Takeaways](#key-takeaways)
 - [Navigation](#navigation)
 
@@ -770,6 +775,9 @@ After completing this lesson, you will be able to:
 ### Question 1: SASE vs Traditional Architecture
 **"Your CEO has asked you to explain why you're recommending a SASE architecture over the traditional hub-and-spoke model. How would you make the business case?"**
 
+<details>
+<summary>Click to reveal answer</summary>
+
 **Model Answer:**
 "I'd frame the SASE recommendation around business outcomes rather than technical details:
 
@@ -816,10 +824,15 @@ After completing this lesson, you will be able to:
 
 This positions SASE as a business enabler, not just a technology refresh."
 
+</details>
+
 ---
 
 ### Question 2: SSE Component Selection
 **"You're evaluating SSE solutions. The CISO wants to understand the differences between ZTNA, SWG, and CASB. How would you explain when to use each?"**
+
+<details>
+<summary>Click to reveal answer</summary>
 
 **Model Answer:**
 "Each SSE component addresses different access patterns and risks. Here's how I'd explain them:
@@ -895,10 +908,15 @@ Start with the highest-risk use case:
 
 Then expand to full SSE for unified policy and operations."
 
+</details>
+
 ---
 
 ### Question 3: SASE Migration Challenges
 **"You're planning a SASE migration for a 20,000-employee company with 100 branch offices and significant legacy infrastructure. What challenges do you anticipate and how would you address them?"**
+
+<details>
+<summary>Click to reveal answer</summary>
 
 **Model Answer:**
 "A migration of this scale has multiple challenge categories. Here's my approach:
@@ -979,10 +997,15 @@ Then expand to full SSE for unified policy and operations."
 
 Total timeline: 12-18 months for complete migration."
 
+</details>
+
 ---
 
 ### Question 4: Future Architecture Planning
 **"The board is asking about our 5-year security architecture strategy. What trends should we be planning for, and how does that affect our current investments?"**
+
+<details>
+<summary>Click to reveal answer</summary>
 
 **Model Answer:**
 "A 5-year security architecture strategy needs to balance current operational needs with positioning for emerging trends:
@@ -1048,10 +1071,15 @@ Total timeline: 12-18 months for complete migration."
 
 This strategy ensures we're operationally effective today while positioning for the security landscape of 2030."
 
+</details>
+
 ---
 
 ### Question 5: SASE Vendor Selection
 **"You've been asked to lead the SASE vendor selection. Walk me through your evaluation framework and key decision criteria."**
+
+<details>
+<summary>Click to reveal answer</summary>
 
 **Model Answer:**
 "SASE vendor selection requires balancing current needs with strategic direction. Here's my framework:
@@ -1147,6 +1175,116 @@ This strategy ensures we're operationally effective today while positioning for 
 - Strategic alignment with our direction
 
 This structured approach ensures we make a defensible decision that balances current needs with long-term value."
+
+</details>
+
+---
+
+### Question 6: ZTNA Technical Architecture
+**"Can you explain the technical security difference between a VPN concentrator and a ZTNA broker? Specifically regarding attack surface."**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+**Model Answer:**
+"The fundamental difference is the direction of connectivity and visibility:
+
+**VPN (Outside-In):**
+- Listens on a public IP/port for incoming connections.
+- DDoS target; exploitable vulnerabilities (e.g., buffer overflows) on the concentrator itself.
+- Once authenticated, places the user *on the network* (layer 3 access).
+- Lateral movement is possible unless heavily segmented.
+
+**ZTNA (Inside-Out):**
+- The connector (near the app) establishes an outbound connection to the cloud broker.
+- No open inbound ports on the firewall (Darknet).
+- Broker stitches the user connection to the app connection.
+- User is never 'on the network'—they have a specific tunnel to a specific app.
+- Lateral movement is blocked by design."
+
+</details>
+
+### Question 7: SASE and SD-WAN Integration
+**"We already have SD-WAN. Why do we need the 'Security Service Edge' part? Can't our branch firewalls handle it?"**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+**Model Answer:**
+"Branch firewalls struggle with the modern threat landscape for three reasons:
+
+1.  **Encryption Inspection**: Decrypting SSL/TLS traffic at line rate requires expensive hardware upgrades at every branch.
+2.  **Threat Updates**: Distributed appliances are hard to keep patched and updated with real-time threat intel.
+3.  **Mobile Users**: Your branch firewall does nothing for users working from home or coffee shops.
+
+**SASE/SSE Advantage**:
+- **Single Pass**: Traffic is inspected once in the cloud (SWG, CASB, DLP, Malware) regardless of where it comes from (Branch or Remote).
+- **Scale**: Cloud processing power scales elastically for SSL inspection.
+- **Consistency**: The same policy applies to the branch and the remote worker."
+
+</details>
+
+### Question 8: Unified Data Protection
+**"How does SASE improve our Data Loss Prevention (DLP) posture compared to our current disjointed tools?"**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+**Model Answer:**
+"The key value is **Unified Policy**. Currently, you likely have separate DLP rules for:
+- Endpoint (USB blocking)
+- Email (Gateway)
+- Cloud (CASB)
+- Web (Proxy)
+
+This leads to policy gaps (e.g., I can't upload to Drive, but I can WeTransfer it).
+
+**SASE DLP**:
+- Defines data patterns (e.g., 'Credit Card Numbers', 'Confidential Design Docs') once.
+- Applies checks across all channels: Uploads to web, API calls to SaaS, and endpoint transfers.
+- Provides a single dashboard for incidents, reducing alert fatigue and correlation time."
+
+</details>
+
+### Question 9: SASE for Unmanaged Devices (IoT/OT)
+**"Most SASE solutions rely on an agent. How do we secure our IoT devices and 3rd party contractors who can't install agents?"**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+**Model Answer:**
+"For unmanaged devices, we rely on **Agentless** methods and **Network Segmentation**:
+
+**For Contractors (Clientless ZTNA):**
+- Use browser-based portal access (Reverse Proxy).
+- Renders the app in the browser; data doesn't land on the device.
+- Good for web apps, RDP, SSH.
+
+**For IoT/OT (Network-Based):**
+- Place IoT devices behind a **Connector/Gateway** (SD-WAN edge).
+- The gateway creates the tunnel to the SASE cloud.
+- SASE enforces policy upstream (e.g., 'IoT Camera VLAN can only talk to Video Server IP').
+- Combining this with **Device Posture** checks (via API integration or passive fingerprinting) ensures only known, healthy devices connect."
+
+</details>
+
+### Question 10: Measuring Success with DEM
+**"With traffic taking so many hops (User -> Wi-Fi -> ISP -> SASE PoP -> Cloud Provider -> App), users blame the network for everything. How do we troubleshoot?"**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+**Model Answer:**
+"This is where **Digital Experience Monitoring (DEM)** is critical. A SASE solution should provide hop-by-hop visibility:
+
+1.  **Endpoint**: High CPU/RAM? Weak Wi-Fi signal? (Often the root cause).
+2.  **Last Mile**: Stability of the user's ISP connection to the SASE PoP.
+3.  **SASE Backbone**: Latency within the SASE vendor's network.
+4.  **Application Response**: Time To First Byte (TTFB) from the SaaS provider (e.g., Salesforce/Zoom).
+
+By correlating these, we can prove 'It's not the network, it's the home Wi-Fi' or 'It's an Azure outage', drastically reducing Mean Time to Innocence (MTTI)."
+
+</details>
 
 ---
 
