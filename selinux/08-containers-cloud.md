@@ -1,5 +1,20 @@
 # Phase 7: SELinux for Containers & Cloud (Week 7)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [sVirt (Secure Virtualization)](#svirt-secure-virtualization)
+    - [Container Labels](#container-labels)
+    - [The `:Z` Flag](#the-z-flag)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. The Volume Mount Issue](#1-the-volume-mount-issue)
+    - [2. UDICA (Advanced)](#2-udica-advanced)
+- [Cloud Context: OpenShift & Kubernetes](#cloud-context-openshift--kubernetes)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 SELinux is a core defense layer in modern container platforms (Podman, Docker, Kubernetes/OpenShift). It prevents "container escapes"—where a process inside a container attacks the host.
 

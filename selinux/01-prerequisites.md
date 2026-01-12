@@ -1,7 +1,23 @@
 # Phase 0: Prerequisites (Optional but Helpful)
 
+
 ## Goal
 Be comfortable with the Linux internals that SELinux builds upon. Before diving into SELinux, ensure you have a solid grasp of these fundamental concepts.
+
+---
+
+## Table of Contents
+
+- [Goal](#goal)
+- [Key Concepts](#key-concepts)
+    - [1. Linux Permissions (DAC - Discretionary Access Control)](#1-linux-permissions-dac---discretionary-access-control)
+    - [2. Processes, PIDs, and Services](#2-processes-pids-and-services)
+    - [3. Filesystems, Sockets, and Ports](#3-filesystems-sockets-and-ports)
+    - [4. Basic Troubleshooting Tools](#4-basic-troubleshooting-tools)
+- [Hands-On Refresher](#hands-on-refresher)
+- [Why This Matters](#why-this-matters)
+
+---
 
 ## Key Concepts
 

@@ -1,5 +1,24 @@
 # Phase 4: Troubleshooting & Auditing (Week 4)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [The Audit Log](#the-audit-log)
+    - [Core Tools](#core-tools)
+- [Hands-On Workflow](#hands-on-workflow)
+    - [1. Trigger a Denial](#1-trigger-a-denial)
+    - [2. Check for Denials](#2-check-for-denials)
+    - [3. Translate with `sealert`](#3-translate-with-sealert)
+    - [4. The Decision Matrix](#4-the-decision-matrix)
+- [Guided Exercise: Debugging a Denial](#guided-exercise-debugging-a-denial)
+    - [1. Preparation (Break it)](#1-preparation-break-it)
+    - [2. Detect (ausearch)](#2-detect-ausearch)
+    - [3. Analyze (sealert)](#3-analyze-sealert)
+    - [4. Fix (Without Disabling)](#4-fix-without-disabling)
+
+---
+
 ## Concepts
 When things break, don't blame SELinux blindly. Use the tools to confirm if SELinux is actively denying access.
 

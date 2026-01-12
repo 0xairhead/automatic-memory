@@ -1,6 +1,25 @@
 # SELinux Syllabus
 
+
 A streamlined, practitioner-focused path to mastering SELinux.
+
+---
+
+## Table of Contents
+
+- [Phase 0: Environment Setup (CRITICAL for macOS Users)](#phase-0-environment-setup-critical-for-macos-users)
+- [Phase 1: Prerequisites](#phase-1-prerequisites)
+- [Phase 2: Fundamentals](#phase-2-fundamentals)
+- [Phase 3: Labels, Contexts & Types](#phase-3-labels-contexts--types)
+- [Phase 4: Booleans](#phase-4-booleans)
+- [Phase 5: Troubleshooting & Auditing](#phase-5-troubleshooting--auditing)
+- [Phase 6: Managing Contexts Properly](#phase-6-managing-contexts-properly)
+- [Phase 7: Custom Policy](#phase-7-custom-policy)
+- [Phase 8: Containers & Cloud](#phase-8-containers--cloud)
+- [Phase 9: Advanced & Offensive](#phase-9-advanced--offensive)
+- [Practical Labs](#practical-labs)
+
+---
 
 ## Phase 0: Environment Setup (CRITICAL for macOS Users)
 **[00-environment-setup.md](00-environment-setup.md)**

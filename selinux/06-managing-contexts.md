@@ -1,5 +1,18 @@
 # Phase 5: Managing Contexts Properly (Week 5)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [`chcon` vs `semanage`](#chcon-vs-semanage)
+    - [Best Practice Workflow](#best-practice-workflow)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. The "Right Way" to Label a Custom Directory](#1-the-right-way-to-label-a-custom-directory)
+    - [2. Adding a Custom Port](#2-adding-a-custom-port)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 By now you know that incorrect labels break things. But how do you change them *correctly*?
 

@@ -1,5 +1,20 @@
 # Phase 3: SELinux Booleans (Week 3)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [What are Booleans?](#what-are-booleans)
+    - [Common Examples](#common-examples)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. List All Booleans](#1-list-all-booleans)
+    - [2. Check a Specific Boolean](#2-check-a-specific-boolean)
+    - [3. Change a Boolean (Runtime vs Persistent)](#3-change-a-boolean-runtime-vs-persistent)
+- [Scenario: The "Bad Gateway" Optimization](#scenario-the-bad-gateway-optimization)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 
 ### What are Booleans?

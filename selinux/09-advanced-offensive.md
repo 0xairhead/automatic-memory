@@ -1,5 +1,19 @@
 # Phase 8: Advanced & Offensive Thinking (Week 8)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [SELinux as Exploit Mitigation](#selinux-as-exploit-mitigation)
+    - [Domain Transitions](#domain-transitions)
+    - [Neverallow Rules](#neverallow-rules)
+- [Hands-On: The "What If" Exercise](#hands-on-the-what-if-exercise)
+    - [Scenario: The compromised web server](#scenario-the-compromised-web-server)
+- [Offensive Check](#offensive-check)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 Now that you know how to build, let's look at how SELinux stops attackers—and how attackers think about SELinux.
 

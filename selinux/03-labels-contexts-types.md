@@ -1,5 +1,19 @@
 # Phase 2: Labels, Contexts & Types (Week 2)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [The Security Context](#the-security-context)
+    - [Common Types](#common-types)
+    - [The "Mismatch" Problem](#the-mismatch-problem)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. View Security Contexts](#1-view-security-contexts)
+    - [2. The "Break and Fix" Lab](#2-the-break-and-fix-lab)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 
 ### The Security Context

@@ -1,5 +1,18 @@
 # Phase 6: Writing Custom SELinux Policy (Week 6)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [The Golden Rule](#the-golden-rule)
+    - [Tools](#tools)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. Generating Policy with `audit2allow`](#1-generating-policy-with-audit2allow)
+- [Advanced: Writing Hand-Coded Policy](#advanced-writing-hand-coded-policy)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 Sometimes, `semanage` and booleans aren't enough. If you have a custom application doing something unique, you might need to create a **Type Enforcement (TE) module**.
 

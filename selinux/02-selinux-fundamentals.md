@@ -1,5 +1,21 @@
 # Phase 1: SELinux Fundamentals (Week 1)
 
+
+## Table of Contents
+
+- [Concepts](#concepts)
+    - [What is SELinux and Why Does it Exist?](#what-is-selinux-and-why-does-it-exist)
+    - [SELinux Modes](#selinux-modes)
+    - [Policy Types](#policy-types)
+    - [The Decision Process](#the-decision-process)
+- [Hands-On Exercises](#hands-on-exercises)
+    - [1. Check SELinux Status](#1-check-selinux-status)
+    - [2. Switch Modes (Temporarily)](#2-switch-modes-temporarily)
+    - [3. Understanding the Config File](#3-understanding-the-config-file)
+- [Key Takeaway](#key-takeaway)
+
+---
+
 ## Concepts
 
 ### What is SELinux and Why Does it Exist?

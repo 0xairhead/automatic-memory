@@ -4,6 +4,22 @@ This file contains consolidated labs to test your skills. Each lab simulates a r
 
 ---
 
+
+## Table of Contents
+
+- [Lab 1: The "Moved Webroot" Scenario](#lab-1-the-moved-webroot-scenario)
+- [Lab 2: The SSH Port Switch](#lab-2-the-ssh-port-switch)
+- [Lab 3: The "Broken" Container Volume](#lab-3-the-broken-container-volume)
+- [Lab 4: Boolean Toggles](#lab-4-boolean-toggles)
+- [Lab 5: The "Forbidden" Cron Job (Advanced)](#lab-5-the-forbidden-cron-job-advanced)
+- [Lab 6: The "Remote DB" Connection](#lab-6-the-remote-db-connection)
+- [Lab 7: Custom Log File Rotation](#lab-7-custom-log-file-rotation)
+- [Lab 8: The Forgotten `restorecon`](#lab-8-the-forgotten-restorecon)
+- [Lab 9: User Confinement (RBAC) - Advanced](#lab-9-user-confinement-rbac---advanced)
+- [Lab 10: Manual Policy Writing (Expert)](#lab-10-manual-policy-writing-expert)
+
+---
+
 ## Lab 1: The "Moved Webroot" Scenario
 **Goal**: Host a website from a non-standard directory (`/srv/web`) and make it work with SELinux.
 

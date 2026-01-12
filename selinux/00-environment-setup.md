@@ -1,6 +1,23 @@
 # SELinux Lab Environment Setup
 
+
 This guide helps you create the necessary environment to practice SELinux. You can run these labs on maintaining **macOS (via Lima)** or a **Native Fedora/RHEL** system.
+
+---
+
+## Table of Contents
+
+- [Part 1: macOS Users (Recommended: Lima)](#part-1-macos-users-recommended-lima)
+    - [1. Installation](#1-installation)
+    - [2. Start the VM](#2-start-the-vm)
+    - [3. Verification](#3-verification)
+    - [4. Connect](#4-connect)
+- [Part 2: Native Linux Users (Fedora / RHEL / CentOS)](#part-2-native-linux-users-fedora--rhel--centos)
+- [Part 3: Common Provisioning (REQUIRED)](#part-3-common-provisioning-required)
+- [Part 4: The macOS Workflow (Lima Only)](#part-4-the-macos-workflow-lima-only)
+- [Part 5: Lima Cheat Sheet](#part-5-lima-cheat-sheet)
+- [Part 6: SELinux Verification](#part-6-selinux-verification)
+- [Troubleshooting (Lima)](#troubleshooting-lima)
 
 ---
 
