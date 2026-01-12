@@ -1,0 +1,7 @@
+# github.com/google/uuid v1.6.0
+## explicit
+github.com/google/uuid
+# my-local-lib v0.0.0 => ../local-lib
+## explicit; go 1.25.5
+my-local-lib
+# my-local-lib => ../local-lib
