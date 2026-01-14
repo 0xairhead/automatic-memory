@@ -67,6 +67,8 @@ You will see it trying thousands of random things until BAM! It accidentally typ
 3.  **Core Components**: What are the two main files required to run this fuzzing experiment, and what is the role of each?
     <details>
     <summary>Answer</summary>
+
     1.  **The Target (`vuln.c`)**: The vulnerable program we are trying to break.
     2.  **The Fuzzer (`fuzzer.py`)**: The script that generates random inputs to throw at the target.
+    
     </details>
