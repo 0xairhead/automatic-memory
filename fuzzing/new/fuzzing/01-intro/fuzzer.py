@@ -17,6 +17,7 @@ def fuzz():
     while True:
         count += 1
         data = generate_input()
+        print(f"Trying input: {repr(data)}")
         
         # Run the target program
         process = subprocess.Popen(
