@@ -55,13 +55,17 @@ You will see it trying thousands of random things until BAM! It accidentally typ
 1.  **Concept Check**: In the "blindfolded monkey" analogy, what does the monkey represent in a fuzzing setup?
     <details>
     <summary>Answer</summary>
+
     The monkey represents the **Fuzzer** (specifically, the random input generator). It blindly generates inputs without understanding the program logic.
+
     </details>
 
 2.  **Target Analysis**: Looking at `vuln.c`, why does the input "crash" cause the program to fail?
     <details>
     <summary>Answer</summary>
+
     The code has an explicit check `if (strcmp(buffer, "crash\n") == 0)`. When the input matches "crash" (plus a newline), the program executes the `abort()` function, causing it to crash.
+    
     </details>
 
 3.  **Core Components**: What are the two main files required to run this fuzzing experiment, and what is the role of each?
@@ -70,5 +74,5 @@ You will see it trying thousands of random things until BAM! It accidentally typ
 
     1.  **The Target (`vuln.c`)**: The vulnerable program we are trying to break.
     2.  **The Fuzzer (`fuzzer.py`)**: The script that generates random inputs to throw at the target.
-    
+
     </details>
