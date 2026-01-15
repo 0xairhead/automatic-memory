@@ -25,11 +25,14 @@
 - [x] **6. Generation-based Fuzzing**
     - [Tutorial](06-generation-based/06-generation-based.md) | [Files](06-generation-based/)
     - Concepts: Grammar Fuzzing, Strict Formats (XML), Bypass Validation.
-- [ ] **7. Structure-aware Fuzzing**
-    - Concepts: Protobuf Mutation, Custom Mutators.
-- [ ] **8. Advanced Testing Techniques**
+- [x] **7. Structure-aware Fuzzing**
+    - [Tutorial](07-structure-aware/07-structure-aware.md) | [Files](07-structure-aware/)
+    - Concepts: Protobuf Mutation, Custom Mutators, libprotobuf-mutator.
+- [x] **8. Advanced Testing Techniques**
+    - [Tutorial](08-advanced-testing/08-advanced-testing.md) | [Files](08-advanced-testing/)
     - Concepts: Symbolic Execution, Concolic Execution, Differential Fuzzing.
 
 ## Part 5: Exercises / Capstone
-- [ ] **9. Exercises**
+- [x] **9. Exercises**
+    - [Tutorial](09-exercises/09-exercises.md) | [Files](09-exercises/)
     - Real-world targets and challenges.
