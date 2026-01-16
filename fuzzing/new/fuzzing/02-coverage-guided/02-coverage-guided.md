@@ -108,17 +108,23 @@ python3 smart_fuzzer.py
 1.  **Analogy Check**: In the "Safe Cracker" analogy, what corresponds to the "click" sound in a software program?
     <details>
     <summary>Answer</summary>
+
     The "click" corresponds to **Code Coverage** (or executing a new path/line of code). It tells the fuzzer that the input triggered something new, even if it didn't cause a crash yet.
+
     </details>
 
 2.  **Efficiency**: Why is the "Safe Cracker" approach (coverage-guided) faster than the "Monkey" approach (random fuzzing) for solving the maze?
     <details>
     <summary>Answer</summary>
+
     The "Safe Cracker" learns from partial success. When it finds a correct character (like 'M'), it saves it and builds upon it ("mutates" it), whereas the "Monkey" starts from scratch every time.
+
     </details>
 
 3.  **Mechanism**: When `smart_fuzzer.py` detects that a new level has been passed, what does it do with that input?
     <details>
     <summary>Answer</summary>
+
     It **saves** the input as the `current_best_input`. Future inputs are created by "mutating" (slightly changing) this best input, rather than successful random guessing.
+    
     </details>
