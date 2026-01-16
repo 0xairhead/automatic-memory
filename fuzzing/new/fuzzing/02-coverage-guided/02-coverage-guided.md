@@ -126,5 +126,5 @@ python3 smart_fuzzer.py
     <summary>Answer</summary>
 
     It **saves** the input as the `current_best_input`. Future inputs are created by "mutating" (slightly changing) this best input, rather than successful random guessing.
-    
+
     </details>
