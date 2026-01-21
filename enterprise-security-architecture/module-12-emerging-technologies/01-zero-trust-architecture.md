@@ -25,49 +25,49 @@ By the end of this lesson, you will be able to:
 │                    EVOLUTION OF SECURITY MODELS                             │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  TRADITIONAL PERIMETER MODEL ("Castle and Moat")                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │     UNTRUSTED                    │        TRUSTED                   │   │
-│  │     (Internet)                   │        (Internal)                │   │
-│  │                                  │                                  │   │
-│  │   ┌─────┐                       ┌┴┐       ┌─────┐  ┌─────┐         │   │
-│  │   │Attk │ ────────────────────> │F│ ────> │Users│  │Srvrs│         │   │
-│  │   └─────┘                       │W│       └─────┘  └─────┘         │   │
-│  │                                 └┬┘                                 │   │
-│  │                                  │                                  │   │
-│  │   Assumption: Inside = Safe     │   Problem: Once inside, free    │   │
-│  │                                 │            lateral movement      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  TRADITIONAL PERIMETER MODEL ("Castle and Moat")                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │     UNTRUSTED                    │        TRUSTED                   │    │
+│  │     (Internet)                   │        (Internal)                │    │
+│  │                                  │                                  │    │
+│  │   ┌─────┐                       ┌┴┐       ┌─────┐  ┌─────┐          │    │
+│  │   │Attk │ ────────────────────> │F│ ────> │Users│  │Srvrs│          │    │
+│  │   └─────┘                       │W│       └─────┘  └─────┘          │    │
+│  │                                 └┬┘                                 │    │
+│  │                                  │                                  │    │
+│  │   Assumption: Inside = Safe      │   Problem: Once inside, free     │    │
+│  │                                  │            lateral movement      │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  WHY PERIMETER FAILED:                                                     │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Cloud adoption dissolved the perimeter                           │   │
-│  │  • Remote work means users are everywhere                           │   │
-│  │  • Attackers already inside (breach assumption)                     │   │
-│  │  • Insider threats are real                                         │   │
-│  │  • East-west traffic exceeds north-south                            │   │
-│  │  • Mobile and BYOD blur boundaries                                  │   │
-│  │  • Third-party access requirements                                  │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  WHY PERIMETER FAILED:                                                      │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Cloud adoption dissolved the perimeter                           │    │
+│  │  • Remote work means users are everywhere                           │    │
+│  │  • Attackers already inside (breach assumption)                     │    │
+│  │  • Insider threats are real                                         │    │
+│  │  • East-west traffic exceeds north-south                            │    │
+│  │  • Mobile and BYOD blur boundaries                                  │    │
+│  │  • Third-party access requirements                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  ZERO TRUST MODEL ("Never Trust, Always Verify")                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │   Every access request is:                                          │   │
-│  │   • Verified explicitly (identity, device, context)                 │   │
-│  │   • Granted least privilege access                                  │   │
-│  │   • Assumed breach (inspect and log everything)                     │   │
-│  │                                                                      │   │
-│  │   ┌──────┐      ┌──────────────────┐      ┌──────────┐             │   │
-│  │   │ User │ ───> │  Policy Engine   │ ───> │ Resource │             │   │
-│  │   │Device│      │  (Verify Every   │      │ (Data/   │             │   │
-│  │   │Contxt│      │   Request)       │      │  App)    │             │   │
-│  │   └──────┘      └──────────────────┘      └──────────┘             │   │
-│  │                                                                      │   │
-│  │   Location doesn't determine trust                                  │   │
-│  │   Identity + Context + Continuous Verification = Trust              │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  ZERO TRUST MODEL ("Never Trust, Always Verify")                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │   Every access request is:                                          │    │
+│  │   • Verified explicitly (identity, device, context)                 │    │
+│  │   • Granted least privilege access                                  │    │
+│  │   • Assumed breach (inspect and log everything)                     │    │
+│  │                                                                     │    │
+│  │   ┌──────┐      ┌──────────────────┐      ┌──────────┐              │    │
+│  │   │ User │ ───> │  Policy Engine   │ ───> │ Resource │              │    │
+│  │   │Device│      │  (Verify Every   │      │ (Data/   │              │    │
+│  │   │Contxt│      │   Request)       │      │  App)    │              │    │
+│  │   └──────┘      └──────────────────┘      └──────────┘              │    │
+│  │                                                                     │    │
+│  │   Location doesn't determine trust                                  │    │
+│  │   Identity + Context + Continuous Verification = Trust              │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -78,53 +78,53 @@ By the end of this lesson, you will be able to:
 │                    ZERO TRUST CORE PRINCIPLES                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  1. VERIFY EXPLICITLY                                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Always authenticate and authorize based on all available data:     │   │
-│  │  • User identity (who are you?)                                     │   │
-│  │  • Device health (is your device compliant?)                        │   │
-│  │  • Location (where are you connecting from?)                        │   │
-│  │  • Service/workload (what is requesting access?)                    │   │
-│  │  • Data classification (what are you accessing?)                    │   │
-│  │  • Anomalies (is this behavior normal?)                             │   │
-│  │                                                                      │   │
-│  │  → Every request, every time, regardless of source                  │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  1. VERIFY EXPLICITLY                                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Always authenticate and authorize based on all available data:     │    │
+│  │  • User identity (who are you?)                                     │    │
+│  │  • Device health (is your device compliant?)                        │    │
+│  │  • Location (where are you connecting from?)                        │    │
+│  │  • Service/workload (what is requesting access?)                    │    │
+│  │  • Data classification (what are you accessing?)                    │    │
+│  │  • Anomalies (is this behavior normal?)                             │    │
+│  │                                                                     │    │
+│  │  → Every request, every time, regardless of source                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  2. USE LEAST PRIVILEGE ACCESS                                             │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Limit access to only what's needed:                                │   │
-│  │  • Just-In-Time (JIT) access                                        │   │
-│  │  • Just-Enough-Access (JEA)                                         │   │
-│  │  • Risk-based adaptive policies                                     │   │
-│  │  • Session-based access (not persistent)                            │   │
-│  │  • Micro-segmentation (limit lateral movement)                      │   │
-│  │                                                                      │   │
-│  │  → Minimize blast radius of potential compromise                    │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  2. USE LEAST PRIVILEGE ACCESS                                              │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Limit access to only what's needed:                                │    │
+│  │  • Just-In-Time (JIT) access                                        │    │
+│  │  • Just-Enough-Access (JEA)                                         │    │
+│  │  • Risk-based adaptive policies                                     │    │
+│  │  • Session-based access (not persistent)                            │    │
+│  │  • Micro-segmentation (limit lateral movement)                      │    │
+│  │                                                                     │    │
+│  │  → Minimize blast radius of potential compromise                    │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  3. ASSUME BREACH                                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Operate as if attackers are already inside:                        │   │
-│  │  • Minimize blast radius through segmentation                       │   │
-│  │  • End-to-end encryption                                            │   │
-│  │  • Continuous monitoring and analytics                              │   │
-│  │  • Automated threat detection and response                          │   │
-│  │  • Log and inspect all traffic (even internal)                      │   │
-│  │                                                                      │   │
-│  │  → Design for resilience, not just prevention                       │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  3. ASSUME BREACH                                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Operate as if attackers are already inside:                        │    │
+│  │  • Minimize blast radius through segmentation                       │    │
+│  │  • End-to-end encryption                                            │    │
+│  │  • Continuous monitoring and analytics                              │    │
+│  │  • Automated threat detection and response                          │    │
+│  │  • Log and inspect all traffic (even internal)                      │    │
+│  │                                                                     │    │
+│  │  → Design for resilience, not just prevention                       │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  FORRESTER'S EXTENDED PRINCIPLES (ZTX):                                    │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • All data sources and computing services are resources            │   │
-│  │  • All communication is secured regardless of location              │   │
-│  │  • Access is granted per-session basis                              │   │
-│  │  • Access is determined by dynamic policy                           │   │
-│  │  • Enterprise monitors and measures security posture                │   │
-│  │  • Authentication and authorization are dynamic and strict          │   │
-│  │  • Enterprise collects information for security improvement         │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  FORRESTER'S EXTENDED PRINCIPLES (ZTX):                                     │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • All data sources and computing services are resources            │    │
+│  │  • All communication is secured regardless of location              │    │
+│  │  • Access is granted per-session basis                              │    │
+│  │  • Access is determined by dynamic policy                           │    │
+│  │  • Enterprise monitors and measures security posture                │    │
+│  │  • Authentication and authorization are dynamic and strict          │    │
+│  │  • Enterprise collects information for security improvement         │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -139,46 +139,46 @@ By the end of this lesson, you will be able to:
 │                 NIST SP 800-207 ARCHITECTURE                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                     CONTROL PLANE                                    │   │
-│  │  ┌─────────────────────────────────────────────────────────────┐    │   │
-│  │  │              POLICY ENGINE (PE)                              │    │   │
-│  │  │                                                              │    │   │
-│  │  │  • Makes access decisions                                    │    │   │
-│  │  │  • Evaluates policy against request context                  │    │   │
-│  │  │  • Grants/denies/revokes access                              │    │   │
-│  │  │  • Uses input from multiple sources                          │    │   │
-│  │  └─────────────────────────────────────────────────────────────┘    │   │
-│  │                           │                                          │   │
-│  │                           ▼                                          │   │
-│  │  ┌─────────────────────────────────────────────────────────────┐    │   │
-│  │  │            POLICY ADMINISTRATOR (PA)                         │    │   │
-│  │  │                                                              │    │   │
-│  │  │  • Executes PE decisions                                     │    │   │
-│  │  │  • Establishes/terminates connections                        │    │   │
-│  │  │  • Commands PEP to allow/deny                                │    │   │
-│  │  │  • Generates session credentials                             │    │   │
-│  │  └─────────────────────────────────────────────────────────────┘    │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
-│                                 │                                          │
-│                                 │ Control                                  │
-│                                 ▼                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                      DATA PLANE                                      │   │
-│  │  ┌─────────────────────────────────────────────────────────────┐    │   │
-│  │  │           POLICY ENFORCEMENT POINT (PEP)                     │    │   │
-│  │  │                                                              │    │   │
-│  │  │  • Enables/disables connections                              │    │   │
-│  │  │  • Enforces access decisions                                 │    │   │
-│  │  │  • May be agent, gateway, or network device                  │    │   │
-│  │  │  • Closest to the resource                                   │    │   │
-│  │  └─────────────────────────────────────────────────────────────┘    │   │
-│  │                           │                                          │   │
-│  │        Subject ──────────┼──────────> Enterprise Resource           │   │
-│  │        (User/Device)     │           (Data/App/Service)             │   │
-│  │                    Implicit Trust Zone                               │   │
-│  │                    (Minimized)                                       │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                     CONTROL PLANE                                   │    │
+│  │  ┌─────────────────────────────────────────────────────────────┐    │    │
+│  │  │              POLICY ENGINE (PE)                             │    │    │
+│  │  │                                                             │    │    │
+│  │  │  • Makes access decisions                                   │    │    │
+│  │  │  • Evaluates policy against request context                 │    │    │
+│  │  │  • Grants/denies/revokes access                             │    │    │
+│  │  │  • Uses input from multiple sources                         │    │    │
+│  │  └─────────────────────────────────────────────────────────────┘    │    │
+│  │                           │                                         │    │
+│  │                           ▼                                         │    │
+│  │  ┌─────────────────────────────────────────────────────────────┐    │    │
+│  │  │            POLICY ADMINISTRATOR (PA)                        │    │    │
+│  │  │                                                             │    │    │
+│  │  │  • Executes PE decisions                                    │    │    │
+│  │  │  • Establishes/terminates connections                       │    │    │
+│  │  │  • Commands PEP to allow/deny                               │    │    │
+│  │  │  • Generates session credentials                            │    │    │
+│  │  └─────────────────────────────────────────────────────────────┘    │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                 │                                           │
+│                                 │ Control                                   │
+│                                 ▼                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                      DATA PLANE                                     │    │
+│  │  ┌─────────────────────────────────────────────────────────────┐    │    │
+│  │  │           POLICY ENFORCEMENT POINT (PEP)                    │    │    │
+│  │  │                                                             │    │    │
+│  │  │  • Enables/disables connections                             │    │    │
+│  │  │  • Enforces access decisions                                │    │    │
+│  │  │  • May be agent, gateway, or network device                 │    │    │
+│  │  │  • Closest to the resource                                  │    │    │
+│  │  └─────────────────────────────────────────────────────────────┘    │    │
+│  │                           │                                         │    │
+│  │        Subject ──────────┼──────────> Enterprise Resource           │    │
+│  │        (User/Device)     │           (Data/App/Service)             │    │
+│  │                    Implicit Trust Zone                              │    │
+│  │                    (Minimized)                                      │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -190,48 +190,48 @@ By the end of this lesson, you will be able to:
 │                  POLICY ENGINE DATA SOURCES                                 │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│                        ┌───────────────────────┐                           │
-│                        │    POLICY ENGINE      │                           │
-│                        │    (Decision Point)   │                           │
-│                        └───────────┬───────────┘                           │
-│                                    │                                       │
-│           ┌────────────────────────┼────────────────────────┐             │
-│           │                        │                        │             │
-│           ▼                        ▼                        ▼             │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐       │
-│  │  IDENTITY       │    │  DEVICE         │    │  THREAT         │       │
-│  │  MANAGEMENT     │    │  MANAGEMENT     │    │  INTELLIGENCE   │       │
-│  │                 │    │                 │    │                 │       │
-│  │ • IdP/Directory │    │ • MDM/UEM       │    │ • TIP feeds     │       │
-│  │ • MFA status    │    │ • EDR           │    │ • SIEM alerts   │       │
-│  │ • User risk     │    │ • Health status │    │ • Reputation    │       │
-│  │ • Attributes    │    │ • Compliance    │    │ • IOCs          │       │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘       │
-│           │                        │                        │             │
-│           └────────────────────────┼────────────────────────┘             │
-│                                    │                                       │
-│           ┌────────────────────────┼────────────────────────┐             │
-│           │                        │                        │             │
-│           ▼                        ▼                        ▼             │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐       │
-│  │  DATA ACCESS    │    │  SECURITY       │    │  ACTIVITY       │       │
-│  │  POLICIES       │    │  ANALYTICS      │    │  LOGS           │       │
-│  │                 │    │                 │    │                 │       │
-│  │ • Data class.   │    │ • UEBA          │    │ • Access logs   │       │
-│  │ • Sensitivity   │    │ • Risk scoring  │    │ • Network flow  │       │
-│  │ • Regulations   │    │ • Anomaly det.  │    │ • Audit trails  │       │
-│  │ • Business need │    │ • ML models     │    │ • Forensics     │       │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘       │
+│                        ┌───────────────────────┐                            │
+│                        │    POLICY ENGINE      │                            │
+│                        │    (Decision Point)   │                            │
+│                        └───────────┬───────────┘                            │
+│                                    │                                        │
+│           ┌────────────────────────┼────────────────────────┐               │
+│           │                        │                        │               │
+│           ▼                        ▼                        ▼               │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐          │
+│  │  IDENTITY       │    │  DEVICE         │    │  THREAT         │          │
+│  │  MANAGEMENT     │    │  MANAGEMENT     │    │  INTELLIGENCE   │          │
+│  │                 │    │                 │    │                 │          │
+│  │ • IdP/Directory │    │ • MDM/UEM       │    │ • TIP feeds     │          │
+│  │ • MFA status    │    │ • EDR           │    │ • SIEM alerts   │          │
+│  │ • User risk     │    │ • Health status │    │ • Reputation    │          │
+│  │ • Attributes    │    │ • Compliance    │    │ • IOCs          │          │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘          │
+│           │                        │                        │               │
+│           └────────────────────────┼────────────────────────┘               │
+│                                    │                                        │
+│           ┌────────────────────────┼────────────────────────┐               │
+│           │                        │                        │               │
+│           ▼                        ▼                        ▼               │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐          │
+│  │  DATA ACCESS    │    │  SECURITY       │    │  ACTIVITY       │          │
+│  │  POLICIES       │    │  ANALYTICS      │    │  LOGS           │          │
+│  │                 │    │                 │    │                 │          │
+│  │ • Data class.   │    │ • UEBA          │    │ • Access logs   │          │
+│  │ • Sensitivity   │    │ • Regulations   │    │ • Network flow  │          │
+│  │ • Regulations   │    │ • Anomaly det.  │    │ • Audit trails  │          │
+│  │ • Business need │    │ • ML models     │    │ • Forensics     │          │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘          │
 │                                                                             │
-│  THE PE EVALUATES ALL INPUTS TO DETERMINE:                                 │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Is this identity authenticated and authorized?                   │   │
-│  │  • Is the device compliant and healthy?                             │   │
-│  │  • Is this behavior normal for this user/device?                    │   │
-│  │  • Is there active threat activity related to this request?         │   │
-│  │  • Does policy allow this access based on all context?              │   │
-│  │  • What level of access should be granted?                          │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  THE PE EVALUATES ALL INPUTS TO DETERMINE:                                  │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Is this identity authenticated and authorized?                   │    │
+│  │  • Is the device compliant and healthy?                             │    │
+│  │  • Is this behavior normal for this user/device?                    │    │
+│  │  • Is there active threat activity related to this request?         │    │
+│  │  • Does policy allow this access based on all context?              │    │
+│  │  • What level of access should be granted?                          │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -242,58 +242,58 @@ By the end of this lesson, you will be able to:
 │                 NIST ZTA DEPLOYMENT MODELS                                  │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  MODEL 1: DEVICE AGENT / GATEWAY-BASED                                     │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ┌─────────┐         ┌─────────┐         ┌─────────┐               │   │
-│  │  │ Device  │ ──────> │ Gateway │ ──────> │Resource │               │   │
-│  │  │ Agent   │         │  (PEP)  │         │         │               │   │
-│  │  └─────────┘         └─────────┘         └─────────┘               │   │
-│  │       │                   ▲                                         │   │
-│  │       │                   │                                         │   │
-│  │       └───────────────────┼─────────> PE/PA                        │   │
-│  │                                                                      │   │
-│  │  Use case: Enterprise with managed devices                          │   │
-│  │  Examples: Zscaler Private Access, Cloudflare Access               │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MODEL 1: DEVICE AGENT / GATEWAY-BASED                                      │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ┌─────────┐         ┌─────────┐         ┌─────────┐                │    │
+│  │  │ Device  │ ──────> │ Gateway │ ──────> │Resource │                │    │
+│  │  │ Agent   │         │  (PEP)  │         │         │                │    │
+│  │  └─────────┘         └─────────┘         └─────────┘                │    │
+│  │       │                   ▲                                         │    │
+│  │       │                   │                                         │    │
+│  │       └───────────────────┼─────────> PE/PA                         │    │
+│  │                                                                     │    │
+│  │  Use case: Enterprise with managed devices                          │    │
+│  │  Examples: Zscaler Private Access, Cloudflare Access                │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  MODEL 2: ENCLAVE-BASED                                                    │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ┌─────────┐         ┌────────────────────────────┐                │   │
-│  │  │ Subject │ ──────> │    Gateway PEP             │                │   │
-│  │  └─────────┘         │  ┌─────┐ ┌─────┐ ┌─────┐  │                │   │
-│  │                      │  │Res1 │ │Res2 │ │Res3 │  │                │   │
-│  │                      │  └─────┘ └─────┘ └─────┘  │                │   │
-│  │                      └────────────────────────────┘                │   │
-│  │                                                                      │   │
-│  │  Use case: Legacy apps that can't support agents                    │   │
-│  │  PEP protects enclave of resources                                  │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MODEL 2: ENCLAVE-BASED                                                     │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ┌─────────┐         ┌────────────────────────────┐                 │    │
+│  │  │ Subject │ ──────> │    Gateway PEP             │                 │    │
+│  │  └─────────┘         │  ┌─────┐ ┌─────┐ ┌─────┐   │                 │    │
+│  │                      │  │Res1 │ │Res2 │ │Res3 │   │                 │    │
+│  │                      │  └─────┘ └─────┘ └─────┘   │                 │    │
+│  │                      └────────────────────────────┘                 │    │
+│  │                                                                     │    │
+│  │  Use case: Legacy apps that can't support agents                    │    │
+│  │  PEP protects enclave of resources                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  MODEL 3: RESOURCE PORTAL-BASED                                            │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ┌─────────┐         ┌─────────┐                                   │   │
-│  │  │ Subject │ ──────> │ Portal  │ ──────> Individual Resources      │   │
-│  │  │(Browser)│         │  (PEP)  │         (rendered through portal) │   │
-│  │  └─────────┘         └─────────┘                                   │   │
-│  │                                                                      │   │
-│  │  Use case: BYOD, unmanaged devices                                  │   │
-│  │  Examples: Citrix Workspace, Azure AD App Proxy                     │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MODEL 3: RESOURCE PORTAL-BASED                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ┌─────────┐         ┌─────────┐                                    │    │
+│  │  │ Subject │ ──────> │ Portal  │ ──────> Individual Resources       │    │
+│  │  │(Browser)│         │  (PEP)  │         (rendered through portal)  │    │
+│  │  └─────────┘         └─────────┘                                    │    │
+│  │                                                                     │    │
+│  │  Use case: BYOD, unmanaged devices                                  │    │
+│  │  Examples: Citrix Workspace, Azure AD App Proxy                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  MODEL 4: SANDBOXING / APPLICATION-BASED                                   │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  Resource runs in sandbox on subject's device                       │   │
-│  │  PE controls what data can enter/leave sandbox                      │   │
-│  │                                                                      │   │
-│  │  Use case: Highly sensitive applications, contractors               │   │
-│  │  Examples: Virtual Desktop, Containerized browsers                  │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MODEL 4: SANDBOXING / APPLICATION-BASED                                    │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  Resource runs in sandbox on subject's device                       │    │
+│  │  PE controls what data can enter/leave sandbox                      │    │
+│  │                                                                     │    │
+│  │  Use case: Highly sensitive applications, contractors               │    │
+│  │  Examples: Virtual Desktop, Containerized browsers                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  HYBRID: Most enterprises combine multiple models                          │
+│  HYBRID: Most enterprises combine multiple models                           │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -308,75 +308,75 @@ By the end of this lesson, you will be able to:
 │                    FIVE PILLARS OF ZERO TRUST                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐    │
-│  │           │ │           │ │           │ │           │ │           │    │
-│  │ IDENTITY  │ │  DEVICE   │ │  NETWORK  │ │APPLICATION│ │   DATA    │    │
-│  │           │ │           │ │           │ │ WORKLOAD  │ │           │    │
-│  │           │ │           │ │           │ │           │ │           │    │
-│  └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘    │
-│        │             │             │             │             │          │
-│        └─────────────┴─────────────┴─────────────┴─────────────┘          │
-│                                    │                                       │
-│                                    ▼                                       │
-│                    ┌───────────────────────────────┐                      │
-│                    │     VISIBILITY & ANALYTICS    │                      │
-│                    │                               │                      │
-│                    │  AUTOMATION & ORCHESTRATION   │                      │
-│                    │                               │                      │
-│                    │      GOVERNANCE & POLICY      │                      │
-│                    └───────────────────────────────┘                      │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐      │
+│  │           │ │           │ │           │ │           │ │           │      │
+│  │ IDENTITY  │ │  DEVICE   │ │  NETWORK  │ │APPLICATION│ │   DATA    │      │
+│  │           │ │           │ │           │ │ WORKLOAD  │ │           │      │
+│  │           │ │           │ │           │ │           │ │           │      │
+│  └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘      │
+│        │             │             │             │             │            │
+│        └─────────────┴─────────────┴─────────────┴─────────────┘            │
+│                                    │                                        │
+│                                    ▼                                        │
+│                    ┌───────────────────────────────┐                        │
+│                    │     VISIBILITY & ANALYTICS    │                        │
+│                    │                               │                        │
+│                    │  AUTOMATION & ORCHESTRATION   │                        │
+│                    │                               │                        │
+│                    │      GOVERNANCE & POLICY      │                        │
+│                    └───────────────────────────────┘                        │
 │                                                                             │
-│  PILLAR DETAILS:                                                           │
+│  PILLAR DETAILS:                                                            │
 │                                                                             │
-│  IDENTITY                                                                  │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Strong authentication (MFA, passwordless)                        │   │
-│  │  • Identity verification and proofing                               │   │
-│  │  • Privileged access management                                     │   │
-│  │  • Identity governance and lifecycle                                │   │
-│  │  • Risk-based authentication                                        │   │
-│  │  • Continuous authentication                                        │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  IDENTITY                                                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Strong authentication (MFA, passwordless)                        │    │
+│  │  • Identity verification and proofing                               │    │
+│  │  • Privileged access management                                     │    │
+│  │  • Identity governance and lifecycle                                │    │
+│  │  • Risk-based authentication                                        │    │
+│  │  • Continuous authentication                                        │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  DEVICE                                                                    │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Device inventory and visibility                                  │   │
-│  │  • Device compliance and health checks                              │   │
-│  │  • Endpoint detection and response                                  │   │
-│  │  • Mobile device management                                         │   │
-│  │  • Patch and vulnerability management                               │   │
-│  │  • Device trust assessment                                          │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  DEVICE                                                                     │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Device inventory and visibility                                  │    │
+│  │  • Device compliance and health checks                              │    │
+│  │  • Endpoint detection and response                                  │    │
+│  │  • Mobile device management                                         │    │
+│  │  • Patch and vulnerability management                               │    │
+│  │  • Device trust assessment                                          │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  NETWORK                                                                   │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Micro-segmentation                                               │   │
-│  │  • Software-defined perimeter                                       │   │
-│  │  • Encrypted communications (TLS everywhere)                        │   │
-│  │  • Network access control                                           │   │
-│  │  • East-west traffic inspection                                     │   │
-│  │  • DNS security                                                     │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  NETWORK                                                                    │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Micro-segmentation                                               │    │
+│  │  • Software-defined perimeter                                       │    │
+│  │  • Encrypted communications (TLS everywhere)                        │    │
+│  │  • Network access control                                           │    │
+│  │  • East-west traffic inspection                                     │    │
+│  │  • DNS security                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  APPLICATION WORKLOAD                                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Application-level authentication                                 │   │
-│  │  • API security and gateway                                         │   │
-│  │  • Workload identity                                                │   │
-│  │  • Service mesh and mTLS                                            │   │
-│  │  • Container and serverless security                                │   │
-│  │  • Secure software supply chain                                     │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  APPLICATION WORKLOAD                                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Application-level authentication                                 │    │
+│  │  • API security and gateway                                         │    │
+│  │  • Workload identity                                                │    │
+│  │  • Service mesh and mTLS                                            │    │
+│  │  • Container and serverless security                                │    │
+│  │  • Secure software supply chain                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  DATA                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  • Data classification and labeling                                 │   │
-│  │  • Data loss prevention                                             │   │
-│  │  • Encryption (at rest, in transit, in use)                         │   │
-│  │  • Rights management                                                │   │
-│  │  • Data access governance                                           │   │
-│  │  • Tokenization and masking                                         │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  DATA                                                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  • Data classification and labeling                                 │    │
+│  │  • Data loss prevention                                             │    │
+│  │  • Encryption (at rest, in transit, in use)                         │    │
+│  │  • Rights management                                                │    │
+│  │  • Data access governance                                           │    │
+│  │  • Tokenization and masking                                         │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -387,68 +387,68 @@ By the end of this lesson, you will be able to:
 │                  IDENTITY-CENTRIC ZERO TRUST                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  "Identity is the new perimeter"                                           │
+│  "Identity is the new perimeter"                                            │
 │                                                                             │
-│  IDENTITY AS THE CONTROL PLANE:                                            │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │                    ┌─────────────────────┐                          │   │
-│  │                    │  IDENTITY PROVIDER  │                          │   │
-│  │                    │   (Control Plane)   │                          │   │
-│  │                    └──────────┬──────────┘                          │   │
-│  │                               │                                     │   │
-│  │        ┌──────────────────────┼──────────────────────┐             │   │
-│  │        │                      │                      │             │   │
-│  │        ▼                      ▼                      ▼             │   │
-│  │   ┌─────────┐           ┌─────────┐           ┌─────────┐         │   │
-│  │   │  SaaS   │           │  IaaS   │           │On-Prem  │         │   │
-│  │   │  Apps   │           │  Cloud  │           │  Apps   │         │   │
-│  │   └─────────┘           └─────────┘           └─────────┘         │   │
-│  │                                                                      │   │
-│  │   Every access decision flows through identity verification         │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  IDENTITY AS THE CONTROL PLANE:                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │                    ┌─────────────────────┐                          │    │
+│  │                    │  IDENTITY PROVIDER  │                          │    │
+│  │                    │   (Control Plane)   │                          │    │
+│  │                    └──────────┬──────────┘                          │    │
+│  │                               │                                     │    │
+│  │        ┌──────────────────────┼──────────────────────┐              │    │
+│  │        │                      │                      │              │    │
+│  │        ▼                      ▼                      ▼              │    │
+│  │   ┌─────────┐           ┌─────────┐           ┌─────────┐           │    │
+│  │   │  SaaS   │           │  IaaS   │           │On-Prem  │           │    │
+│  │   │  Apps   │           │  Cloud  │           │  Apps   │           │    │
+│  │   └─────────┘           └─────────┘           └─────────┘           │    │
+│  │                                                                     │    │
+│  │   Every access decision flows through identity verification         │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  KEY CAPABILITIES:                                                         │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  STRONG AUTHENTICATION                                              │   │
-│  │  ├─ MFA for all users (not just privileged)                         │   │
-│  │  ├─ Passwordless authentication (FIDO2, biometrics)                 │   │
-│  │  ├─ Risk-based step-up authentication                               │   │
-│  │  └─ Continuous authentication throughout session                    │   │
-│  │                                                                      │   │
-│  │  CONDITIONAL ACCESS                                                 │   │
-│  │  ├─ Policies based on user, device, location, risk                  │   │
-│  │  ├─ Real-time policy evaluation                                     │   │
-│  │  ├─ Adaptive responses (allow, block, MFA, limit)                   │   │
-│  │  └─ Integration with threat intelligence                            │   │
-│  │                                                                      │   │
-│  │  IDENTITY GOVERNANCE                                                │   │
-│  │  ├─ Automated provisioning/deprovisioning                           │   │
-│  │  ├─ Access reviews and certification                                │   │
-│  │  ├─ Separation of duties enforcement                                │   │
-│  │  └─ Privileged access management                                    │   │
-│  │                                                                      │   │
-│  │  IDENTITY ANALYTICS                                                 │   │
-│  │  ├─ User and entity behavior analytics (UEBA)                       │   │
-│  │  ├─ Impossible travel detection                                     │   │
-│  │  ├─ Anomalous access patterns                                       │   │
-│  │  └─ Compromised credential detection                                │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  KEY CAPABILITIES:                                                          │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  STRONG AUTHENTICATION                                              │    │
+│  │  ├─ MFA for all users (not just privileged)                         │    │
+│  │  ├─ Passwordless authentication (FIDO2, biometrics)                 │    │
+│  │  ├─ Risk-based step-up authentication                               │    │
+│  │  └─ Continuous authentication throughout session                    │    │
+│  │                                                                     │    │
+│  │  CONDITIONAL ACCESS                                                 │    │
+│  │  ├─ Policies based on user, device, location, risk                  │    │
+│  │  ├─ Real-time policy evaluation                                     │    │
+│  │  ├─ Adaptive responses (allow, block, MFA, limit)                   │    │
+│  │  └─ Integration with threat intelligence                            │    │
+│  │                                                                     │    │
+│  │  IDENTITY GOVERNANCE                                                │    │
+│  │  ├─ Automated provisioning/deprovisioning                           │    │
+│  │  ├─ Access reviews and certification                                │    │
+│  │  ├─ Separation of duties enforcement                                │    │
+│  │  └─ Privileged access management                                    │    │
+│  │                                                                     │    │
+│  │  IDENTITY ANALYTICS                                                 │    │
+│  │  ├─ User and entity behavior analytics (UEBA)                       │    │
+│  │  ├─ Impossible travel detection                                     │    │
+│  │  ├─ Anomalous access patterns                                       │    │
+│  │  └─ Compromised credential detection                                │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  CONDITIONAL ACCESS POLICY EXAMPLE:                                        │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  IF:                                                                │   │
-│  │  • User is accessing financial application                          │   │
-│  │  • AND device is unmanaged                                          │   │
-│  │  • AND location is outside corporate network                        │   │
-│  │  THEN:                                                              │   │
-│  │  • Require MFA                                                      │   │
-│  │  • Grant read-only access                                           │   │
-│  │  • Enable session recording                                         │   │
-│  │  • Block download of sensitive data                                 │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  CONDITIONAL ACCESS POLICY EXAMPLE:                                         │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  IF:                                                                │    │
+│  │  • User is accessing financial application                          │    │
+│  │  • AND device is unmanaged                                          │    │
+│  │  • AND location is outside corporate network                        │    │
+│  │  THEN:                                                              │    │
+│  │  • Require MFA                                                      │    │
+│  │  • Grant read-only access                                           │    │
+│  │  • Enable session recording                                         │    │
+│  │  • Block download of sensitive data                                 │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -459,60 +459,60 @@ By the end of this lesson, you will be able to:
 │                    MICRO-SEGMENTATION                                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  TRADITIONAL SEGMENTATION                 MICRO-SEGMENTATION               │
-│  ┌─────────────────────────┐             ┌─────────────────────────┐       │
-│  │                         │             │ ┌───┐ ┌───┐ ┌───┐ ┌───┐ │       │
-│  │   Zone A    │  Zone B   │             │ │ W │─│ W │ │ W │─│ W │ │       │
-│  │   ┌───┬───┐ │ ┌───┬───┐ │             │ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ │       │
-│  │   │ W │ W │ │ │ W │ W │ │             │   │     │     │     │   │       │
-│  │   └───┴───┘ │ └───┴───┘ │             │   └──┬──┘     └──┬──┘   │       │
-│  │      │      │     │     │             │      │           │      │       │
-│  │      └──────┼─────┘     │             │      └─────┬─────┘      │       │
-│  │    Free flow│within zone│             │   Every connection     │       │
-│  │             │           │             │   controlled           │       │
-│  └─────────────────────────┘             └─────────────────────────┘       │
+│  TRADITIONAL SEGMENTATION                 MICRO-SEGMENTATION                │
+│  ┌─────────────────────────┐             ┌─────────────────────────┐        │
+│  │                         │             │ ┌───┐ ┌───┐ ┌───┐ ┌───┐ │        │
+│  │   Zone A    │  Zone B   │             │ │ W │─│ W │ │ W │─│ W │ │        │
+│  │   ┌───┬───┐ │ ┌───┬───┐ │             │ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ │        │
+│  │   │ W │ W │ │ │ W │ W │ │             │   │     │     │     │   │        │
+│  │   └───┴───┘ │ └───┴───┘ │             │   └──┬──┘     └──┬──┘   │        │
+│  │      │      │     │     │             │      │           │      │        │
+│  │      └──────┼─────┘     │             │      └─────┬─────┘      │        │
+│  │    Free flow│within zone│             │   Every connection      │        │
+│  │             │           │             │   controlled            │        │
+│  └─────────────────────────┘             └─────────────────────────┘        │
 │                                                                             │
-│  MICRO-SEGMENTATION APPROACHES:                                            │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  NETWORK-BASED (SDN)                                                │   │
-│  │  ├─ Virtual firewalls between segments                              │   │
-│  │  ├─ Software-defined networking policies                            │   │
-│  │  ├─ VLAN and VXLAN segmentation                                     │   │
-│  │  └─ Products: VMware NSX, Cisco ACI                                 │   │
-│  │                                                                      │   │
-│  │  HOST-BASED                                                         │   │
-│  │  ├─ Agent on each workload                                          │   │
-│  │  ├─ Application-aware policies                                      │   │
-│  │  ├─ Works across environments (on-prem, cloud)                      │   │
-│  │  └─ Products: Illumio, Guardicore                                   │   │
-│  │                                                                      │   │
-│  │  IDENTITY-BASED                                                     │   │
-│  │  ├─ Policies based on workload identity                             │   │
-│  │  ├─ Service mesh (Istio, Linkerd)                                   │   │
-│  │  ├─ Certificate-based authentication                                │   │
-│  │  └─ Products: HashiCorp Consul, Istio                               │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MICRO-SEGMENTATION APPROACHES:                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  NETWORK-BASED (SDN)                                                │    │
+│  │  ├─ Virtual firewalls between segments                              │    │
+│  │  ├─ Software-defined networking policies                            │    │
+│  │  ├─ VLAN and VXLAN segmentation                                     │    │
+│  │  └─ Products: VMware NSX, Cisco ACI                                 │    │
+│  │                                                                     │    │
+│  │  HOST-BASED                                                         │    │
+│  │  ├─ Agent on each workload                                          │    │
+│  │  ├─ Application-aware policies                                      │    │
+│  │  ├─ Works across environments (on-prem, cloud)                      │    │
+│  │  └─ Products: Illumio, Guardicore                                   │    │
+│  │                                                                     │    │
+│  │  IDENTITY-BASED                                                     │    │
+│  │  ├─ Policies based on workload identity                             │    │
+│  │  ├─ Service mesh (Istio, Linkerd)                                   │    │
+│  │  ├─ Certificate-based authentication                                │    │
+│  │  └─ Products: HashiCorp Consul, Istio                               │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  MICRO-SEGMENTATION POLICY MODEL:                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  Default: DENY ALL                                                  │   │
-│  │                                                                      │   │
-│  │  Explicit allows only:                                              │   │
-│  │  ┌────────────────────────────────────────────────────────────┐     │   │
-│  │  │  Source         │ Destination    │ Port  │ Protocol       │     │   │
-│  │  ├────────────────────────────────────────────────────────────┤     │   │
-│  │  │  Web Server     │ App Server     │ 8080  │ HTTPS          │     │   │
-│  │  │  App Server     │ Database       │ 5432  │ PostgreSQL     │     │   │
-│  │  │  App Server     │ Cache          │ 6379  │ Redis          │     │   │
-│  │  │  Admin Jump     │ All Servers    │ 22    │ SSH            │     │   │
-│  │  │  Monitoring     │ All Servers    │ 9090  │ Prometheus     │     │   │
-│  │  └────────────────────────────────────────────────────────────┘     │   │
-│  │                                                                      │   │
-│  │  Benefit: Lateral movement prevented - breach contained             │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  MICRO-SEGMENTATION POLICY MODEL:                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  Default: DENY ALL                                                  │    │
+│  │                                                                     │    │
+│  │  Explicit allows only:                                              │    │
+│  │  ┌────────────────────────────────────────────────────────────┐     │    │
+│  │  │  Source         │ Destination    │ Port  │ Protocol        │     │    │
+│  │  ├────────────────────────────────────────────────────────────┤     │    │
+│  │  │  Web Server     │ App Server     │ 8080  │ HTTPS           │     │    │
+│  │  │  App Server     │ Database       │ 5432  │ PostgreSQL      │     │    │
+│  │  │  App Server     │ Cache          │ 6379  │ Redis           │     │    │
+│  │  │  Admin Jump     │ All Servers    │ 22    │ SSH             │     │    │
+│  │  │  Monitoring     │ All Servers    │ 9090  │ Prometheus      │     │    │
+│  │  └────────────────────────────────────────────────────────────┘     │    │
+│  │                                                                     │    │
+│  │  Benefit: Lateral movement prevented - breach contained             │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -527,53 +527,53 @@ By the end of this lesson, you will be able to:
 │                      ZTNA VS TRADITIONAL VPN                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  TRADITIONAL VPN                                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │    User ──VPN──> Corporate Network ──> All Resources                │   │
-│  │                                                                      │   │
-│  │    Problems:                                                         │   │
-│  │    • Network-level access (too broad)                               │   │
-│  │    • "Once in, full access" model                                   │   │
-│  │    • Backhauls all traffic through datacenter                       │   │
-│  │    • No application-level security                                  │   │
-│  │    • Trust based on network location                                │   │
-│  │    • Scalability and performance issues                             │   │
-│  │    • Complex split-tunnel decisions                                 │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  TRADITIONAL VPN                                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │    User ──VPN──> Corporate Network ──> All Resources                │    │
+│  │                                                                     │    │
+│  │    Problems:                                                        │    │
+│  │    • Network-level access (too broad)                               │    │
+│  │    • "Once in, full access" model                                   │    │
+│  │    • Backhauls all traffic through datacenter                       │    │
+│  │    • No application-level security                                  │    │
+│  │    • Trust based on network location                                │    │
+│  │    • Scalability and performance issues                             │    │
+│  │    • Complex split-tunnel decisions                                 │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  ZERO TRUST NETWORK ACCESS (ZTNA)                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │    User ──ZTNA──> Specific Application (only what's authorized)     │   │
-│  │                                                                      │   │
-│  │    Characteristics:                                                  │   │
-│  │    • Application-level access (granular)                            │   │
-│  │    • Every request verified                                         │   │
-│  │    • Direct-to-app connectivity                                     │   │
-│  │    • User never on corporate network                                │   │
-│  │    • Applications invisible to unauthorized users                   │   │
-│  │    • Context-aware access decisions                                 │   │
-│  │    • Better performance (no backhaul)                               │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  ZERO TRUST NETWORK ACCESS (ZTNA)                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │    User ──ZTNA──> Specific Application (only what's authorized)     │    │
+│  │                                                                     │    │
+│  │    Characteristics:                                                 │    │
+│  │    • Application-level access (granular)                            │    │
+│  │    • Every request verified                                         │    │
+│  │    • Direct-to-app connectivity                                     │    │
+│  │    • User never on corporate network                                │    │
+│  │    • Applications invisible to unauthorized users                   │    │
+│  │    • Context-aware access decisions                                 │    │
+│  │    • Better performance (no backhaul)                               │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  COMPARISON:                                                               │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Aspect            │ Traditional VPN    │ ZTNA                      │   │
-│  ├─────────────────────────────────────────────────────────────────────┤   │
-│  │  Access Model      │ Network-centric    │ Application-centric       │   │
-│  │  Trust Model       │ Trust network      │ Never trust, verify       │   │
-│  │  Visibility        │ Apps visible once  │ Apps hidden until         │   │
-│  │                    │ on network         │ authorized                │   │
-│  │  Lateral Movement  │ Possible           │ Prevented                 │   │
-│  │  User Experience   │ All traffic thru   │ Direct to app             │   │
-│  │                    │ VPN                │                           │   │
-│  │  Scalability       │ Appliance-bound    │ Cloud-native              │   │
-│  │  Third-Party       │ Complex/risky      │ Granular control          │   │
-│  │  Cloud Apps        │ Backhaul traffic   │ Direct access             │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  COMPARISON:                                                                │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Aspect            │ Traditional VPN    │ ZTNA                      │    │
+│  ├─────────────────────────────────────────────────────────────────────┤    │
+│  │  Access Model      │ Network-centric    │ Application-centric       │    │
+│  │  Trust Model       │ Trust network      │ Never trust, verify       │    │
+│  │  Visibility        │ Apps visible once  │ Apps hidden until         │    │
+│  │                    │ on network         │ authorized                │    │
+│  │  Lateral Movement  │ Possible           │ Prevented                 │    │
+│  │  User Experience   │ All traffic thru   │ Direct to app             │    │
+│  │                    │ VPN                │                           │    │
+│  │  Scalability       │ Appliance-bound    │ Cloud-native              │    │
+│  │  Third-Party       │ Complex/risky      │ Granular control          │    │
+│  │  Cloud Apps        │ Backhaul traffic   │ Direct access             │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -584,68 +584,68 @@ By the end of this lesson, you will be able to:
 │                    ZTNA ARCHITECTURE PATTERNS                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  SERVICE-INITIATED ZTNA (Connector-Based)                                  │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ┌──────┐                    ┌───────────┐                          │   │
-│  │  │ User │                    │   ZTNA    │                          │   │
-│  │  │Device│ ────────────────── │  Service  │                          │   │
-│  │  │+Agent│                    │  (Cloud)  │                          │   │
-│  │  └──────┘                    └─────┬─────┘                          │   │
-│  │                                    │                                │   │
-│  │                                    │ Outbound connection            │   │
-│  │                                    │ (No inbound ports)             │   │
-│  │                                    ▼                                │   │
-│  │                              ┌───────────┐                          │   │
-│  │                              │ Connector │                          │   │
-│  │                              │ (On-Prem) │                          │   │
-│  │                              └─────┬─────┘                          │   │
-│  │                                    │                                │   │
-│  │                                    ▼                                │   │
-│  │                              ┌───────────┐                          │   │
-│  │                              │   App     │                          │   │
-│  │                              └───────────┘                          │   │
-│  │                                                                      │   │
-│  │  Advantages:                                                        │   │
-│  │  • No inbound firewall ports needed                                 │   │
-│  │  • Apps completely hidden from internet                             │   │
-│  │  • Connector makes outbound connection                              │   │
-│  │  Examples: Zscaler ZPA, Cloudflare Access, Netskope NPA             │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  SERVICE-INITIATED ZTNA (Connector-Based)                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ┌──────┐                    ┌───────────┐                          │    │
+│  │  │ User │                    │   ZTNA    │                          │    │
+│  │  │Device│ ────────────────── │  Service  │                          │    │
+│  │  │+Agent│                    │  (Cloud)  │                          │    │
+│  │  └──────┘                    └─────┬─────┘                          │    │
+│  │                                    │                                │    │
+│  │                                    │ Outbound connection            │    │
+│  │                                    │ (No inbound ports)             │    │
+│  │                                    ▼                                │    │
+│  │                              ┌───────────┐                          │    │
+│  │                              │ Connector │                          │    │
+│  │                              │ (On-Prem) │                          │    │
+│  │                              └─────┬─────┘                          │    │
+│  │                                    │                                │    │
+│  │                                    ▼                                │    │
+│  │                              ┌───────────┐                          │    │
+│  │                              │   App     │                          │    │
+│  │                              └───────────┘                          │    │
+│  │                                                                     │    │
+│  │  Advantages:                                                        │    │
+│  │  • No inbound firewall ports needed                                 │    │
+│  │  • Apps completely hidden from internet                             │    │
+│  │  • Connector makes outbound connection                              │    │
+│  │  Examples: Zscaler ZPA, Cloudflare Access, Netskope NPA             │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  ENDPOINT-INITIATED ZTNA                                                   │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ┌──────┐      ┌───────────┐      ┌───────────┐                    │   │
-│  │  │ User │ ──── │   ZTNA    │ ──── │   App     │                    │   │
-│  │  │Device│      │  Gateway  │      │  Server   │                    │   │
-│  │  │+Agent│      │           │      │           │                    │   │
-│  │  └──────┘      └───────────┘      └───────────┘                    │   │
-│  │                                                                      │   │
-│  │  Agent on device initiates connection to gateway                    │   │
-│  │  Gateway terminates and proxies to application                      │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  ENDPOINT-INITIATED ZTNA                                                    │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ┌──────┐      ┌───────────┐      ┌───────────┐                     │    │
+│  │  │ User │ ──── │   ZTNA    │ ──── │   App     │                     │    │
+│  │  │Device│      │  Gateway  │      │  Server   │                     │    │
+│  │  │+Agent│      │           │      │           │                     │    │
+│  │  └──────┘      └───────────┘      └───────────┘                     │    │
+│  │                                                                     │    │
+│  │  Agent on device initiates connection to gateway                    │    │
+│  │  Gateway terminates and proxies to application                      │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  SOFTWARE-DEFINED PERIMETER (SDP)                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  Three-Component Architecture:                                      │   │
-│  │                                                                      │   │
-│  │  1. SDP Client (on device)                                          │   │
-│  │     └─ Initiates Single Packet Authorization (SPA)                  │   │
-│  │                                                                      │   │
-│  │  2. SDP Controller                                                  │   │
-│  │     └─ Authenticates, determines authorized connections             │   │
-│  │     └─ Creates dynamic firewall rules                               │   │
-│  │                                                                      │   │
-│  │  3. SDP Gateway                                                     │   │
-│  │     └─ Ports closed until SPA validated                             │   │
-│  │     └─ Creates mutual TLS tunnel                                    │   │
-│  │                                                                      │   │
-│  │  Result: "Dark" infrastructure invisible to unauthorized            │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  SOFTWARE-DEFINED PERIMETER (SDP)                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  Three-Component Architecture:                                      │    │
+│  │                                                                     │    │
+│  │  1. SDP Client (on device)                                          │    │
+│  │     └─ Initiates Single Packet Authorization (SPA)                  │    │
+│  │                                                                     │    │
+│  │  2. SDP Controller                                                  │    │
+│  │     └─ Authenticates, determines authorized connections             │    │
+│  │     └─ Creates dynamic firewall rules                               │    │
+│  │                                                                     │    │
+│  │  3. SDP Gateway                                                     │    │
+│  │     └─ Ports closed until SPA validated                             │    │
+│  │     └─ Creates mutual TLS tunnel                                    │    │
+│  │                                                                     │    │
+│  │  Result: "Dark" infrastructure invisible to unauthorized            │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -660,55 +660,55 @@ By the end of this lesson, you will be able to:
 │                  ZERO TRUST MATURITY MODEL (CISA)                           │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│                    TRADITIONAL → INITIAL → ADVANCED → OPTIMAL              │
+│                    TRADITIONAL → INITIAL → ADVANCED → OPTIMAL               │
 │                                                                             │
-│  IDENTITY PILLAR:                                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: Password-only, limited visibility                     │   │
-│  │  Initial: MFA for privileged, some SSO                              │   │
-│  │  Advanced: MFA for all, risk-based auth, identity analytics         │   │
-│  │  Optimal: Passwordless, continuous verification, full automation    │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  IDENTITY PILLAR:                                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: Password-only, limited visibility                     │    │
+│  │  Initial: MFA for privileged, some SSO                              │    │
+│  │  Advanced: MFA for all, risk-based auth, identity analytics         │    │
+│  │  Optimal: Passwordless, continuous verification, full automation    │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  DEVICE PILLAR:                                                            │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: Limited device visibility, no compliance checks       │   │
-│  │  Initial: Device inventory, basic compliance for managed devices    │   │
-│  │  Advanced: Real-time compliance, EDR, posture assessment            │   │
-│  │  Optimal: Continuous device health, automated remediation           │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  DEVICE PILLAR:                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: Limited device visibility, no compliance checks       │    │
+│  │  Initial: Device inventory, basic compliance for managed devices    │    │
+│  │  Advanced: Real-time compliance, EDR, posture assessment            │    │
+│  │  Optimal: Continuous device health, automated remediation           │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  NETWORK PILLAR:                                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: Perimeter-based, flat internal network                │   │
-│  │  Initial: Basic segmentation, encrypted external traffic            │   │
-│  │  Advanced: Micro-segmentation, encrypted internal traffic           │   │
-│  │  Optimal: Software-defined micro-perimeters, full encryption        │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  NETWORK PILLAR:                                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: Perimeter-based, flat internal network                │    │
+│  │  Initial: Basic segmentation, encrypted external traffic            │    │
+│  │  Advanced: Micro-segmentation, encrypted internal traffic           │    │
+│  │  Optimal: Software-defined micro-perimeters, full encryption        │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  APPLICATION PILLAR:                                                       │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: No app-level access control, local auth               │   │
-│  │  Initial: Some apps integrated with IdP, basic authorization        │   │
-│  │  Advanced: All apps federated, API security, workload identity      │   │
-│  │  Optimal: Real-time app authorization, secure supply chain          │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  APPLICATION PILLAR:                                                        │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: No app-level access control, local auth               │    │
+│  │  Initial: Some apps integrated with IdP, basic authorization        │    │
+│  │  Advanced: All apps federated, API security, workload identity      │    │
+│  │  Optimal: Real-time app authorization, secure supply chain          │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  DATA PILLAR:                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: Limited classification, perimeter DLP                 │   │
-│  │  Initial: Data classification started, basic encryption             │   │
-│  │  Advanced: Automated classification, comprehensive encryption       │   │
-│  │  Optimal: Dynamic access based on data sensitivity, full DLP        │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  DATA PILLAR:                                                               │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: Limited classification, perimeter DLP                 │    │
+│  │  Initial: Data classification started, basic encryption             │    │
+│  │  Advanced: Automated classification, comprehensive encryption       │    │
+│  │  Optimal: Dynamic access based on data sensitivity, full DLP        │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  VISIBILITY & ANALYTICS (Cross-Cutting):                                   │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │  Traditional: Siloed logs, reactive monitoring                      │   │
-│  │  Initial: Centralized logging, basic SIEM                           │   │
-│  │  Advanced: Integrated analytics, UEBA, automated detection          │   │
-│  │  Optimal: AI/ML analytics, predictive, automated response           │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  VISIBILITY & ANALYTICS (Cross-Cutting):                                    │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  Traditional: Siloed logs, reactive monitoring                      │    │
+│  │  Initial: Centralized logging, basic SIEM                           │    │
+│  │  Advanced: Integrated analytics, UEBA, automated detection          │    │
+│  │  Optimal: AI/ML analytics, predictive, automated response           │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -719,75 +719,75 @@ By the end of this lesson, you will be able to:
 │                 ZERO TRUST IMPLEMENTATION ROADMAP                           │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  PHASE 1: FOUNDATION (Months 1-6)                                          │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ASSESS                                                             │   │
-│  │  ├─ Current state assessment against ZT maturity model              │   │
-│  │  ├─ Identify protect surfaces (critical data, apps, assets)         │   │
-│  │  ├─ Map transaction flows                                           │   │
-│  │  └─ Gap analysis and prioritization                                 │   │
-│  │                                                                      │   │
-│  │  QUICK WINS                                                         │   │
-│  │  ├─ Deploy MFA for all users (if not done)                          │   │
-│  │  ├─ Implement single sign-on                                        │   │
-│  │  ├─ Enable conditional access policies                              │   │
-│  │  ├─ Deploy EDR on all endpoints                                     │   │
-│  │  └─ Start device compliance requirements                            │   │
-│  │                                                                      │   │
-│  │  GOVERNANCE                                                         │   │
-│  │  ├─ Define Zero Trust strategy and roadmap                          │   │
-│  │  ├─ Establish ZT governance committee                               │   │
-│  │  └─ Select pilot applications/user groups                           │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  PHASE 1: FOUNDATION (Months 1-6)                                           │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ASSESS                                                             │    │
+│  │  ├─ Current state assessment against ZT maturity model              │    │
+│  │  ├─ Identify protect surfaces (critical data, apps, assets)         │    │
+│  │  ├─ Map transaction flows                                           │    │
+│  │  └─ Gap analysis and prioritization                                 │    │
+│  │                                                                     │    │
+│  │  QUICK WINS                                                         │    │
+│  │  ├─ Deploy MFA for all users (if not done)                          │    │
+│  │  ├─ Implement single sign-on                                        │    │
+│  │  ├─ Enable conditional access policies                              │    │
+│  │  ├─ Deploy EDR on all endpoints                                     │    │
+│  │  └─ Start device compliance requirements                            │    │
+│  │                                                                     │    │
+│  │  GOVERNANCE                                                         │    │
+│  │  ├─ Define Zero Trust strategy and roadmap                          │    │
+│  │  ├─ Establish ZT governance committee                               │    │
+│  │  └─ Select pilot applications/user groups                           │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  PHASE 2: IDENTITY & ACCESS (Months 6-12)                                  │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ├─ Implement privileged access management                          │   │
-│  │  ├─ Deploy identity governance (access reviews)                     │   │
-│  │  ├─ Enable risk-based authentication                                │   │
-│  │  ├─ Implement user behavior analytics                               │   │
-│  │  ├─ Migrate apps to identity-aware proxy or ZTNA                    │   │
-│  │  └─ Begin passwordless authentication pilots                        │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  PHASE 2: IDENTITY & ACCESS (Months 6-12)                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ├─ Implement privileged access management                          │    │
+│  │  ├─ Deploy identity governance (access reviews)                     │    │
+│  │  ├─ Enable risk-based authentication                                │    │
+│  │  ├─ Implement user behavior analytics                               │    │
+│  │  ├─ Migrate apps to identity-aware proxy or ZTNA                    │    │
+│  │  └─ Begin passwordless authentication pilots                        │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  PHASE 3: NETWORK & WORKLOAD (Months 12-18)                                │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ├─ Implement micro-segmentation for critical assets                │   │
-│  │  ├─ Deploy ZTNA to replace VPN for applications                     │   │
-│  │  ├─ Enable east-west traffic encryption                             │   │
-│  │  ├─ Implement service mesh for container workloads                  │   │
-│  │  ├─ Deploy API gateway with authentication                          │   │
-│  │  └─ Enable workload identity                                        │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  PHASE 3: NETWORK & WORKLOAD (Months 12-18)                                 │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ├─ Implement micro-segmentation for critical assets                │    │
+│  │  ├─ Deploy ZTNA to replace VPN for applications                     │    │
+│  │  ├─ Enable east-west traffic encryption                             │    │
+│  │  ├─ Implement service mesh for container workloads                  │    │
+│  │  ├─ Deploy API gateway with authentication                          │    │
+│  │  └─ Enable workload identity                                        │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  PHASE 4: DATA & VISIBILITY (Months 18-24)                                 │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ├─ Comprehensive data classification                               │   │
-│  │  ├─ Data loss prevention expansion                                  │   │
-│  │  ├─ Rights management for sensitive data                            │   │
-│  │  ├─ Unified visibility and analytics platform                       │   │
-│  │  ├─ Automated threat detection and response                         │   │
-│  │  └─ Continuous compliance monitoring                                │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  PHASE 4: DATA & VISIBILITY (Months 18-24)                                  │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ├─ Comprehensive data classification                               │    │
+│  │  ├─ Data loss prevention expansion                                  │    │
+│  │  ├─ Rights management for sensitive data                            │    │
+│  │  ├─ Unified visibility and analytics platform                       │    │
+│  │  ├─ Automated threat detection and response                         │    │
+│  │  └─ Continuous compliance monitoring                                │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
-│  PHASE 5: OPTIMIZATION (Ongoing)                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │  ├─ Continuous improvement based on metrics                         │   │
-│  │  ├─ Expand to all applications and users                            │   │
-│  │  ├─ Advanced automation (SOAR integration)                          │   │
-│  │  ├─ AI/ML for anomaly detection                                     │   │
-│  │  └─ Regular ZT maturity assessments                                 │   │
-│  │                                                                      │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│  PHASE 5: OPTIMIZATION (Ongoing)                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                                                                     │    │
+│  │  ├─ Continuous improvement based on metrics                         │    │
+│  │  ├─ Expand to all applications and users                            │    │
+│  │  ├─ Advanced automation (SOAR integration)                          │    │
+│  │  ├─ AI/ML for anomaly detection                                     │    │
+│  │  └─ Regular ZT maturity assessments                                 │    │
+│  │                                                                     │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -799,37 +799,37 @@ By the end of this lesson, you will be able to:
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │   USERS              IDENTITY                 APPLICATIONS                  │
-│   ┌─────┐           LAYER                    ┌───────────────┐             │
-│   │     │         ┌───────────┐              │ SaaS Apps     │             │
-│   │Corp │ ──────> │   IdP     │ ─────────────│ (M365,SFDC)   │             │
-│   │User │         │           │              └───────────────┘             │
-│   └─────┘         │ • SSO     │              ┌───────────────┐             │
-│                   │ • MFA     │              │ Private Apps  │             │
-│   ┌─────┐         │ • Cond.   │    ZTNA      │ (On-Prem)     │             │
-│   │     │ ──────> │   Access  │ ─────────────│               │             │
-│   │BYOD │         │ • Risk    │    ┌────┐    └───────────────┘             │
-│   │User │         │   Engine  │    │PEP │    ┌───────────────┐             │
-│   └─────┘         └─────┬─────┘    └────┘    │ Cloud IaaS    │             │
-│                         │                    │ (AWS,Azure)   │             │
-│   ┌─────┐               │                    └───────────────┘             │
-│   │     │               │                                                  │
-│   │3rd  │               ▼                    ┌───────────────┐             │
-│   │Party│         ┌───────────┐              │ APIs          │             │
-│   └─────┘         │ Policy    │ ─────────────│ (Internal/    │             │
-│                   │ Engine    │              │  External)    │             │
-│   DEVICES         └─────┬─────┘              └───────────────┘             │
-│   ┌─────┐               │                                                  │
-│   │     │               │                                                  │
-│   │MDM/ │ ──────────────┘         DATA LAYER                              │
-│   │EDR  │    Device               ┌───────────────────────────┐           │
-│   │     │    Posture              │ • Classification          │           │
-│   └─────┘                         │ • DLP                     │           │
-│                                   │ • Encryption              │           │
-│                                   │ • Rights Management       │           │
-│   MONITORING                      └───────────────────────────┘           │
-│   ┌─────────────────────────────────────────────────────────────────┐     │
-│   │  SIEM  │  UEBA  │  SOAR  │  XDR  │  Analytics  │  Compliance   │     │
-│   └─────────────────────────────────────────────────────────────────┘     │
+│   ┌─────┐           LAYER                    ┌───────────────┐              │
+│   │     │         ┌───────────┐              │ SaaS Apps     │              │
+│   │Corp │ ──────> │   IdP     │ ─────────────│ (M365,SFDC)   │              │
+│   │User │         │           │              └───────────────┘              │
+│   └─────┘         │ • SSO     │              ┌───────────────┐              │
+│                   │ • MFA     │              │ Private Apps  │              │
+│   ┌─────┐         │ • Cond.   │    ZTNA      │ (On-Prem)     │              │
+│   │     │ ──────> │   Access  │ ─────────────│               │              │
+│   │BYOD │         │ • Risk    │    ┌────┐    └───────────────┘              │
+│   │User │         │   Engine  │    │PEP │    ┌───────────────┐              │
+│   └─────┘         └─────┬─────┘    └────┘    │ Cloud IaaS    │              │
+│                         │                    │ (AWS,Azure)   │              │
+│   ┌─────┐               │                    └───────────────┘              │
+│   │     │               │                                                   │
+│   │3rd  │               ▼                    ┌───────────────┐              │
+│   │Party│         ┌───────────┐              │ APIs          │              │
+│   └─────┘         │ Policy    │ ─────────────│ (Internal/    │              │
+│                   │ Engine    │              │  External)    │              │
+│   DEVICES         └─────┬─────┘              └───────────────┘              │
+│   ┌─────┐               │                                                   │
+│   │     │               │                                                   │
+│   │MDM/ │ ──────────────┘         DATA LAYER                                │
+│   │EDR  │    Device               ┌───────────────────────────┐             │
+│   │     │    Posture              │ • Classification          │             │
+│   └─────┘                         │ • DLP                     │             │
+│                                   │ • Encryption              │             │
+│                                   │ • Rights Management       │             │
+│   MONITORING                      └───────────────────────────┘             │
+│   ┌─────────────────────────────────────────────────────────────────┐       │
+│   │  SIEM  │  UEBA  │  SOAR  │  XDR  │  Analytics  │  Compliance    │       │
+│   └─────────────────────────────────────────────────────────────────┘       │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
