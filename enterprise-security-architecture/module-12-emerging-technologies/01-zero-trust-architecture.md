@@ -1,13 +1,5 @@
 # Lesson 1: Zero Trust Architecture
 
-
-## Media Resources
-
-![Zero Trust Reference Architecture](assets/01-zero-trust-reference-architecture.png)
-
-[Audio Explanation: Zero Trust Architecture](assets/01-zero-trust-architecture-audio.m4a)
-
-
 ## Table of Contents
 - [Media Resources](#media-resources)
 - [Overview](#overview)
@@ -41,6 +33,12 @@
     - [References](#references)
     - [Vendors by Category](#vendors-by-category)
 - [Navigation](#navigation)
+
+## Media Resources
+
+![Zero Trust Reference Architecture](assets/01-zero-trust-reference-architecture.png)
+
+[Audio Explanation: Zero Trust Architecture](assets/01-zero-trust-architecture-audio.m4a)
 
 ## Overview
 
