@@ -1,5 +1,47 @@
 # Lesson 1: Zero Trust Architecture
 
+
+## Media Resources
+
+![Zero Trust Reference Architecture](assets/01-zero-trust-reference-architecture.png)
+
+[Audio Explanation: Zero Trust Architecture](assets/01-zero-trust-architecture-audio.m4a)
+
+
+## Table of Contents
+- [Media Resources](#media-resources)
+- [Overview](#overview)
+- [Learning Objectives](#learning-objectives)
+- [1. Zero Trust Fundamentals](#1-zero-trust-fundamentals)
+    - [The Evolution to Zero Trust](#the-evolution-to-zero-trust)
+    - [Zero Trust Core Principles](#zero-trust-core-principles)
+- [2. NIST Zero Trust Architecture (SP 800-207)](#2-nist-zero-trust-architecture-sp-800-207)
+    - [NIST ZTA Core Components](#nist-zta-core-components)
+    - [Policy Engine Data Sources](#policy-engine-data-sources)
+    - [NIST ZTA Deployment Models](#nist-zta-deployment-models)
+- [3. Zero Trust Pillars](#3-zero-trust-pillars)
+    - [The Five Pillars of Zero Trust](#the-five-pillars-of-zero-trust)
+    - [Identity-Centric Zero Trust](#identity-centric-zero-trust)
+    - [Network Micro-Segmentation](#network-micro-segmentation)
+- [4. Zero Trust Network Access (ZTNA)](#4-zero-trust-network-access-ztna)
+    - [ZTNA vs Traditional VPN](#ztna-vs-traditional-vpn)
+    - [ZTNA Architecture Patterns](#ztna-architecture-patterns)
+- [5. Zero Trust Implementation](#5-zero-trust-implementation)
+    - [Zero Trust Maturity Model](#zero-trust-maturity-model)
+    - [Zero Trust Implementation Roadmap](#zero-trust-implementation-roadmap)
+    - [Zero Trust Quick Reference Architecture](#zero-trust-quick-reference-architecture)
+- [Interview Practice Questions](#interview-practice-questions)
+    - [Question 1: Zero Trust Definition](#question-1-zero-trust-definition)
+    - [Question 2: ZTNA vs VPN](#question-2-ztna-vs-vpn)
+    - [Question 3: Implementation Challenges](#question-3-implementation-challenges)
+    - [Question 4: Measuring Zero Trust](#question-4-measuring-zero-trust)
+    - [Question 5: Zero Trust Architecture Design](#question-5-zero-trust-architecture-design)
+- [Key Takeaways](#key-takeaways)
+- [Additional Resources](#additional-resources)
+    - [References](#references)
+    - [Vendors by Category](#vendors-by-category)
+- [Navigation](#navigation)
+
 ## Overview
 
 Zero Trust has evolved from a buzzword to a fundamental security architecture paradigm, shifting from "trust but verify" to "never trust, always verify." This lesson provides comprehensive coverage of Zero Trust principles, the NIST Zero Trust Architecture framework, implementation strategies, and practical guidance for Enterprise Security Architects designing and implementing Zero Trust transformations.
@@ -841,6 +883,9 @@ By the end of this lesson, you will be able to:
 ### Question 1: Zero Trust Definition
 **"How would you explain Zero Trust to a non-technical executive?"**
 
+<details>
+<summary><strong>Click to Reveal Answer</strong></summary>
+
 **Strong Answer:**
 "I'd explain it as a fundamental shift in how we think about security:
 
@@ -869,10 +914,15 @@ We verify every person and device, every time they access anything, regardless o
 
 It's a journey, not a destination. We implement incrementally, starting with our most critical assets."
 
+</details>
+
 ---
 
 ### Question 2: ZTNA vs VPN
 **"We're considering replacing our VPN with ZTNA. What's your recommendation?"**
+
+<details>
+<summary><strong>Click to Reveal Answer</strong></summary>
 
 **Strong Answer:**
 "I'd recommend ZTNA for most use cases, but with a phased approach:
@@ -911,10 +961,15 @@ It's a journey, not a destination. We implement incrementally, starting with our
 
 Cost is typically comparable; savings in VPN infrastructure offset ZTNA licensing."
 
+</details>
+
 ---
 
 ### Question 3: Implementation Challenges
 **"What are the biggest challenges in implementing Zero Trust and how do you address them?"**
+
+<details>
+<summary><strong>Click to Reveal Answer</strong></summary>
 
 **Strong Answer:**
 "I've seen several common challenges:
@@ -968,10 +1023,15 @@ Zero Trust sounds expensive.
 
 The meta-lesson: Zero Trust is a journey. Perfect shouldn't be the enemy of better."
 
+</details>
+
 ---
 
 ### Question 4: Measuring Zero Trust
 **"How do you measure Zero Trust maturity and success?"**
+
+<details>
+<summary><strong>Click to Reveal Answer</strong></summary>
 
 **Strong Answer:**
 "I measure across multiple dimensions:
@@ -1018,10 +1078,15 @@ Overall ZT Maturity: Initial → Advanced (in progress)
 
 Regular maturity assessments against CISA or custom model, reported to leadership quarterly."
 
+</details>
+
 ---
 
 ### Question 5: Zero Trust Architecture Design
 **"Design a Zero Trust architecture for a company moving from on-premises to hybrid cloud."**
+
+<details>
+<summary><strong>Click to Reveal Answer</strong></summary>
 
 **Strong Answer:**
 "I'd design around the core components:
@@ -1078,6 +1143,8 @@ Users → IdP (MFA) → ZTNA Broker → Connectors → Apps
 
 Key principle: All access flows through policy decision, regardless of user location or resource location."
 
+</details>
+
 ---
 
 ## Key Takeaways
@@ -1091,10 +1158,6 @@ Key principle: All access flows through policy decision, regardless of user loca
 ---
 
 ## Additional Resources
-
-### Media Resources
-- **Audio**: `assets/01-zero-trust-architecture-audio.m4a` (when available)
-- **Diagram**: `assets/01-zero-trust-reference-architecture.png` (when available)
 
 ### References
 - NIST SP 800-207: Zero Trust Architecture
