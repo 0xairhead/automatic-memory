@@ -37,9 +37,9 @@
 
 ## Media Resources
 
-![SASE Architecture Visual](./assets/sase-future-architecture-visual.png)
+![SASE Architecture Visual](assets/05-sase-future-architecture-visual.png)
 
-[Audio Explanation: Why Identity Is the New Perimeter](./assets/sase-future-architecture-why-identity-is-the-new-perimeter.m4a)
+[Audio Explanation: Why Identity Is the New Perimeter](assets/05-sase-future-architecture-why-identity-is-the-new-perimeter.m4a)
 
 ## Overview
 
