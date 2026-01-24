@@ -43,7 +43,7 @@
         <summary><strong>Reveal Patching Solution</strong></summary>
 
         1.  **Locate the Jump:** Find the conditional jump instruction (`jnz` or `75`) immediately after the `strcmp` check.
-        2.  **Find File Offset:** IDA shows *Virtual Addresses* (e.g., `0x401050`). Hex Fiend needs the *File Offset*. In IDA, look at the bottom left status bar for `File Offset: ...` when you click the instruction.
+        2.  **Find File Offset:** IDA shows *Virtual Addresses* (e.g., `00401495`). Hex Fiend needs the *File Offset* (e.g., `00000895`). In IDA, look at the bottom left status bar for `File Offset: ...` when you click the instruction.
             ![IDA File Offset](screenshots/ida_file_offset.png)
         3.  **Edit Bytes:** Open the binary in Hex Fiend. Press **Command + L** (or Edit > Jump to Offset) and type the File Offset.
             ![Hex Editor Patching](screenshots/patch_hex_view.png)
