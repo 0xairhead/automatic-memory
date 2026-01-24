@@ -46,7 +46,16 @@
         2.  **Find File Offset:** IDA shows *Virtual Addresses* (e.g., `0x401050`). Hex Fiend needs the *File Offset*. In IDA, look at the bottom left status bar for `File Offset: ...` when you click the instruction.
             ![IDA File Offset](screenshots/ida_file_offset.png)
         3.  **Edit Bytes:** Open the binary in Hex Fiend. Press **Command + L** (or Edit > Jump to Offset) and type the File Offset.
+            ![Hex Editor Patching](screenshots/patch_hex_view.png)
         4.  **The Patch:** Change `75` (JNZ) to `74` (JZ) to invert the logic, or replace the instruction with `90 90` (NOP) to ignore the check entirely.
+            ![Patched Success](screenshots/patch_success_result.png)
+
+        **Alternative: The CLI Way (`xxd`)**
+        If you prefer the terminal:
+        1.  **Dump:** `xxd -g 1 secret.exe > dump.hex`
+        2.  **Edit:** Open `dump.hex` in any text editor (vim/nano). Search for the bytes you found in IDA (e.g., `75 XX`). Change `75` to `74`.
+        3.  **Rebuild:** `xxd -r dump.hex > secret_patched.exe`
+        4.  **Run:** `./secret_patched.exe`
         </details>
 
 ## Exercise 2: The Loop
