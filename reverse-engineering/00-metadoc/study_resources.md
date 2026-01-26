@@ -44,7 +44,7 @@
 ### **Low Level Learning (creel)**
 *   **Focus:** Systems programming, Assembly, and how computers actually work.
 *   **Why watch:** Great for bridging the gap between high-level code and the raw metal.
-*   **Link:** [Low Level Learning](https://www.youtube.com/@LowLevelLearning)
+*   **Link:** [Low Level Learning](https://www.youtube.com/@WhatsACreel)
 
 ### **LaurieWired**
 *   **Focus:** Malware Analysis (especially Mobile/Android) and Reverse Engineering.
