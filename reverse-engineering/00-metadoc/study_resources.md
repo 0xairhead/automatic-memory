@@ -56,6 +56,11 @@
 *   **Why watch:** Stephen Sims interviews industry legends and does deep-dive technical streams.
 *   **Link:** [Off By One Security](https://www.youtube.com/@OffByOneSecurity)
 
+### **Josh Stroschein**
+*   **Focus:** Malware Analysis, Reverse Engineering, and Cyber Defense.
+*   **Why watch:** Deep technical deep-dives into malware samples and reverse engineering concepts. Excellent educational style.
+*   **Link:** [Josh Stroschein](https://www.youtube.com/@jstrosch/featured)
+
 ---
 
 ## 🐦 X (Twitter) Accounts to Follow
@@ -93,6 +98,11 @@ Staying updated is key in this field.
 *   **Focus:** Advanced Windows Internals, Malware Analysis, and Hardware Hacking.
 *   **Description:** A learning hub for cybersecurity professionals offering deep-dive courses like "Windows Internals Master" and "Windows Master Developer".
 *   **Link:** [TrainSec](https://trainsec.net/)
+
+### **The Cyber Yeti (Josh Stroschein)**
+*   **Focus:** Malware Analysis and Reverse Engineering Training.
+*   **Description:** Comprehensive courses on malware analysis and reverse engineering from beginner to advanced levels.
+*   **Link:** [The Cyber Yeti](https://www.thecyberyeti.com/)
 
 ---
 
