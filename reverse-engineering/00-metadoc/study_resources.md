@@ -104,6 +104,11 @@ Staying updated is key in this field.
 *   **Description:** Comprehensive courses on malware analysis and reverse engineering from beginner to advanced levels.
 *   **Link:** [The Cyber Yeti](https://www.thecyberyeti.com/)
 
+### **Pluralsight (Josh Stroschein)**
+*   **Focus:** Malware Analysis, Assembly, and Exploit Development.
+*   **Description:** High-quality, structured video courses covering x86 assembly, malware analysis techniques, and exploit development.
+*   **Link:** [Pluralsight Courses](https://www.pluralsight.com/authors/josh-stroschein)
+
 ---
 
 ## 🚩 CTFs & Wargames
