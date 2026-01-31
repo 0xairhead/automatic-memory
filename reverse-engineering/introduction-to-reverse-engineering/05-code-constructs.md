@@ -103,7 +103,9 @@ In this lesson, we moved from basic instructions to recognizing higher-level cod
 3.  **If `div` is executed, where is the Remainder stored?**
     <details>
     <summary>Answer</summary>
+
     In the **EDX** register.
+    
     </details>
 
 4.  **How are Local Variables typically referenced in assembly?**
