@@ -224,66 +224,88 @@ Reverse Engineering is a challenging but rewarding discipline that combines low-
 1.  **Which analysis method is safer when dealing with unknown malware?**
     <details>
     <summary>Answer</summary>
+
     Static Analysis (because the code is not executed).
+
     </details>
 
 2.  **What is the "primary loss" during the compilation process that makes RE difficult?**
     <details>
     <summary>Answer</summary>
+
     Contextual information like variable names, function names, and data types.
+
     </details>
 
 3.  **Why might a Linear Sweep disassembler fail on complex binaries?**
     <details>
     <summary>Answer</summary>
+
     It can misinterpret data (like jump tables) as executable code because it disassembles sequentially without following control flow.
+
     </details>
 
 4.  **Why is x86 (32-bit) architecture the primary focus for learning reverse engineering?**
     <details>
     <summary>Answer</summary>
+
     It is the foundation for modern systems, still widely used in malware, and easier to learn than x64 while being transferable to other architectures.
+
     </details>
 
 5.  **Which disassembly algorithm is generally more accurate but slower, and why?**
     <details>
     <summary>Answer</summary>
+
     Recursive Descent. It follows the control flow (jumps/calls) to discover code, making it better at distinguishing code from data, though it can miss indirect jumps.
+
     </details>
 
 6.  **What is the purpose of a "packer" in malware?**
     <details>
     <summary>Answer</summary>
+
     To compress or encrypt the malicious payload so it remains hidden from static analysis tools until it is executed and "unpacked" in memory.
+
     </details>
 
 7.  **What is a significant disadvantage of Dynamic Analysis compared to Static Analysis?**
     <details>
     <summary>Answer</summary>
+
     It offers incomplete coverage; you only analyze the code paths that are actually triggered during execution, potentially missing dormant malicious logic.
+
     </details>
 
 8.  **What is a Domain Generation Algorithm (DGA) and why is it used?**
     <details>
     <summary>Answer</summary>
+
     A DGA automatically generates valid domain names for C2 (Command & Control) communication. It is used to evade static blacklisting; if defenders block one domain, the malware can simply generate and switch to a new one.
+
     </details>
 
 9.  **How can defenders detect or defend against DGA-based communication?**
     <details>
     <summary>Answer</summary>
+
     Defenders can analyze DNS traffic or proxy logs for high volumes of **NXDOMAIN** (non-existent domain) responses. This occurs because the DGA generates thousands of potential domains, but the attacker only registers a few. When the malware tries to connect to the unregistered ones, the DNS check fails. Additionally, by reverse engineering the DGA algorithm, security teams can predict future domains and preemptively block (blackhole) them.
+
     </details>
 
 10. **Explain the difference between Linking and Loading in the build process.**
     <details>
     <summary>Answer</summary>
+
     **Linking** happens at build-time (by the developer); it combines object files into an executable and resolves references to library code. **Loading** happens at run-time (by the OS); it maps the executable into memory, handles dynamic links, and prepares the program for execution.
+
     </details>
 
 11. **Why does the "variable length" of x86 instructions make disassembly difficult?**
     <details>
     <summary>Answer</summary>
+
     In x86, instructions can be anywhere from 1 to 15 bytes long. A disassembler cannot simply skip forward by a fixed amount; it must decode each instruction to figure out where the next one starts. If it starts decoding at the wrong offset (e.g., in the middle of an instruction or in a data section), it will produce "garbled" code that doesn't reflect the actual program logic.
+
     </details>
 
