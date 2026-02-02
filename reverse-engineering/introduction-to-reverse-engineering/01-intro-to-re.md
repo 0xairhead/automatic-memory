@@ -15,14 +15,16 @@
 *   [4. The Analyst's Toolkit](#4-the-analysts-toolkit)
     *   [Static Analysis Tools](#static-analysis-tools)
     *   [Dynamic Analysis Tools](#dynamic-analysis-tools)
-*   [5. Why Reverse Engineering Is Hard](#5-why-reverse-engineering-is-hard)
+*   [5. The Software Build Process](#5-the-software-build-process)
+    *   [C: Compilation, Assembly, Linking, Loading](#c-compilation-assembly-linking-loading)
+*   [6. Why Reverse Engineering Is Hard](#6-why-reverse-engineering-is-hard)
     *   [What Gets Lost?](#what-gets-lost)
     *   [The Mapping Problem](#the-mapping-problem)
-*   [6. Disassembly Algorithms](#6-disassembly-algorithms)
+*   [7. Disassembly Algorithms](#7-disassembly-algorithms)
     *   [Linear Sweep (e.g., `objdump`, `WinDbg`)](#linear-sweep-eg-objdump-windbg)
     *   [Recursive Descent (e.g., `IDA Pro`)](#recursive-descent-eg-ida-pro)
-*   [7. Anti-Reverse Engineering](#7-anti-reverse-engineering)
-*   [8. Real-World Applications](#8-real-world-applications)
+*   [8. Anti-Reverse Engineering](#8-anti-reverse-engineering)
+*   [9. Real-World Applications](#9-real-world-applications)
 *   [Summary](#summary)
 *   [Knowledge Check](#knowledge-check)
 
@@ -36,6 +38,7 @@ By the end of this lesson, you will be able to:
 *   Distinguish between **Static Analysis** and **Dynamic Analysis**, and know when to apply each.
 *   Explain the role of **Assembly Language** and the **x86 architecture** in the RE process.
 *   Identify industry-standard tools such as **IDA Pro** and **WinDbg**.
+*   Describe the **Software Build Process** (Preprocessing, Compilation, Assembly, Linking, Loading).
 *   Understand the challenges posed by **compilation** and **optimization**.
 *   Recognize common **anti-reverse engineering** techniques used by malware authors.
 
@@ -116,7 +119,23 @@ You wouldn't be a surgeon without a scalpel. Here are the tools of the trade:
 
 ---
 
-## 5. Why Reverse Engineering Is Hard
+## 5. The Software Build Process
+
+To reverse engineer a program, we must first understand how it was constructed. The journey from human-readable source code to a running process involves several distinct stages.
+
+### C: Compilation, Assembly, Linking, Loading
+
+1.  **Preprocessing**: The preprocessor handles directives (like `#include` and `#define`). It expands macros and pulls in the contents of header files.
+2.  **Compilation**: The compiler (e.g., GCC, Clang, MSVC) translates the preprocessed source code into **Assembly Language** specific to the target architecture (like x86). This is where high-level logic is transformed into low-level instructions.
+3.  **Assembly**: An assembler translates the assembly code into **Machine Code** (binary instructions). The output is an **Object File** (e.g., `.obj` on Windows or `.o` on Linux), which contains machine code but is not yet a complete executable.
+4.  **Linking**: The linker combines one or more object files with pre-compiled library code.
+    *   **Static Linking**: Library code is copied directly into the final executable.
+    *   **Dynamic Linking**: The executable contains "stubs" that point to external library files (like `.dll` or `.so`). The linker resolves external symbols and calculates the final memory layout of the file.
+5.  **Loading**: When a user executes the file, the OS **Loader** takes over. It maps the file from disk into the process's virtual memory, sets up the stack and heap, resolves dynamic library addresses, and finally jumps to the program's **Entry Point** (often `main`).
+
+---
+
+## 6. Why Reverse Engineering Is Hard
 
 If it were easy, everyone would do it. The primary difficulty stems from **Compilation Loss**.
 
@@ -136,7 +155,7 @@ There is a **many-to-many** relationship between source code and machine code.
 
 ---
 
-## 6. Disassembly Algorithms
+## 7. Disassembly Algorithms
 
 How do tools like IDA Pro turn raw bytes back into assembly instructions? They use one of two main algorithms:
 
@@ -154,7 +173,7 @@ How do tools like IDA Pro turn raw bytes back into assembly instructions? They u
 
 ---
 
-## 7. Anti-Reverse Engineering
+## 8. Anti-Reverse Engineering
 
 Malware authors and software protection schemes actively try to stop you.
 
@@ -164,7 +183,7 @@ Malware authors and software protection schemes actively try to stop you.
 
 ---
 
-## 8. Real-World Applications
+## 9. Real-World Applications
 
 *   **Malware Analysis**: Dissecting a new ransomware strain (like **CryptoLocker**) to find a "kill switch" or write a decryptor. Often, analysts focus only on specific parts, like the Domain Generation Algorithm (DGA) used for C2 communication.
 *   **Software Interoperability**: Reverse engineering a proprietary file format (like `.doc` before it was open) to allow open-source tools to read/write it.
@@ -235,5 +254,11 @@ Reverse Engineering is a challenging but rewarding discipline that combines low-
     <details>
     <summary>Answer</summary>
     Defenders can analyze DNS traffic or proxy logs for high volumes of **NXDOMAIN** (non-existent domain) responses. This occurs because the DGA generates thousands of potential domains, but the attacker only registers a few. When the malware tries to connect to the unregistered ones, the DNS check fails. Additionally, by reverse engineering the DGA algorithm, security teams can predict future domains and preemptively block (blackhole) them.
+    </details>
+
+10. **Explain the difference between Linking and Loading in the build process.**
+    <details>
+    <summary>Answer</summary>
+    **Linking** happens at build-time (by the developer); it combines object files into an executable and resolves references to library code. **Loading** happens at run-time (by the OS); it maps the executable into memory, handles dynamic links, and prepares the program for execution.
     </details>
 
