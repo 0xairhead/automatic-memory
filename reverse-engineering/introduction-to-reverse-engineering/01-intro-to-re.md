@@ -98,6 +98,23 @@ Binaries are machine code—streams of ones and zeros. **Assembly language** is 
 
 While modern computers are 64-bit, we will focus on **32-bit Windows (x86)** architecture.
 *   **Why?** It is still widely used in malware and legacy systems, and it is largely a subset of the more complex 64-bit architecture (x64).
+*   **Variable Instruction Length**: Unlike RISC architectures (like ARM) where instructions are typically a fixed size (e.g., 4 bytes), x86 instructions can range from **1 to 15 bytes**. This makes correctly identifying where one instruction ends and the next begins a major challenge for disassemblers.
+
+    **Examples of x86 Instruction Lengths:**
+
+    | Hex Bytes | Assembly Instruction | Length |
+    | :--- | :--- | :--- |
+    | `90` | `NOP` (No Operation) | 1 Byte |
+    | `50` | `PUSH EAX` | 1 Byte |
+    | `B8 44 33 22 11` | `MOV EAX, 0x11223344` | 5 Bytes |
+    | `81 C3 01 00 00 00` | `ADD EBX, 1` | 6 Bytes |
+    | `0F 84 10 02 00 00` | `JZ <address>` | 6 Bytes |
+
+    **The Disassembly Challenge (Misalignment):**
+    If a disassembler starts reading just one byte off, the entire stream changes.
+    *   **Original**: `B8 90 90 90 90` -> `MOV EAX, 0x90909090` (5 bytes)
+    *   **Misaligned**: If we skip the `B8`, the disassembler sees four `90` bytes -> `NOP`, `NOP`, `NOP`, `NOP`.
+
 *   **Transferability**: Once you master x86, transitioning to x64 or ARM is simply a matter of learning new registers and calling conventions.
 
 ---
@@ -157,7 +174,9 @@ There is a **many-to-many** relationship between source code and machine code.
 
 ## 7. Disassembly Algorithms
 
-How do tools like IDA Pro turn raw bytes back into assembly instructions? They use one of two main algorithms:
+How do tools like IDA Pro turn raw bytes back into assembly instructions? Because x86 has **variable-length instructions**, a dissembler cannot simply "jump" to a fixed offset. It must decode each byte to determine the instruction's length before it knows where the next one starts.
+
+They use one of two main algorithms:
 
 ### Linear Sweep (e.g., `objdump`, `WinDbg`)
 
@@ -260,5 +279,11 @@ Reverse Engineering is a challenging but rewarding discipline that combines low-
     <details>
     <summary>Answer</summary>
     **Linking** happens at build-time (by the developer); it combines object files into an executable and resolves references to library code. **Loading** happens at run-time (by the OS); it maps the executable into memory, handles dynamic links, and prepares the program for execution.
+    </details>
+
+11. **Why does the "variable length" of x86 instructions make disassembly difficult?**
+    <details>
+    <summary>Answer</summary>
+    In x86, instructions can be anywhere from 1 to 15 bytes long. A disassembler cannot simply skip forward by a fixed amount; it must decode each instruction to figure out where the next one starts. If it starts decoding at the wrong offset (e.g., in the middle of an instruction or in a data section), it will produce "garbled" code that doesn't reflect the actual program logic.
     </details>
 
