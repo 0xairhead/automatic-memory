@@ -99,23 +99,31 @@ As you identify logic, rename variables (e.g., `var_4` -> `user_count`) and loca
 1.  **Which instruction is primarily used to compare two values before a jump?**
     <details>
     <summary>Answer</summary>
+
     **CMP** (Compare). It subtracts the operands to set flags.
+
     </details>
 
 2.  **If you see a `JG` (Jump Greater) instruction, is the data likely Signed or Unsigned?**
     <details>
     <summary>Answer</summary>
+
     **Signed**. Unsigned comparisons would use `JA` (Jump Above).
+
     </details>
 
 3.  **True or False: Assembly logic usually checks the exact same condition as the source code.**
     <details>
     <summary>Answer</summary>
+
     **False**. Assembly often checks the **inverse** condition to jump over the "true" block.
+
     </details>
 
 4.  **What does "Short-Circuit Evaluation" mean in the context of an `AND` condition?**
     <details>
     <summary>Answer</summary>
+
     It means if the **first** condition fails, the code jumps immediately to failure/else **without** checking the second condition.
+    
     </details>
