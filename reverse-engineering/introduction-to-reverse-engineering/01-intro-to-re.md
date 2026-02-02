@@ -1,5 +1,33 @@
 # Lesson 01: Introduction to Software Reverse Engineering
 
+
+## Table of Contents
+
+*   [Learning Objectives](#learning-objectives)
+*   [1. What Is Reverse Engineering?](#1-what-is-reverse-engineering)
+    *   [Primary Goals](#primary-goals)
+*   [2. Core Analysis Methodologies](#2-core-analysis-methodologies)
+    *   [Static Analysis](#static-analysis)
+    *   [Dynamic Analysis](#dynamic-analysis)
+*   [3. Technical Foundations](#3-technical-foundations)
+    *   [Assembly Language](#assembly-language)
+    *   [Target Architecture: x86 (Windows 32-bit)](#target-architecture-x86-windows-32-bit)
+*   [4. The Analyst's Toolkit](#4-the-analysts-toolkit)
+    *   [Static Analysis Tools](#static-analysis-tools)
+    *   [Dynamic Analysis Tools](#dynamic-analysis-tools)
+*   [5. Why Reverse Engineering Is Hard](#5-why-reverse-engineering-is-hard)
+    *   [What Gets Lost?](#what-gets-lost)
+    *   [The Mapping Problem](#the-mapping-problem)
+*   [6. Disassembly Algorithms](#6-disassembly-algorithms)
+    *   [Linear Sweep (e.g., `objdump`, `WinDbg`)](#linear-sweep-eg-objdump-windbg)
+    *   [Recursive Descent (e.g., `IDA Pro`)](#recursive-descent-eg-ida-pro)
+*   [7. Anti-Reverse Engineering](#7-anti-reverse-engineering)
+*   [8. Real-World Applications](#8-real-world-applications)
+*   [Summary](#summary)
+*   [Knowledge Check](#knowledge-check)
+
+---
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
