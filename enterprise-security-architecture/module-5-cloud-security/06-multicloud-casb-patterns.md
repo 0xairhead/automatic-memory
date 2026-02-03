@@ -37,7 +37,7 @@ This final lesson ties together everything you've learned into enterprise-grade 
 
 **Audio Lecture:**
 
-🎧 <audio controls src="./assets/06-multicloud-casb-audio.m4a"></audio>
+🎧 [🎧 Listen to Audio](./assets/06-multicloud-casb-audio.m4a)
 
 ---
 

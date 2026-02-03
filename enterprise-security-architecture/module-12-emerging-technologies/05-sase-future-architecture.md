@@ -39,7 +39,7 @@
 
 ![SASE Architecture Visual](assets/05-sase-future-architecture-visual.png)
 
-<audio controls src="assets/05-sase-future-architecture-why-identity-is-the-new-perimeter.m4a"></audio>
+[🎧 Listen to Audio](assets/05-sase-future-architecture-why-identity-is-the-new-perimeter.m4a)
 
 ## Overview
 

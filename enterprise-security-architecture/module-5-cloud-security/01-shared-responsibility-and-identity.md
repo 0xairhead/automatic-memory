@@ -33,7 +33,7 @@ Welcome to Cloud Security! This foundational lesson covers the most critical con
 
 **Audio Lecture:**
 
-🎧 <audio controls src="./assets/01-shared-responsibility-audio.m4a"></audio>
+🎧 [🎧 Listen to Audio](./assets/01-shared-responsibility-audio.m4a)
 
 ---
 

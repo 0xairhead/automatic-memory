@@ -36,7 +36,7 @@ Network security is where traditional security skills meet cloud-native concepts
 
 **Audio Lecture:**
 
-🎧 <audio controls src="./assets/02-cloud-network-audio.m4a"></audio>
+🎧 [🎧 Listen to Audio](./assets/02-cloud-network-audio.m4a)
 
 ---
 

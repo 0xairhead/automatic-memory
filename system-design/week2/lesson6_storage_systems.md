@@ -43,7 +43,7 @@ Welcome to the final lesson of Week 2! You've learned about networking and cachi
 ![Choosing Your Storage: A Guide to File, Block, and Object](./assets/storage_systems_infographic.png)
 
 **Audio Lesson:**
-<audio controls src="./assets/storage_systems.m4a"></audio>
+[🎧 Listen to Audio](./assets/storage_systems.m4a)
 
 ---
 

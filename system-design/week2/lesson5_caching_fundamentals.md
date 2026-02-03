@@ -37,7 +37,7 @@ Welcome to one of the most important lessons in system design! Caching is the se
 ![Caching Fundamentals: A Guide to Faster Systems](./assets/caching_fundamentals_infographic.png)
 
 **Audio Lesson:**
-<audio controls src="./assets/caching_fundamentals.m4a"></audio>
+[🎧 Listen to Audio](./assets/caching_fundamentals.m4a)
 
 ---
 

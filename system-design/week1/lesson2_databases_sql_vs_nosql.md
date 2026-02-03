@@ -23,7 +23,7 @@
 ![SQL vs NoSQL: Choosing the Right Database](./assets/sql_vs_nosql_infographic.png)
 
 **Audio Lesson:**
-<audio controls src="./assets/sql_nosql_consistency_and_scale.m4a"></audio>
+[🎧 Listen to Audio](./assets/sql_nosql_consistency_and_scale.m4a)
 
 ---
 

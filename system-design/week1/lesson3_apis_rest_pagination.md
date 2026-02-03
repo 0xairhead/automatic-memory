@@ -26,7 +26,7 @@
 ![A Developer's Guide to REST APIs](./assets/rest_apis_guide_infographic.png)
 
 **Audio Lesson:**
-<audio controls src="./assets/designing_rest_apis_for_scale.m4a"></audio>
+[🎧 Listen to Audio](./assets/designing_rest_apis_for_scale.m4a)
 
 ---
 

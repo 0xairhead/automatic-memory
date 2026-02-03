@@ -45,7 +45,7 @@
 
 ![The Data Protection Gap Diagram](assets/06-confidential-computing-data-protection-gap.png)
 
-<audio controls src="assets/06-confidential-computing-solves-the-data-gap.m4a"></audio>
+[🎧 Listen to Audio](assets/06-confidential-computing-solves-the-data-gap.m4a)
 
 ## Overview
 

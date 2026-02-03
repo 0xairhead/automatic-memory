@@ -25,7 +25,7 @@ Welcome to your first lesson! Let's build your foundation.
 ![The Web's Restaurant: A Guide to Client-Server & HTTP](./assets/client_server_http_infographic.png)
 
 **Audio Lesson:**
-<audio controls src="./assets/HTTP_Client_Server_and_Status_Codes.m4a"></audio>
+[🎧 Listen to Audio](./assets/HTTP_Client_Server_and_Status_Codes.m4a)
 
 ---
 

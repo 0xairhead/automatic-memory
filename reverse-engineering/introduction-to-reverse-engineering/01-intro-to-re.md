@@ -46,7 +46,7 @@ By the end of this lesson, you will be able to:
 
 ## Media Resources
 
-<audio controls src="assets/intro-to-re.m4a"></audio>
+[🎧 Listen to Audio](assets/intro-to-re.m4a)
 
 ![Introduction to Reverse Engineering](assets/intro-to-re.png)
 

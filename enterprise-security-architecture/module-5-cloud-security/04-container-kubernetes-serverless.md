@@ -36,7 +36,7 @@ Containers and serverless have transformed how we deploy applications. They also
 
 **Audio Lecture:**
 
-🎧 <audio controls src="./assets/04-container-kubernetes-audio.m4a"></audio>
+🎧 [🎧 Listen to Audio](./assets/04-container-kubernetes-audio.m4a)
 
 ---
 
