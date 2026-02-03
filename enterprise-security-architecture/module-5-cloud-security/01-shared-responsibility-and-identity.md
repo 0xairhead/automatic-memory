@@ -33,7 +33,7 @@ Welcome to Cloud Security! This foundational lesson covers the most critical con
 
 **Audio Lecture:**
 
-🎧 [Shared Responsibility & Identity Management (Audio)](./assets/01-shared-responsibility-audio.m4a)
+🎧 <audio controls src="./assets/01-shared-responsibility-audio.m4a"></audio>
 
 ---
 

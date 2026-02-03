@@ -36,7 +36,7 @@ Data is the ultimate target. Attackers don't want your compute or network—they
 
 **Audio Lecture:**
 
-🎧 [Mastering Cloud Data Protection & Key Control (Audio)](./assets/05-cloud-data-protection-audio.m4a)
+🎧 <audio controls src="./assets/05-cloud-data-protection-audio.m4a"></audio>
 
 ---
 

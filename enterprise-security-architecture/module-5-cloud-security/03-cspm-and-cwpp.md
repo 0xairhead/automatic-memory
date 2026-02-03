@@ -33,7 +33,7 @@ Most cloud breaches aren't sophisticated hacks—they're misconfigurations. This
 
 **Audio Lecture:**
 
-🎧 [CSPM & CWPP Explained (Audio)](./assets/03-cspm-cwpp-audio.m4a)
+🎧 <audio controls src="./assets/03-cspm-cwpp-audio.m4a"></audio>
 
 ---
 

@@ -26,7 +26,7 @@
 ![A Developer's Guide to REST APIs](./assets/rest_apis_guide_infographic.png)
 
 **Audio Lesson:**
-[Designing REST APIs for Massive Scale (Audio)](./assets/designing_rest_apis_for_scale.m4a)
+<audio controls src="./assets/designing_rest_apis_for_scale.m4a"></audio>
 
 ---
 

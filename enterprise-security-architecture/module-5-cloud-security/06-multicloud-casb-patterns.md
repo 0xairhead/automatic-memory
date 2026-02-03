@@ -37,7 +37,7 @@ This final lesson ties together everything you've learned into enterprise-grade 
 
 **Audio Lecture:**
 
-🎧 [Building Consistent Multi-Cloud Security Architecture (Audio)](./assets/06-multicloud-casb-audio.m4a)
+🎧 <audio controls src="./assets/06-multicloud-casb-audio.m4a"></audio>
 
 ---
 

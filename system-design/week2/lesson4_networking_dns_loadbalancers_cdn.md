@@ -43,7 +43,7 @@ Welcome to Week 2! Now we're getting into the infrastructure that makes the inte
 ![The Pillars of Modern Networking: DNS, Load Balancers & CDNs](./assets/dns_loadbalancers_cdn_infographic.png)
 
 **Audio Lesson:**
-[DNS, Load Balancers and CDNs Explained (Audio)](./assets/dns_loadbalancers_cdn.m4a)
+<audio controls src="./assets/dns_loadbalancers_cdn.m4a"></audio>
 
 ---
 

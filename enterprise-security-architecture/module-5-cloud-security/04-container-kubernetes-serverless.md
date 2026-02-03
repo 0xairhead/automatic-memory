@@ -36,7 +36,7 @@ Containers and serverless have transformed how we deploy applications. They also
 
 **Audio Lecture:**
 
-🎧 [Securing Containers, Kubernetes & Serverless (Audio)](./assets/04-container-kubernetes-audio.m4a)
+🎧 <audio controls src="./assets/04-container-kubernetes-audio.m4a"></audio>
 
 ---
 

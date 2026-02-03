@@ -38,7 +38,7 @@
 
 ![Zero Trust Reference Architecture](assets/01-zero-trust-reference-architecture.png)
 
-[Audio Explanation: Zero Trust Architecture](assets/01-zero-trust-architecture-audio.m4a)
+<audio controls src="assets/01-zero-trust-architecture-audio.m4a"></audio>
 
 ## Overview
 

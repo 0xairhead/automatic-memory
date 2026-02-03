@@ -1,6 +1,5 @@
 # Lesson 01: Introduction to Software Reverse Engineering
 
-
 ## Table of Contents
 
 *   [Learning Objectives](#learning-objectives)
@@ -44,6 +43,14 @@ By the end of this lesson, you will be able to:
 *   Recognize common **anti-reverse engineering** techniques used by malware authors.
 
 ---
+
+## Media Resources
+
+<audio controls src="assets/intro-to-re.m4a"></audio>
+
+![Introduction to Reverse Engineering](assets/intro-to-re.png)
+
+[Lecture Slides: Introduction to Reverse Engineering](assets/intro-to-re.pdf)
 
 ## 1. What Is Reverse Engineering?
 
