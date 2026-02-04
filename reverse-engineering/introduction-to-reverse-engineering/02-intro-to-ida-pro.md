@@ -143,3 +143,45 @@ IDA Pro is a powerful tool with a unique workflow. It separates the **raw binary
     <summary>Answer</summary>
     "Pack database (Store)". This compiles the temporary working files into a single .idb file.
     </details>
+
+4.  **What happens during the "Instruction Parsing" (Pass 1) phase of analysis?**
+    <details>
+    <summary>Answer</summary>
+    IDA decodes binary bytes into assembly instructions (mnemonics and operands).
+    </details>
+
+5.  **What crucial context does the "Semantic Analysis" (Pass 2) phase add?**
+    <details>
+    <summary>Answer</summary>
+    It identifies functions, argument lists, and cross-references (xrefs).
+    </details>
+
+6.  **Why does IDA map the binary into virtual memory instead of just reading it from disk?**
+    <details>
+    <summary>Answer</summary>
+    To simulate how the OS loads the program, ensuring memory addresses match what they would be during actual execution.
+    </details>
+
+7.  **What is the purpose of the `.til` temporary file?**
+    <details>
+    <summary>Answer</summary>
+    It stores type library information (function prototypes and data structures).
+    </details>
+
+8.  **If IDA identifies a binary as a "PE" file, what architecture is it likely targeted for?**
+    <details>
+    <summary>Answer</summary>
+    Windows (Portable Executable).
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **The Golden Rule**: IDA *never* modifies the original binary. It works on a copy (database). This is safe and allows for non-destructive experimentation.
+*   **The Database (.idb) is Your Work**: All your renames, comments, and coloring are stored in the `.idb` file. If you lose this, you start from scratch.
+*   **Recursive Descent Disassembly**: IDA doesn't just read top-to-bottom. It follows jump and call instructions to find code, which helps it distinguish code from data better than simple linear sweep tools.
+*   **The Two-Pass System**:
+    *   **Pass 1 (Parsing)**: Decodes bytes into instructions.
+    *   **Pass 2 (Semantics)**: Adds meaning (functions, args, cross-references).
+*   **Version Check**: Use the Freeware/Lab version to **save** your work. The Demo version is a trap for students (no save).
