@@ -129,49 +129,65 @@ IDA Pro is a powerful tool with a unique workflow. It separates the **raw binary
 1.  **Why is the "Demo" version of IDA Pro unsuitable for this course?**
     <details>
     <summary>Answer</summary>
+
     It disables the "Save" feature, meaning you cannot create or submit the required .idb database files.
+    
     </details>
 
 2.  **True or False: When you add a comment in IDA Pro, it modifies the original .exe file.**
     <details>
     <summary>Answer</summary>
+
     **False**. IDA modifies its own *database* (.idb), leaving the original binary untouched.
+
     </details>
 
 3.  **What is the default action you should choose when closing IDA to ensure your work is kept?**
     <details>
     <summary>Answer</summary>
+
     "Pack database (Store)". This compiles the temporary working files into a single .idb file.
+
     </details>
 
 4.  **What happens during the "Instruction Parsing" (Pass 1) phase of analysis?**
     <details>
     <summary>Answer</summary>
+
     IDA decodes binary bytes into assembly instructions (mnemonics and operands).
+
     </details>
 
 5.  **What crucial context does the "Semantic Analysis" (Pass 2) phase add?**
     <details>
     <summary>Answer</summary>
+
     It identifies functions, argument lists, and cross-references (xrefs).
+
     </details>
 
 6.  **Why does IDA map the binary into virtual memory instead of just reading it from disk?**
     <details>
     <summary>Answer</summary>
+
     To simulate how the OS loads the program, ensuring memory addresses match what they would be during actual execution.
+
     </details>
 
 7.  **What is the purpose of the `.til` temporary file?**
     <details>
     <summary>Answer</summary>
+
     It stores type library information (function prototypes and data structures).
+
     </details>
 
 8.  **If IDA identifies a binary as a "PE" file, what architecture is it likely targeted for?**
     <details>
     <summary>Answer</summary>
+
     Windows (Portable Executable).
+
     </details>
 
 ---
