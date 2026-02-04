@@ -13,6 +13,14 @@ By the end of this lesson, you will be able to:
 
 ---
 
+## Media Resources
+
+[🎧 Listen to Audio](assets/intro-to-ida-pro.m4a)
+
+![Introduction to IDA Pro](assets/intro-to-ida-pro.png)
+
+---
+
 ## 1. Introduction to IDA Pro
 
 **IDA Pro (Interactive Disassembler)** is the industry-standard tool for static analysis. It is a "multipass" disassembler that attempts to convert binary machine code into human-readable assembly language. Beyond simple translation, IDA analyzes the code to identify functions, variables, data structures, and cross-references, effectively reconstructing the program's logic.
