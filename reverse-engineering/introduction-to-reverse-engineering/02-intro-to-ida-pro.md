@@ -1,5 +1,29 @@
 # Lesson 02: Introduction to IDA Pro
 
+## Table of Contents
+
+*   [Learning Objectives](#learning-objectives)
+*   [Media Resources](#media-resources)
+*   [1. Introduction to IDA Pro](#1-introduction-to-ida-pro)
+*   [2. Versions and Licensing](#2-versions-and-licensing)
+    *   [The Lab Version (Freeware 5.0)](#the-lab-version-freeware-50)
+    *   [The Demo Version](#the-demo-version)
+    *   [The Commercial (Pro) Version](#the-commercial-pro-version)
+*   [3. Loading a Binary](#3-loading-a-binary)
+    *   [The Loading Process](#the-loading-process)
+*   [4. The Analysis Process](#4-the-analysis-process)
+    *   [Step 1: Memory Mapping](#step-1-memory-mapping)
+    *   [Step 2: Instruction Parsing (Pass 1)](#step-2-instruction-parsing-pass-1)
+    *   [Step 3: Semantic Analysis (Pass 2)](#step-3-semantic-analysis-pass-2)
+*   [5. The IDA Database (.idb)](#5-the-ida-database-idb)
+    *   [Temporary Files](#temporary-files)
+    *   [The .idb File](#the-idb-file)
+*   [6. Saving Your Work](#6-saving-your-work)
+    *   [How to Save](#how-to-save)
+*   [Summary](#summary)
+*   [Knowledge Check](#knowledge-check)
+*   [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
