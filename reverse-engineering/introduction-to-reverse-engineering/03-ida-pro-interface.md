@@ -10,6 +10,28 @@ By the end of this lesson, you will be able to:
 *   Perform basic interactions such as **Jumping**, **Renaming**, and **Commenting**.
 *   Understand the critical "No Undo" limitation of the IDA database.
 
+
+---
+
+## Table of Contents
+
+- [1. Key Interface Components](#1-key-interface-components)
+    - [Overview Navigator](#overview-navigator)
+    - [Disassembly View](#disassembly-view)
+    - [Functions Window](#functions-window)
+    - [Output Window](#output-window)
+- [2. Visualizing Control Flow (Graph View)](#2-visualizing-control-flow-graph-view)
+- [3. Navigation and Interaction](#3-navigation-and-interaction)
+    - [Jumping to Locations](#jumping-to-locations)
+    - [Renaming](#renaming)
+    - [Comments](#comments)
+    - [Data Conversion](#data-conversion)
+- [4. Critical Warnings](#4-critical-warnings)
+    - [NO UNDO BUTTON](#no-undo-button)
+    - [Analysis Start Point](#analysis-start-point)
+- [Summary](#summary)
+- [Knowledge Check](#knowledge-check)
+
 ---
 
 ## 1. Key Interface Components
