@@ -1,5 +1,26 @@
 # Lesson 03: IDA Pro Interface & Navigation
 
+## Table of Contents
+
+*   [Learning Objectives](#learning-objectives)
+*   [1. Key Interface Components](#1-key-interface-components)
+    *   [Overview Navigator](#overview-navigator)
+    *   [Disassembly View](#disassembly-view)
+    *   [Functions Window](#functions-window)
+    *   [Output Window](#output-window)
+*   [2. Visualizing Control Flow (Graph View)](#2-visualizing-control-flow-graph-view)
+*   [3. Navigation and Interaction](#3-navigation-and-interaction)
+    *   [Jumping to Locations](#jumping-to-locations)
+    *   [Renaming](#renaming)
+    *   [Comments](#comments)
+    *   [Data Conversion](#data-conversion)
+*   [4. Critical Warnings](#4-critical-warnings)
+    *   [NO UNDO BUTTON](#no-undo-button)
+    *   [Analysis Start Point](#analysis-start-point)
+*   [Summary](#summary)
+*   [Knowledge Check](#knowledge-check)
+*   [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
@@ -13,26 +34,6 @@ By the end of this lesson, you will be able to:
 
 ---
 
-## Table of Contents
-
-- [1. Key Interface Components](#1-key-interface-components)
-    - [Overview Navigator](#overview-navigator)
-    - [Disassembly View](#disassembly-view)
-    - [Functions Window](#functions-window)
-    - [Output Window](#output-window)
-- [2. Visualizing Control Flow (Graph View)](#2-visualizing-control-flow-graph-view)
-- [3. Navigation and Interaction](#3-navigation-and-interaction)
-    - [Jumping to Locations](#jumping-to-locations)
-    - [Renaming](#renaming)
-    - [Comments](#comments)
-    - [Data Conversion](#data-conversion)
-- [4. Critical Warnings](#4-critical-warnings)
-    - [NO UNDO BUTTON](#no-undo-button)
-    - [Analysis Start Point](#analysis-start-point)
-- [Summary](#summary)
-- [Knowledge Check](#knowledge-check)
-
----
 
 ## 1. Key Interface Components
 
@@ -141,3 +142,40 @@ The IDA Pro interface is designed to help you visualize complex binary logic. By
     <summary>Answer</summary>
     Because IDA Pro has **no Undo function**. If you make a mistake, reloading a saved database is the only way to revert it.
     </details>
+
+4.  **What does a Blue arrow signify in the Graph View?**
+    <details>
+    <summary>Answer</summary>
+    It signifies an **Unconditional Jump**, meaning the execution path *must* follow this arrow (no decision is made).
+    </details>
+
+5.  **What is the hotkey to rename a function or variable?**
+    <details>
+    <summary>Answer</summary>
+    The **N** key.
+    </details>
+
+6.  **If you see a function named `sub_401000`, what does this tell you?**
+    <details>
+    <summary>Answer</summary>
+    It is a generic, auto-generated name for a subroutine at memory address `0x401000` that IDA has not identified as a standard library function. It is a primary target for analysis.
+    </details>
+
+7.  **Where can you view the status of file loading and any analysis errors?**
+    <details>
+    <summary>Answer</summary>
+    The **Output Window** at the bottom of the interface.
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **The "Spacebar" Moment**: This is often the "aha!" moment for students. Show the dense, linear Text View first, let them feel overwhelmed, and then hit **Spacebar** to reveal the clean, logic-flow Graph View. It visually demonstrates the value of the tool.
+*   **Color Logic Mnemonic**:
+    *   **Green** for "Go" / "Yes" (True)
+    *   **Red** for "Stop" / "No" (False)
+    *   **Blue** for "Must Do" (Unconditional)
+*   **The "No Undo" Trap**: Reiterate this until it sticks. New users *will* try to Ctrl+Z and panic. Emphasize the "Save Early, Save Often" mantra.
+*   **Renaming IS Analysis**: Students often think reading the code is the work. Correct them: *Annotating* the code is the work. If they understand a function but `sub_401000` remains named `sub_401000`, they haven't finished the job.
+*   **Navigation**: Compare the **Esc** key to a web browser's "Back" button. It's an intuitive analogy that helps them feel comfortable exploring without getting lost.
