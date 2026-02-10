@@ -1,5 +1,17 @@
 # Lesson 05: Code Constructs
 
+## Table of Contents
+
+- [Learning Objectives](#learning-objectives)
+- [1. Goals of Binary Analysis](#1-goals-of-binary-analysis)
+- [2. Variable Scope and Identification in IDA](#2-variable-scope-and-identification-in-ida)
+- [3. Practical Analysis Techniques](#3-practical-analysis-techniques)
+- [4. Arithmetic and Register Manipulation](#4-arithmetic-and-register-manipulation)
+- [5. Two's Complement Refresher](#5-twos-complement-refresher)
+- [Summary](#summary)
+- [Knowledge Check](#knowledge-check)
+- [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
@@ -113,3 +125,39 @@ In this lesson, we moved from basic instructions to recognizing higher-level cod
     <summary>Answer</summary>
     By offsets relative to the Base Pointer (`EBP`) or Stack Pointer (`ESP`), e.g., `[EBP-4]`.
     </details>
+
+5.  **What does a question mark (`?`) in the `.data` section signify?**
+    <details>
+    <summary>Answer</summary>
+    It signifies an **Uninitialized** variable.
+    </details>
+
+6.  **If you see `mov eax, dword_402000`, what type of variable is likely being accessed?**
+    <details>
+    <summary>Answer</summary>
+    A **Global Variable** (referenced by a hardcoded memory address).
+    </details>
+
+7.  **In Two's Complement, what is the shortcut to find the magnitude of a negative number?**
+    <details>
+    <summary>Answer</summary>
+    **Invert all bits** and **add 1**.
+    </details>
+
+8.  **Why is renaming variables in IDA Pro considered a "Best Practice"?**
+    <details>
+    <summary>Answer</summary>
+    It propagates the meaning of the variable throughout the entire database, making the overall control flow and logic much easier to understand.
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **Global vs. Local Analogy**:
+    *   **Global**: Like a "Public Notice Board" at a fixed location (hardcoded address). Everyone knows where it is.
+    *   **Local**: Like a "Sticky Note" on your desk (Stack). It's temporary and relative to where *you* are sitting (EBP).
+*   **The "CDQ" Gotcha**: This is a high-value teaching point. If they miss the `CDQ` instruction before a division, their analysis of any signed math operations will be incorrect. It's a subtle but critical detail.
+*   **Modulo Operator**: Remind them that in programming, `%` (modulo) gives the remainder. In assembly `DIV`, the remainder is "hidden" in **EDX**.
+*   **Two's Complement "Flip & Add"**: Drill this mechanic. "Flip the bits, Add one." It's the standard way to verify if that large hex number (`0xFFFFFFFB`) is actually just `-5`.
+*   **Renaming IS Analysis**: Reiterate this core philosophy. "An unnamed variable is an unanalyzed variable." usage of `N` hotkey should be muscle memory.
