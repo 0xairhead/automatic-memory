@@ -31,9 +31,7 @@ By the end of this lesson, you will be able to:
 *   Perform basic interactions such as **Jumping**, **Renaming**, and **Commenting**.
 *   Understand the critical "No Undo" limitation of the IDA database.
 
-
 ---
-
 
 ## 1. Key Interface Components
 

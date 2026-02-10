@@ -1,5 +1,17 @@
 # Lesson 04: x86 Refresher
 
+## Table of Contents
+
+- [Learning Objectives](#learning-objectives)
+- [1. Memory Management in 32-bit Systems](#1-memory-management-in-32-bit-systems)
+- [2. Data Representation and Opcodes](#2-data-representation-and-opcodes)
+- [3. Key x86 Registers](#3-key-x86-registers)
+- [4. Assembly Instructions](#4-assembly-instructions)
+- [5. Practical Workflow: Compiling and Analyzing](#5-practical-workflow-compiling-and-analyzing)
+- [Summary](#summary)
+- [Knowledge Check](#knowledge-check)
+- [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
@@ -122,3 +134,40 @@ This refresher covered the bedrock of x86 reverse engineering. From the downward
     <summary>Answer</summary>
     It is a highly efficient way to set the EAX register to **zero**.
     </details>
+
+5.  **Which 32-bit register is typically used as a loop counter?**
+    <details>
+    <summary>Answer</summary>
+    **ECX**.
+    </details>
+
+6.  **In a Little-Endian system, how would the hexadecimal value `0x12345678` be stored in memory?**
+    <details>
+    <summary>Answer</summary>
+    `78 56 34 12` (Least Significant Byte first).
+    </details>
+
+7.  **What is the specific purpose of the EIP register?**
+    <details>
+    <summary>Answer</summary>
+    It holds the address of the **next instruction** to be executed.
+    </details>
+
+8.  **If a C program has `int x = 5 + 5;`, why might you see `MOV EAX, 0xA` in the assembly instead of an `ADD` instruction?**
+    <details>
+    <summary>Answer</summary>
+    Because of **Compiler Optimization**, where the compiler pre-calculates static values at compile time to improve runtime performance.
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **Stack vs. Heap Visual**: Use the "Stack of Plates" analogy for the Stack (LIFO) and a "Free-form Cloud" for the Heap. Emphasize that the Stack grows *down* (towards 0), like digging a hole, while the Heap grows *up*.
+*   **Endianness Trick**: "Little Endian" = "Little End First". The smallest unit (least significant byte) is at the start.
+*   **The "Holy Grail" Register**: When discussing EIP, pause and emphasize it. Controlling EIP means controlling execution. This is the bridge to exploit development.
+*   **MOV vs. LEA**: This is the most common point of confusion.
+    *   **MOV**: "Give me what is *inside* the box."
+    *   **LEA**: "Give me the *address* of the box."
+*   **XOR Zeroing**: Ask the class why compilers use `XOR EAX, EAX` instead of `MOV EAX, 0`. (Answer: It's smaller and faster). It's a great example of compiler optimization they will see everywhere.
+*   **The "Lossy" Nature of Compilation**: Show the `int x = 1 + 2` -> `MOV EAX, 3` example. Reinforce that we are looking at the *result* of the code, not the original source code.
