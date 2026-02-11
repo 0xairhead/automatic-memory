@@ -1,5 +1,16 @@
 # Lesson 06: Code Constructs: IF Statements
 
+## Table of Contents
+
+- [Learning Objectives](#learning-objectives)
+- [1. The Mechanics of Comparisons and Jumps](#1-the-mechanics-of-comparisons-and-jumps)
+- [2. Signed vs. Unsigned Data](#2-signed-vs-unsigned-data)
+- [3. Inverted Logic in Assembly](#3-inverted-logic-in-assembly)
+- [4. Analyzing Complex Constructs](#4-analyzing-complex-constructs)
+- [5. Practical Analysis Techniques](#5-practical-analysis-techniques)
+- [Knowledge Check](#knowledge-check)
+- [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
@@ -127,3 +138,40 @@ As you identify logic, rename variables (e.g., `var_4` -> `user_count`) and loca
     It means if the **first** condition fails, the code jumps immediately to failure/else **without** checking the second condition.
     
     </details>
+
+5.  **Which view in IDA Pro is best for visualizing the flow of control blocks?**
+    <details>
+    <summary>Answer</summary>
+    **Graph View**.
+    </details>
+
+6.  **What is the purpose of an Unconditional Jump (`JMP`) in an if-else structure?**
+    <details>
+    <summary>Answer</summary>
+    To **skip** the `else` block after the "True" block has executed.
+    </details>
+
+7.  **If you are analyzing a comparison `CMP EAX, 10`, what should you do to understand the context?**
+    <details>
+    <summary>Answer</summary>
+    **Back-trace** to see where `EAX` got its value from.
+    </details>
+
+8.  **What simple mnemonic helps distinguish Signed vs. Unsigned jumps?**
+    <details>
+    <summary>Answer</summary>
+    **G**reater/**L**ess for **Signed**, **A**bove/**B**elow for **Unsigned**.
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **CMP is Silent**: Remind them that `CMP` doesn't change the operands; it only updates the EFLAGS. It's invisible storage.
+*   **Signed (GL) vs. Unsigned (AB)**: Use the mnemonic: **G**reater/**L**ess for signed (integers), **A**bove/**B**elow for unsigned (memory addresses/sizes).
+*   **The "Inverted Jump" Rule**: Beginners often look for `JE` (Jump Equal) when they see `if (x == 1)`. Show them why compilers prefer `JNE` (Jump Not Equal) to skip the block.
+*   **Graph View Shapes**:
+    *   **If**: A split that rejoins.
+    *   **If-Else**: A split where both paths go their own way before potentially rejoining.
+    *   **Loop**: An arrow going *up* (backwards).
+*   **Spacebar Toggle**: If they get lost in the linear instruction list, hit Spacebar. The shapes tell the story better than the lines.
