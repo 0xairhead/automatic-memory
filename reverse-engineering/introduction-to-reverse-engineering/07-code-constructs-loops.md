@@ -1,5 +1,13 @@
 # Lesson 07: Code Constructs: Loops and Jump Tables
 
+## Table of Contents
+
+- [Learning Objectives](#learning-objectives)
+- [1. Analyzing Loops in Disassembly](#1-analyzing-loops-in-disassembly)
+- [2. Switch Statements and Jump Tables](#2-switch-statements-and-jump-tables)
+- [Knowledge Check](#knowledge-check)
+- [Presentation Cliffnotes](#presentation-cliffnotes)
+
 ## Learning Objectives
 
 By the end of this lesson, you will be able to:
@@ -101,3 +109,27 @@ JMP [Base_Address + (Register * 4)]
     **True**. It compares against the first case, then the second, and so on, which is slower for large sets than a Jump Table.
 
     </details>
+
+5.  **What are the four components of a standard `for` loop in assembly?**
+    <details>
+    <summary>Answer</summary>
+    **Initialization**, **Comparison**, **Body**, and **Increment**.
+    </details>
+
+6.  **In a Jump Table switch, where does the code jump if the input is greater than the highest case?**
+    <details>
+    <summary>Answer</summary>
+    It jumps to the **Default** case.
+    </details>
+
+---
+
+## Presentation Cliffnotes
+
+*   **The "Blue Arrow Up"**: In IDA Graph view, the most reliable sign of a loop is the blue line going *backwards* (up) to an earlier address.
+*   **Loop Components**: Drill the "Init -> Compare -> Body -> Increment" structure. If they can identify these 4 parts, they can reconstruct the original loop.
+*   **Switch Optimization**: Explain *why* compilers switch strategies.
+    *   **Few Cases**: `CMP/JE` chains are simple.
+    *   **Many Cases**: A Jump Table (O(1)) is faster than checking 50 `if` statements (O(n)).
+*   **The "Times 4" Mystery**: When they see `[Register * 4]`, it's almost always an array index or a jump table lookup. The `4` is just the size of a 32-bit pointer.
+*   **Data Types Redux**: Reiterate that `JGE/JL` means **signed** (looping from -10 to 10) and `JA/JB` means **unsigned** (looping through memory sizes).
