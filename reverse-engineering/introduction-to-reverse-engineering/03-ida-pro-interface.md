@@ -3,6 +3,7 @@
 ## Table of Contents
 
 *   [Learning Objectives](#learning-objectives)
+*   [Media Resources](#media-resources)
 *   [1. Key Interface Components](#1-key-interface-components)
     *   [Overview Navigator](#overview-navigator)
     *   [Disassembly View](#disassembly-view)
@@ -30,6 +31,16 @@ By the end of this lesson, you will be able to:
 *   Interpret the logic behind the **Control Flow Graph (CFG)** colors (Blue, Green, Red).
 *   Perform basic interactions such as **Jumping**, **Renaming**, and **Commenting**.
 *   Understand the critical "No Undo" limitation of the IDA database.
+
+---
+
+## Media Resources
+
+[🎧 Listen to Audio](assets/03-ida-pro-interface.m4a)
+
+![IDA Pro Interface](assets/03-ida-pro-interface.png)
+
+[Lecture Slides: IDA Pro Interface & Navigation](assets/03-ida-pro-interface.pdf)
 
 ---
 
