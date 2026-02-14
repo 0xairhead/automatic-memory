@@ -46,11 +46,11 @@ By the end of this lesson, you will be able to:
 
 ## Media Resources
 
-[🎧 Listen to Audio](assets/intro-to-re.m4a)
+[🎧 Listen to Audio](assets/01-intro-to-re.m4a)
 
-![Introduction to Reverse Engineering](assets/intro-to-re.png)
+![Introduction to Reverse Engineering](assets/01-intro-to-re.png)
 
-[Lecture Slides: Introduction to Reverse Engineering](assets/intro-to-re.pdf)
+[Lecture Slides: Introduction to Reverse Engineering](assets/01-intro-to-re.pdf)
 
 ## 1. What Is Reverse Engineering?
 

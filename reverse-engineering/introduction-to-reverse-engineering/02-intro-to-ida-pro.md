@@ -39,9 +39,9 @@ By the end of this lesson, you will be able to:
 
 ## Media Resources
 
-[🎧 Listen to Audio](assets/intro-to-ida-pro.m4a)
+[🎧 Listen to Audio](assets/02-intro-to-ida-pro.m4a)
 
-![Introduction to IDA Pro](assets/intro-to-ida-pro.png)
+![Introduction to IDA Pro](assets/02-intro-to-ida-pro.png)
 
 ---
 
