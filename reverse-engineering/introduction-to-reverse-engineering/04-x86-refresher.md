@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Learning Objectives](#learning-objectives)
+- [Media Resources](#media-resources)
 - [1. Memory Management in 32-bit Systems](#1-memory-management-in-32-bit-systems)
 - [2. Data Representation and Opcodes](#2-data-representation-and-opcodes)
 - [3. Key x86 Registers](#3-key-x86-registers)
@@ -21,6 +22,16 @@ By the end of this lesson, you will be able to:
 *   Identify key **x86 Registers** (EAX, ECX, EFLAGS, EIP) and their specific purposes.
 *   Recognize essential **Assembly Instructions** (MOV, LEA, XOR, SHL/SHR).
 *   Describe the practical workflow of **compiling C code** and analyzing it in **IDA Pro**.
+
+---
+
+## Media Resources
+
+[🎧 Listen to Audio](assets/04-x86-refresher.m4a)
+
+![x86 Refresher](assets/04-x86-refresher.png)
+
+[Lecture Slides: x86 Refresher](assets/04-x86-refresher.pdf)
 
 ---
 

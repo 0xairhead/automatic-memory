@@ -43,6 +43,8 @@ By the end of this lesson, you will be able to:
 
 ![Introduction to IDA Pro](assets/02-intro-to-ida-pro.png)
 
+[Lecture Slides: Introduction to IDA Pro](assets/02-intro-to-ida-pro.pdf)
+
 ---
 
 ## 1. Introduction to IDA Pro
