@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Learning Objectives](#learning-objectives)
+- [Media Resources](#media-resources)
 - [1. Goals of Binary Analysis](#1-goals-of-binary-analysis)
 - [2. Variable Scope and Identification in IDA](#2-variable-scope-and-identification-in-ida)
 - [3. Practical Analysis Techniques](#3-practical-analysis-techniques)
@@ -21,6 +22,16 @@ By the end of this lesson, you will be able to:
 *   Apply practical analysis techniques such as **renaming variables** and **identifying standard library functions**.
 *   Understand **arithmetic operations** at the assembly level, specifically division and sign extension (`CDQ`).
 *   Perform **Two's Complement** calculations to verify negative values.
+
+---
+
+## Media Resources
+
+[🎧 Listen to Audio](assets/05-code-constructs.m4a)
+
+![Code Constructs](assets/05-code-constructs.png)
+
+[Lecture Slides: Code Constructs](assets/05-code-constructs.pdf)
 
 ---
 
