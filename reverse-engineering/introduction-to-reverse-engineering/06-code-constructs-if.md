@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Learning Objectives](#learning-objectives)
+- [Media Resources](#media-resources)
 - [1. The Mechanics of Comparisons and Jumps](#1-the-mechanics-of-comparisons-and-jumps)
 - [2. Signed vs. Unsigned Data](#2-signed-vs-unsigned-data)
 - [3. Inverted Logic in Assembly](#3-inverted-logic-in-assembly)
@@ -20,6 +21,16 @@ By the end of this lesson, you will be able to:
 *   Recognize **Inverted Logic** in assembly code (e.g., how `if (a > b)` usually compiles to a check for `<=`).
 *   Identify complex constructs such as **Logical Operators** and **Nested If Statements** in assembly.
 *   Apply practical analysis techniques like **Back-Tracing** and **Text View** in IDA Pro.
+
+---
+
+## Media Resources
+
+[🎧 Listen to Audio](assets/06-code-constructs-if.m4a)
+
+![Code Constructs: IF Statements](assets/06-code-constructs-if.png)
+
+[Lecture Slides: Code Constructs: IF Statements](assets/06-code-constructs-if.pdf)
 
 ---
 
