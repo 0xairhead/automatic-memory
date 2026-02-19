@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Learning Objectives](#learning-objectives)
+- [Media Resources](#media-resources)
 - [1. Analyzing Loops in Disassembly](#1-analyzing-loops-in-disassembly)
 - [2. Switch Statements and Jump Tables](#2-switch-statements-and-jump-tables)
 - [Knowledge Check](#knowledge-check)
@@ -17,6 +18,16 @@ By the end of this lesson, you will be able to:
 *   Differentiate between **Signed** and **Unsigned** comparisons to infer data types in loops.
 *   Distinguish between **Comparison Chains** (small switches) and **Jump Tables** (large switches).
 *   Explain the mechanism of a **Jump Table** calculation `(Base + Index * 4)`.
+
+---
+
+## Media Resources
+
+[🎧 Listen to Audio](assets/07-code-constructs-loops.m4a)
+
+![Code Constructs: Loops and Jump Tables](assets/07-code-constructs-loops.png)
+
+[Lecture Slides: Code Constructs: Loops and Jump Tables](assets/07-code-constructs-loops.pdf)
 
 ---
 
