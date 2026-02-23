@@ -45,6 +45,8 @@ By the end of this lesson, you will be able to:
 
 [Lecture Slides: Introduction to IDA Pro](assets/02-intro-to-ida-pro.pdf)
 
+[📺 Watch Lecture Video](https://www.youtube.com/watch?v=Rk98rsmHbIg)
+
 ---
 
 ## 1. Introduction to IDA Pro
@@ -157,7 +159,7 @@ IDA Pro is a powerful tool with a unique workflow. It separates the **raw binary
     <summary>Answer</summary>
 
     It disables the "Save" feature, meaning you cannot create or submit the required .idb database files.
-    
+
     </details>
 
 2.  **True or False: When you add a comment in IDA Pro, it modifies the original .exe file.**

@@ -3,6 +3,7 @@
 ## Table of Contents
 
 *   [Learning Objectives](#learning-objectives)
+*   [Media Resources](#media-resources)
 *   [1. What Is Reverse Engineering?](#1-what-is-reverse-engineering)
     *   [Primary Goals](#primary-goals)
 *   [2. Core Analysis Methodologies](#2-core-analysis-methodologies)
@@ -51,6 +52,8 @@ By the end of this lesson, you will be able to:
 ![Introduction to Reverse Engineering](assets/01-intro-to-re.png)
 
 [Lecture Slides: Introduction to Reverse Engineering](assets/01-intro-to-re.pdf)
+
+[📺 Watch Lecture Video](https://www.youtube.com/watch?v=fv9ii3W5htQ)
 
 ## 1. What Is Reverse Engineering?
 
@@ -182,7 +185,7 @@ There is a **many-to-many** relationship between source code and machine code.
 
 ## 7. Disassembly Algorithms
 
-How do tools like IDA Pro turn raw bytes back into assembly instructions? Because x86 has **variable-length instructions**, a dissembler cannot simply "jump" to a fixed offset. It must decode each byte to determine the instruction's length before it knows where the next one starts.
+How do tools like IDA Pro turn raw bytes back into assembly instructions? Because x86 has **variable-length instructions**, a disassembler cannot simply "jump" to a fixed offset. It must decode each byte to determine the instruction's length before it knows where the next one starts.
 
 They use one of two main algorithms:
 

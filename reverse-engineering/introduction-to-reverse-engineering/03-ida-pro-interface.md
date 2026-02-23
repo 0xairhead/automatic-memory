@@ -42,6 +42,8 @@ By the end of this lesson, you will be able to:
 
 [Lecture Slides: IDA Pro Interface & Navigation](assets/03-ida-pro-interface.pdf)
 
+[📺 Watch Lecture Video](https://www.youtube.com/watch?v=1YfvHV47lV0)
+
 ---
 
 ## 1. Key Interface Components
@@ -106,7 +108,7 @@ One of your main goals is to make the code readable.
 ### Comments
 Leave notes for yourself or other analysts.
 *   **Hotkey**: **; (Semicolon)** or **:** (Colon)
-*   **Usage**: detailed comments explaining complex logic blocks are crucial for long-term analysis.
+*   **Usage**: Detailed comments explaining complex logic blocks are crucial for long-term analysis.
 
 ### Data Conversion
 IDA sometimes misinterprets data types.
